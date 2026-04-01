@@ -1,3 +1,78 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import "tailwindcss";
+
+* {
+    font-family: 'DMSans';
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+@font-face {
+    font-family: 'DMSans';
+    src: url("../public/font/DMSans.woff2");
+    font-weight: 100;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DMSans';
+    src: url("../public/font/DMSans.woff2");
+    font-weight: 200;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DMSans';
+    src: url("../public/font/DMSans.woff2");
+    font-weight: 300;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DMSans';
+    src: url("../public/font/DMSans.woff2");
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DMSans';
+    src: url("../public/font/DMSans.woff2");
+    font-weight: 500;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DMSans';
+    src: url("../public/font/DMSans.woff2");
+    font-weight: 600;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DMSans';
+    src: url("../public/font/DMSans.woff2");
+    font-weight: 700;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DMSans';
+    src: url("../public/font/DMSans.woff2");
+    font-weight: 800;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DMSans';
+    src: url("../public/font/DMSans.woff2");
+    font-weight: 900;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DMSans';
+    src: url("../public/font/DMSans.woff2");
+    font-weight: 1000;
+    font-display: swap;
+}
