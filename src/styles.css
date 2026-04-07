@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+:root{
+    --color-background-white: #F1F3F2;
+    --color-background-gray: #e9f5ee;
+    --color-background-green: #1b4332;
+    --color-font-1: #1B4332;
+    --color-font-2: #74837B;
+}
+
 * {
     font-family: 'DMSans';
     box-sizing: border-box;
