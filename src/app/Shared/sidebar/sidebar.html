@@ -1,0 +1,24 @@
+<nav class="navbar" aria-label="Menú lateral">
+    <section class="navbar__group">
+        <header class="group__user">
+            <span class="material-symbols-outlined">fork_spoon</span>
+            <h3 class="user__title">Zenkai</h3>
+        </header>
+
+        <ul class="group__list">
+            @for (item of menuItems(); track item.route) {
+            <li class="list__item">
+                <a [routerLink]="item.route" class="item__link" routerLinkActive="router-active"
+                    [routerLinkActiveOptions]="{exact: true}">
+                    <span class="material-symbols-outlined">{{item.icon}}</span>
+                    {{item.label}}
+                </a>
+            </li>
+            }
+            <button (click)="logout()" class="item__link">
+                <span class="material-symbols-outlined">logout</span>
+                Log out
+            </button>
+        </ul>
+    </section>
+</nav>

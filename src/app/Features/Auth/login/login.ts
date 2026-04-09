@@ -31,8 +31,7 @@ export class Login {
     this.authService.login(credentials).subscribe({
       next: () => {
         const role = this.authService.getUserRole();
-        console.log('User role:', role);
-        console.log('Email:', this.authService.getUserEmail());
+        this.redirectByUserRole(role);
       },error: (err) => {
         console.error('Login failed', err);
       }

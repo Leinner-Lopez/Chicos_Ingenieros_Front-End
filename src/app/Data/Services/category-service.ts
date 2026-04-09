@@ -1,0 +1,32 @@
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Category } from '../Interfaces/Category';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class CategoryService {
+  httpClient = inject(HttpClient);
+  private readonly apiUrl = 'http://localhost:8080/api/categories';
+
+  saveCategory(category: Category): Observable<Category> {
+    return this.httpClient.post<Category>(this.apiUrl, category);
+  }
+
+  getAllCategories(): Observable<Category[]> {
+    return this.httpClient.get<Category[]>(this.apiUrl);
+  }
+
+  findCategoryById(id: number): Observable<Category> {
+    return this.httpClient.get<Category>(`${this.apiUrl}/${id}`);
+  }
+
+  updateCategory(category: Category): Observable<Category> {
+    return this.httpClient.put<Category>(this.apiUrl, category);
+  }
+
+  deleteCategory(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.apiUrl}/${id}`)
+  }
+}
