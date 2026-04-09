@@ -1,0 +1,18 @@
+<div class="modal">
+    <h2 class="modal__title">Registrar Categoría</h2>
+    <button class="modal__close" (click)="closeModal()">
+        <span class="material-symbols-outlined">
+            close
+        </span></button>
+    <form class="modal__form" (ngSubmit)="onSubmit()" [formGroup]="formularioRegistration">
+        <div class="input__container">
+            <label for="categoryName">Nombre</label>
+            <input type="text" formControlName="name" name="categoryName" id="categoryName">
+        </div>
+        <div class="input__container">
+            <label for="categoryDescription">Descripción</label>
+            <textarea name="categoryDescription" id="categoryDescription" formControlName="description"></textarea>
+        </div>
+        <button type="submit" class="submit__button">Registrar</button>
+    </form>
+</div>

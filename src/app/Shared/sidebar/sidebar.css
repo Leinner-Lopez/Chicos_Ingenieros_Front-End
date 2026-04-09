@@ -56,7 +56,7 @@ h3 {
     font-size: 1.2rem;
     user-select: none;
     text-decoration: none;
-    color: inherit;
+    color: var(--color-font-2);
     display: flex;
     gap: 8px;
     align-items: center;

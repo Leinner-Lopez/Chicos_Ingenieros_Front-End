@@ -1,7 +1,7 @@
 <section class="categories__view">
     <header class="view__header">
         <h2 class="header__title">Categorías</h2>
-        <button class="header__button">
+        <button class="header__button" (click)="registerCategory()">
             <span class="material-symbols-outlined">
                 add
             </span>
@@ -39,24 +39,24 @@
             </tr>
         </thead>
         <tbody class="table__body">
-            @for (category of categories; track category.category_id) {
-                <tr class="body__row">
-                    <td class="row__content">{{ category.category_id }}</td>
-                    <td class="row__content">{{ category.name }}</td>
-                    <td class="row__content">{{ category.description }}</td>
-                    <td class="row__content">
-                        <button class="content__button">
-                            <span class="material-symbols-outlined">
-                                edit
-                            </span>
-                        </button>
-                        <button class="content__button">
-                            <span class="material-symbols-outlined">
-                                delete
-                            </span>
-                        </button>
-                    </td>
-                </tr>
+            @for (category of categories(); track category.category_id) {
+            <tr class="body__row">
+                <td class="row__content">{{ category.category_id }}</td>
+                <td class="row__content">{{ category.name }}</td>
+                <td class="row__content">{{ category.description }}</td>
+                <td class="row__content row__actions">
+                    <button class="button edit__button" (click)="updateCategory(category.category_id)">
+                        <span class="material-symbols-outlined">
+                            edit
+                        </span>
+                    </button>
+                    <button class="button delete__button" (click)="deleteCategory(category.category_id)">
+                        <span class="material-symbols-outlined">
+                            delete
+                        </span>
+                    </button>
+                </td>
+            </tr>
 
             }
         </tbody>

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import '@angular/cdk/overlay-prebuilt.css';
 
 :root {
     --color-background-white: #F1F3F2;
