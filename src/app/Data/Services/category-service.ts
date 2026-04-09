@@ -2,13 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Category } from '../Interfaces/Category';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategoryService {
   httpClient = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/api/categories';
+  private readonly apiUrl = `${environment.apiUrl}/categories`;
+
 
   saveCategory(category: Category): Observable<Category> {
     return this.httpClient.post<Category>(this.apiUrl, category);

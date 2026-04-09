@@ -7,6 +7,7 @@ import { tap } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { JwtPayload } from '../../Data/Interfaces/JwtPayload';
 import { RegisterRequest } from '../../Data/Interfaces/RegisterRequest';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class AuthService {
   httpCLient = inject(HttpClient);
   router = inject(Router);
   private platformId = inject(PLATFORM_ID);
-  private readonly apiUrl = `http://localhost:8080/api/auth`;
+  private readonly apiUrl = `${environment.apiUrl}/auth`;
 
   token = signal<string | null>(null);
   userRole = signal<string | null>(null);
