@@ -42,7 +42,7 @@ export class RegisterCategory {
       description: this.formularioRegistration.value.description!
     }
 
-    if(this.data && this.data.categoryId) {
+    if (this.data && this.data.categoryId) {
       categoryData.category_id = this.data.categoryId;
       this.categoryService.updateCategory(categoryData).subscribe({
         next: () => {
@@ -52,7 +52,7 @@ export class RegisterCategory {
       });
       return;
     }
-    
+
     this.categoryService.saveCategory(categoryData).subscribe({
       next: () => {
         console.log('Categoría registrada exitosamente');
@@ -63,5 +63,10 @@ export class RegisterCategory {
 
   closeModal() {
     this.dialogRef.close('Categoría registrada');
+  }
+
+  hasError(controlName: string, errorType: string): boolean {
+    const control = this.formularioRegistration.get(controlName);
+    return control?.hasError(errorType) && (control.dirty || control.touched) || false;
   }
 }

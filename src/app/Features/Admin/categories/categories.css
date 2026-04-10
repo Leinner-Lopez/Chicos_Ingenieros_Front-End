@@ -79,7 +79,6 @@
 .row__content {
     text-align: center;
     padding: 5px 0;
-    width: max-content;
 }
 
 .row__title {
@@ -111,6 +110,7 @@
 .row__actions {
     display: flex;
     gap: 10px;
+    justify-content: center;
 }
 
 .edit__button{

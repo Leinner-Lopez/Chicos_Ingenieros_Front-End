@@ -53,6 +53,13 @@
     gap: 15px;
 }
 
+.form__input-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 5px;
+}
+
 .input__container {
     display: flex;
     flex-direction: column;
@@ -94,6 +101,12 @@ textarea {
     background-color: #fff;
     color: var(--color-background-green);
     box-shadow: 0 0 8px rgba(27, 67, 50,.7);
+}
+
+.error__message {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: rgba(240, 20, 20);
 }
 
 @starting-style {
