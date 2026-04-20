@@ -4,14 +4,17 @@ import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../Core/Services/auth-service';
 import { Router } from '@angular/router';
 import { LoginRequest } from '../../../Data/Interfaces/LoginRequest';
+import { Dialog } from '@angular/cdk/dialog';
+import { MessageModal } from '../../../Shared/Modals/message-modal/message-modal';
 
 @Component({
   selector: 'app-login',
-  imports: [RouterLink,ReactiveFormsModule],
+  imports: [RouterLink, ReactiveFormsModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class Login {
+  dialog = inject(Dialog);
   form = inject(FormBuilder);
   authService = inject(AuthService);
   router = inject(Router);
@@ -23,8 +26,8 @@ export class Login {
   })
 
   onSubmit() {
-    if(this.formularioLogin.invalid) return;
-    const credentials: LoginRequest= {
+    if (this.formularioLogin.invalid) return;
+    const credentials: LoginRequest = {
       username: this.formularioLogin.value.Username,
       password: this.formularioLogin.value.Password
     }
@@ -32,14 +35,19 @@ export class Login {
       next: () => {
         const role = this.authService.getUserRole();
         this.redirectByUserRole(role);
-      },error: (err) => {
-        console.error('Login failed', err);
+      }, error: (err) => {
+        this.dialog.open<string>(MessageModal,{
+          data:{
+            title: 'Error de autenticación',
+            message: 'Email o contraseña incorrectos. Por favor, inténtelo de nuevo.'
+          }
+        })
       }
     })
   }
 
   private redirectByUserRole(role: string | null) {
-        switch (role) {
+    switch (role) {
       case 'ADMIN':
         this.router.navigate(['/admin/inicio']);
         break;

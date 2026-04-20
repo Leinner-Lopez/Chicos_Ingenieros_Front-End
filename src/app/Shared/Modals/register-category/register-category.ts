@@ -1,8 +1,9 @@
 import { Component, Inject, inject, model } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CategoryService } from '../../../Data/Services/category-service';
-import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
+import { Dialog, DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Category } from '../../../Data/Interfaces/Category';
+import { MessageModal } from '../message-modal/message-modal';
 
 @Component({
   selector: 'app-register-category',
@@ -11,7 +12,7 @@ import { Category } from '../../../Data/Interfaces/Category';
   styleUrl: './register-category.css',
 })
 export class RegisterCategory {
-
+  dialog = inject(Dialog);
   dialogRef: DialogRef<string> = inject(DialogRef);
   form = inject(FormBuilder);
   categoryService: CategoryService = inject(CategoryService);
@@ -55,8 +56,16 @@ export class RegisterCategory {
 
     this.categoryService.saveCategory(categoryData).subscribe({
       next: () => {
-        console.log('Categoría registrada exitosamente');
-        this.closeModal();
+        const dialogRef = this.dialog.open<string>(MessageModal, {
+          data: {
+            title: 'Categoría Registrada',
+            message: 'La categoría ha sido registrada exitosamente.'
+          }
+        });
+        setTimeout(() => {
+          dialogRef.close();
+          this.closeModal();
+        }, 1500);
       }
     });
   }

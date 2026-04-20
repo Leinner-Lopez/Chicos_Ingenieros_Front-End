@@ -1,0 +1,106 @@
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    z-index: 10;
+    width: 350px;
+    transition:
+        opacity .5s ease-out,
+        transform .5s cubic-bezier(0.34, 1.56, 0.64, 1),
+        display .5s allow-discrete;
+
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 24px;
+    padding: 1.4rem;
+    background: white;
+    box-shadow: 0 0 50px -12px rgb(0, 0, 0);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow: hidden;
+}
+
+.modal__close {
+    padding: 10px;
+    background-color: var(--color-background-green);
+    color: #fff;
+    border-radius: 64px;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 1rem;
+    display: flex;
+    transition: scale .4s;
+    top: 1rem;
+}
+
+.modal__close:hover {
+    scale: 1.15
+}
+
+.modal__title {
+    font-size: 1.5rem;
+    color: var(--color-font-1);
+    font-weight: 600;
+}
+
+.modal__content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.content__text {
+    font-weight: 400;
+    font-size: 1.2rem;
+}
+
+.content__buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.buttons__button {
+    padding: 10px;
+    border-radius: 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    color: var(--color-font-3);
+    transition: background-color .5s, color .5s;
+}
+
+.button--accept {
+    background-color: rgba(255, 0, 0);
+    border: 2px solid rgba(255, 0, 0, .7);
+}
+
+.button--cancel {
+    border: 2px solid var(--color-font-1);
+    background-color: var(--color-background-green);
+}
+
+.button--accept:hover {
+    background-color: var(--color-background-white);
+    color: rgba(255, 0, 0, .7);
+}
+
+.button--cancel:hover {
+    background-color: var(--color--background-white);
+    color: var(--color-font-1);
+}
+
+@starting-style {
+    .modal {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+}
+
+@media (max-width:700px) {
+    .modal {
+        width: 320px;
+    }
+}
