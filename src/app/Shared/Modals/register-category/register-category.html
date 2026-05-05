@@ -1,28 +1,31 @@
 <div class="modal">
-    <h2 class="modal__title">Registrar Categoría</h2>
-    <button class="modal__close" (click)="closeModal()">
-        <span class="material-symbols-outlined">
-            close
-        </span></button>
-    <form class="modal__form" (ngSubmit)="onSubmit()" [formGroup]="formularioRegistration">
-        <div class="form__input-container">
-            <div class="input__container">
-                <label for="categoryName">Nombre</label>
-                <input type="text" formControlName="name" name="categoryName" id="categoryName">
-            </div>
-            @if (hasError("name","required")) {
-            <p class="error__message">El campo es requerido</p>
-            }
-        </div>
-        <div class="form__input-container">
-            <div class="input__container">
-                <label for="categoryDescription">Descripción</label>
-                <textarea name="categoryDescription" id="categoryDescription" formControlName="description"></textarea>
-            </div>
-            @if (hasError("description","required")) {
-            <p class="error__message">El campo es requerido</p>
-            }
-        </div>
-        <button type="submit" class="submit__button">Registrar</button>
-    </form>
+  <h2 class="modal__title">Registrar Categoría</h2>
+  <button class="modal__close" (click)="closeModal()">
+    <span class="material-symbols-outlined"> close </span>
+  </button>
+  <form class="modal__form" (ngSubmit)="onSubmit()" [formGroup]="formularioRegistration">
+    <div class="form__input-container">
+      <div class="input__container">
+        <label for="categoryName">Nombre</label>
+        <input type="text" formControlName="name" name="categoryName" id="categoryName" />
+      </div>
+      @if (hasError("name","required")) {
+      <p class="error__message">El campo es requerido</p>
+      }
+    </div>
+    <div class="form__input-container">
+      <div class="input__container">
+        <label for="categoryDescription">Descripción</label>
+        <textarea
+          name="categoryDescription"
+          id="categoryDescription"
+          formControlName="description"
+        ></textarea>
+      </div>
+      @if (hasError("description","required")) {
+      <p class="error__message">El campo es requerido</p>
+      }
+    </div>
+    <button type="submit" class="submit__button">Registrar</button>
+  </form>
 </div>

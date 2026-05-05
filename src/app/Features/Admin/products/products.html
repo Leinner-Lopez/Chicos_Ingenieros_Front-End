@@ -1,1 +1,56 @@
-<p>products works!</p>
+<section class="products__view">
+  <header class="view__header">
+    <h2 class="header__title">Productos</h2>
+    <button class="header__button" (click)="registerProduct()">
+      <span class="material-symbols-outlined"> add </span>
+      Registrar
+    </button>
+  </header>
+
+  <section class="view__cards">
+    <ul class="cards__list">
+      <li class="list__item">
+        <small class="item__title">Totales</small>
+        <strong class="item__content">{{productNumber()}}</strong>
+      </li>
+      <li class="list__item">
+        <small class="item__title">Activas</small>
+        <strong class="item__content">01</strong>
+      </li>
+      <li class="list__item">
+        <small class="item__title">Inactivas</small>
+        <strong class="item__content">02</strong>
+      </li>
+    </ul>
+  </section>
+
+  <table class="view__table">
+    <thead class="table__title">
+      <tr class="title__row">
+        <th class="row__title">Nombre</th>
+        <th class="row__title">Categoria</th>
+        <th class="row__title">Precio</th>
+        <th class="row__title">Descripción</th>
+        <th class="row__title">Acciones</th>
+      </tr>
+    </thead>
+    <tbody class="table__body">
+      @for (product of products(); track product.product_id) {
+      <tr class="body__row">
+        <td class="row__content">{{product.name}}</td>
+        <td class="row__content">{{product.categoryName}}</td>
+        <td class="row__content">{{product.price}}</td>
+        <td class="row__content">{{product.description}}</td>
+        <td class="row__content row__actions">
+          <button class="button edit__button" (click)="updateProduct(product.product_id)">
+            <span class="material-symbols-outlined" > edit </span>
+          </button>
+          <button class="button delete__button" (click)="deleteProduct(product.product_id)">
+            <span class="material-symbols-outlined"> delete </span>
+          </button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</section>

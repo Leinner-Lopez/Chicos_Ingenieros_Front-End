@@ -19,20 +19,19 @@ export class RegisterCategory {
 
   constructor(@Inject(DIALOG_DATA) public data: any) {
     if (data && data.categoryId) {
-      this.categoryService.findCategoryById(data.categoryId).subscribe(category => {
+      this.categoryService.findCategoryById(data.categoryId).subscribe((category) => {
         this.formularioRegistration.patchValue({
           name: category.name,
-          description: category.description
+          description: category.description,
         });
       });
     }
-
   }
 
   formularioRegistration = this.form.group({
     name: ['', [Validators.required]],
-    description: ['', [Validators.required]]
-  })
+    description: ['', [Validators.required]],
+  });
 
   onSubmit() {
     if (this.formularioRegistration.invalid) return;
@@ -40,8 +39,8 @@ export class RegisterCategory {
     const categoryData: Category = {
       category_id: null!,
       name: this.formularioRegistration.value.name!,
-      description: this.formularioRegistration.value.description!
-    }
+      description: this.formularioRegistration.value.description!,
+    };
 
     if (this.data && this.data.categoryId) {
       categoryData.category_id = this.data.categoryId;
@@ -49,7 +48,7 @@ export class RegisterCategory {
         next: () => {
           console.log('Categoría actualizada exitosamente');
           this.closeModal();
-        }
+        },
       });
       return;
     }
@@ -59,14 +58,14 @@ export class RegisterCategory {
         const dialogRef = this.dialog.open<string>(MessageModal, {
           data: {
             title: 'Categoría Registrada',
-            message: 'La categoría ha sido registrada exitosamente.'
-          }
+            message: 'La categoría ha sido registrada exitosamente.',
+          },
         });
         setTimeout(() => {
           dialogRef.close();
           this.closeModal();
         }, 1500);
-      }
+      },
     });
   }
 
@@ -76,6 +75,6 @@ export class RegisterCategory {
 
   hasError(controlName: string, errorType: string): boolean {
     const control = this.formularioRegistration.get(controlName);
-    return control?.hasError(errorType) && (control.dirty || control.touched) || false;
+    return (control?.hasError(errorType) && (control.dirty || control.touched)) || false;
   }
 }

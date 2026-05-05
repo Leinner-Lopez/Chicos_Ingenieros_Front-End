@@ -11,13 +11,16 @@ export class CategoryService {
   httpClient = inject(HttpClient);
   private readonly apiUrl = `${environment.apiUrl}/categories`;
 
-
   saveCategory(category: Category): Observable<Category> {
     return this.httpClient.post<Category>(this.apiUrl, category);
   }
 
   getAllCategories(): Observable<Category[]> {
     return this.httpClient.get<Category[]>(this.apiUrl);
+  }
+
+  getCountCategories(): Observable<number> {
+    return this.httpClient.get<number>(`${this.apiUrl}/count`);
   }
 
   findCategoryById(id: number): Observable<Category> {
@@ -29,6 +32,6 @@ export class CategoryService {
   }
 
   deleteCategory(id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${this.apiUrl}/${id}`)
+    return this.httpClient.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

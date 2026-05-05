@@ -1,93 +1,99 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @import '@angular/cdk/overlay-prebuilt.css';
 
 :root {
-    --color-background-white: #F1F3F2;
-    --color-background-gray: #e9f5ee;
-    --color-background-green: #1b4332;
-    --color-font-1: #1B4332;
-    --color-font-2: #74837B;
-    --color-font-3: #F1F3F2;
+  --color-background-white: #f1f3f2;
+  --color-background-gray: #e9f5ee;
+  --color-background-green: #1b4332;
+  --color-font-1: #1b4332;
+  --color-font-2: #74837b;
+  --color-font-3: #f1f3f2;
 }
 
 * {
-    font-family: 'DMSans';
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  font-family: 'DMSans';
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 .material-symbols-outlined {
-    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    transition: font-variation-settings .4s, color .4s;
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+  transition:
+    font-variation-settings 0.4s,
+    color 0.4s;
 }
 
 @font-face {
-    font-family: 'DMSans';
-    src: url("../public/font/DMSans.woff2");
-    font-weight: 100;
-    font-display: swap;
+  font-family: 'DMSans';
+  src: url('../public/font/DMSans.woff2');
+  font-weight: 100;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'DMSans';
-    src: url("../public/font/DMSans.woff2");
-    font-weight: 200;
-    font-display: swap;
+  font-family: 'DMSans';
+  src: url('../public/font/DMSans.woff2');
+  font-weight: 200;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'DMSans';
-    src: url("../public/font/DMSans.woff2");
-    font-weight: 300;
-    font-display: swap;
+  font-family: 'DMSans';
+  src: url('../public/font/DMSans.woff2');
+  font-weight: 300;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'DMSans';
-    src: url("../public/font/DMSans.woff2");
-    font-weight: 400;
-    font-display: swap;
+  font-family: 'DMSans';
+  src: url('../public/font/DMSans.woff2');
+  font-weight: 400;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'DMSans';
-    src: url("../public/font/DMSans.woff2");
-    font-weight: 500;
-    font-display: swap;
+  font-family: 'DMSans';
+  src: url('../public/font/DMSans.woff2');
+  font-weight: 500;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'DMSans';
-    src: url("../public/font/DMSans.woff2");
-    font-weight: 600;
-    font-display: swap;
+  font-family: 'DMSans';
+  src: url('../public/font/DMSans.woff2');
+  font-weight: 600;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'DMSans';
-    src: url("../public/font/DMSans.woff2");
-    font-weight: 700;
-    font-display: swap;
+  font-family: 'DMSans';
+  src: url('../public/font/DMSans.woff2');
+  font-weight: 700;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'DMSans';
-    src: url("../public/font/DMSans.woff2");
-    font-weight: 800;
-    font-display: swap;
+  font-family: 'DMSans';
+  src: url('../public/font/DMSans.woff2');
+  font-weight: 800;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'DMSans';
-    src: url("../public/font/DMSans.woff2");
-    font-weight: 900;
-    font-display: swap;
+  font-family: 'DMSans';
+  src: url('../public/font/DMSans.woff2');
+  font-weight: 900;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'DMSans';
-    src: url("../public/font/DMSans.woff2");
-    font-weight: 1000;
-    font-display: swap;
+  font-family: 'DMSans';
+  src: url('../public/font/DMSans.woff2');
+  font-weight: 1000;
+  font-display: swap;
 }
