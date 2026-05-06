@@ -3,6 +3,7 @@ import { Component, Inject, inject } from '@angular/core';
 import { CategoryService } from '../../../Data/Services/category-service';
 import { MessageModal } from '../message-modal/message-modal';
 import { ProductService } from '../../../Data/Services/product-service';
+import { UserService } from '../../../Data/Services/user-service';
 
 @Component({
   selector: 'app-confirm-modal',
@@ -12,8 +13,11 @@ import { ProductService } from '../../../Data/Services/product-service';
 })
 export class ConfirmModal {
   dialog = inject(Dialog);
+
   productService: ProductService = inject(ProductService);
   categoryService: CategoryService = inject(CategoryService);
+  userService: UserService = inject(UserService);
+
   dialogRef: DialogRef<string> = inject(DialogRef);
   message: string = '';
   entity:string = '';
@@ -41,6 +45,9 @@ export class ConfirmModal {
         break;
       case 'product':
         this.deleteProduct();
+        break;
+      case 'user':
+        this.deleteUser();
         break;
       default:
         console.warn('Entidad no reconocida para eliminación');
@@ -82,4 +89,20 @@ export class ConfirmModal {
     })
   }
 
+  deleteUser(){
+    this.userService.deleteUser(this.id).subscribe({
+      next: () => {
+        const dialogRef = this.dialog.open<string>(MessageModal, {
+          data:{
+            title: 'Usuario Eliminado',
+            message: 'El usuario ha sido eliminado exitosamente.'
+          }
+        });
+        setTimeout(() => {
+          dialogRef.close();
+          this.closeModal();
+        }, 1500);
+      }
+    })
+  }
 }

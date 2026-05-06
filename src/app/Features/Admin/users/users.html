@@ -1,7 +1,7 @@
 <section class="users__view">
   <header class="view__header">
     <h2 class="header__title">Usuarios</h2>
-    <button class="header__button">
+    <button class="header__button" (click)="registerUser()">
       <span class="material-symbols-outlined"> add </span>
       Registrar
     </button>
@@ -15,11 +15,11 @@
       </li>
       <li class="list__item">
         <small class="item__title">Activas</small>
-        <strong class="item__content">8</strong>
+        <strong class="item__content"></strong>
       </li>
       <li class="list__item">
         <small class="item__title">Inactivas</small>
-        <strong class="item__content">2</strong>
+        <strong class="item__content"></strong>
       </li>
     </ul>
   </section>
@@ -42,10 +42,10 @@
         <td class="row__content">{{user.email}}</td>
         <td class="row__content">{{user.role}}</td>
         <td class="row__content row__actions">
-          <button class="button edit__button">
+          <button class="button edit__button" (click)="updateUser(user.user_id)">
             <span class="material-symbols-outlined"> edit </span>
           </button>
-          <button class="button delete__button">
+          <button class="button delete__button" (click)="deleteUser(user.user_id)">
             <span class="material-symbols-outlined"> delete </span>
           </button>
         </td>
