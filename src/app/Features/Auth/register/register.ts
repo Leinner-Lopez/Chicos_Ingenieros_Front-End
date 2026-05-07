@@ -47,8 +47,16 @@ export class Register {
 
     this.authService.register(userData).subscribe({
       next: () => {
-        console.log('Registro exitoso');
-        this.router.navigate(['login']);
+        const dialogRef = this.dialog.open(MessageModal, {
+          data: {
+            message: 'Registro exitoso',
+            title: 'Éxito',
+          },
+        });
+        setTimeout(() => {
+          dialogRef.close();
+          this.router.navigate(['login']);
+        }, 2000);
       },
       error: (err: HttpErrorResponse) => {
         if (err.status === 409) {
