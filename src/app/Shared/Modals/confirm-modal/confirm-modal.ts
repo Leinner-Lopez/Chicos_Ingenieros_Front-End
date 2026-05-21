@@ -4,6 +4,7 @@ import { CategoryService } from '../../../Data/Services/category-service';
 import { MessageModal } from '../message-modal/message-modal';
 import { ProductService } from '../../../Data/Services/product-service';
 import { UserService } from '../../../Data/Services/user-service';
+import { LotService } from '../../../Data/Services/lot-service';
 
 @Component({
   selector: 'app-confirm-modal',
@@ -17,10 +18,11 @@ export class ConfirmModal {
   productService: ProductService = inject(ProductService);
   categoryService: CategoryService = inject(CategoryService);
   userService: UserService = inject(UserService);
+  lotService: LotService = inject(LotService);
 
   dialogRef: DialogRef<string> = inject(DialogRef);
   message: string = '';
-  entity:string = '';
+  entity: string = '';
   id: number = 0;
 
   constructor(@Inject(DIALOG_DATA) public data: any) {
@@ -31,12 +33,9 @@ export class ConfirmModal {
     }
   }
 
-
-
   closeModal() {
     this.dialogRef.close('Eliminación Exitosa');
   }
-
 
   confirmAction() {
     switch (this.entity) {
@@ -49,6 +48,9 @@ export class ConfirmModal {
       case 'user':
         this.deleteUser();
         break;
+      case 'lot':
+        this.deleteLot();
+        break;
       default:
         console.warn('Entidad no reconocida para eliminación');
         break;
@@ -59,50 +61,66 @@ export class ConfirmModal {
     this.categoryService.deleteCategory(this.id).subscribe({
       next: () => {
         const dialogRef = this.dialog.open<string>(MessageModal, {
-          data:{
+          data: {
             title: 'Categoría Eliminada',
-            message: 'La categoría ha sido eliminada exitosamente.'
-          }
+            message: 'La categoría ha sido eliminada exitosamente.',
+          },
         });
         setTimeout(() => {
           dialogRef.close();
           this.closeModal();
         }, 1500);
-      }
-    })
+      },
+    });
   }
 
   deleteProduct() {
     this.productService.deleteProduct(this.id).subscribe({
       next: () => {
         const dialogRef = this.dialog.open<string>(MessageModal, {
-          data:{
+          data: {
             title: 'Producto Eliminado',
-            message: 'El producto ha sido eliminado exitosamente.'
-          }
+            message: 'El producto ha sido eliminado exitosamente.',
+          },
         });
         setTimeout(() => {
           dialogRef.close();
           this.closeModal();
         }, 1500);
-      }
-    })
+      },
+    });
   }
 
-  deleteUser(){
+  deleteUser() {
     this.userService.deleteUser(this.id).subscribe({
       next: () => {
         const dialogRef = this.dialog.open<string>(MessageModal, {
-          data:{
+          data: {
             title: 'Usuario Eliminado',
-            message: 'El usuario ha sido eliminado exitosamente.'
-          }
+            message: 'El usuario ha sido eliminado exitosamente.',
+          },
         });
         setTimeout(() => {
           dialogRef.close();
           this.closeModal();
         }, 1500);
-      }
-    })
+      },
+    });
+  }
+  deleteLot() {
+    this.lotService.deleteLot(this.id).subscribe({
+      next: () => {
+        const dialogRef = this.dialog.open<string>(MessageModal, {
+          data: {
+            title: 'Lote Eliminado',
+            message: 'El lote ha sido eliminado exitosamente.',
+          },
+        });
+        setTimeout(() => {
+          dialogRef.close();
+          this.closeModal();
+        }, 1500);
+      },
+    });
   }
 }

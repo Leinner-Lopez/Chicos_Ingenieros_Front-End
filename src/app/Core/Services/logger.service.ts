@@ -22,7 +22,7 @@ export class LoggerService {
       const path = req('path');
       const DailyRotateFile = req('winston-daily-rotate-file');
 
-      const logPath = process.env['LOG_PATH'] || '/app/logs/frontend';
+      const logPath = process.env['LOG_PATH'] || './Logs/frontend';
 
       this.logger = winston.createLogger({
         level: 'info',

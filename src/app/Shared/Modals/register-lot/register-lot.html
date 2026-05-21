@@ -1,0 +1,48 @@
+<div class="modal">
+  <h2 class="modal__title">Registrar Lote</h2>
+  <button class="modal__close" (click)="closeModal()">
+    <span class="material-symbols-outlined"> close </span>
+  </button>
+  <form class="modal__form" (ngSubmit)="onSubmit()" [formGroup]="formularioRegistration">
+    <div class="form__input-container">
+      <div class="input__container">
+        <label for="productName">Stock</label>
+        <input type="number" formControlName="stock" name="productStock" id="productStock" />
+        @if (hasError("stock","required")) {
+        <p class="error__message">El campo es requerido</p>
+        }
+      </div>
+      <div class="input__container">
+        <label for="productPrice">Estado</label>
+        <select name="status" id="status" formControlName="status" class="input__select">
+          <option value="AVAILABLE">Disponible</option>
+          <option value="EXPIRED">Agotado</option>
+        </select>
+        @if (hasError("status","required")) {
+        <p class="error__message">El campo es requerido</p>
+        }
+      </div>
+      <div class="input__container">
+        <label for="productMinStock">Fecha de Vencimiento</label>
+        <input
+          type="date"
+          formControlName="expirationDate"
+          name="expirationDate"
+          id="expirationDate"
+        />
+        @if (hasError("expirationDate","required")) {
+        <p class="error__message">El campo es requerido</p>
+        }
+      </div>
+      <div class="input__container">
+        <label for="productCategory">Producto</label>
+        <select name="product" id="product" formControlName="product" class="input__select">
+          @for (product of products(); track product.productId) {
+          <option value="{{ product.productId }}">{{ product.name }}</option>
+          }
+        </select>
+      </div>
+    </div>
+    <button type="submit" class="submit__button">Registrar</button>
+  </form>
+</div>

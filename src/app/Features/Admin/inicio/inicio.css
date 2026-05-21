@@ -83,6 +83,7 @@
 }
 
 .card--white p {
+  font-size: 2.3rem;
   font-weight: 600;
   color: var(--color-font-2);
 }
@@ -272,6 +273,129 @@
   align-items: center;
   font-size: 1.5rem;
   color: var(--color-background);
+}
+
+.bento-grid-lotes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 16px;
+}
+
+/* La Mini-Tarjeta */
+.lote-card {
+  background-color: var(--color-background-gray);
+  border: 1px solid var(--color-background-green);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* Efecto sutil al pasar el mouse */
+.lote-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(26, 51, 34, 0.05);
+}
+
+/* Cabecera */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.card-header > span {
+  font-size: 2rem;
+}
+
+.product-icon {
+  background-color: var(--color-background-white);
+  color: var(--color-background-green);
+  padding: 8px;
+  border-radius: 10px;
+  font-size: 3rem;
+}
+
+.product-details h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-font-1);
+  line-height: 1.2;
+}
+
+.lot-id {
+  font-size: 0.9rem;
+  color: var(--color-font-2);
+  font-weight: 600;
+}
+
+/* Cuerpo de la tarjeta */
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.data-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.label {
+  color: var(--color-font-1);
+}
+
+.value {
+  font-weight: 600;
+  color: var(--color-font-1);
+}
+
+/* Estilo destacado para la cantidad */
+.value.accent {
+  background-color: #ffffff;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.date-value {
+  color: #c45a5a; /* Un tono rojizo/ladrillo suave si está muy cerca de vencer */
+}
+
+/* Footer de la tarjeta */
+.card-footer {
+  border-top: 1px dashed rgba(26, 51, 34, 0.1);
+  padding-top: 10px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.status-badge {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2b5c3f;
+  background-color: rgba(43, 92, 63, 0.1);
+  padding: 4px 8px;
+  border-radius: 20px;
+}
+
+/* Estado Vacío */
+.empty-state {
+  grid-column: 1 / -1; /* Ocupa todo el ancho disponible */
+  text-align: center;
+  padding: 40px;
+  color: #728070;
+  background-color: #f7f9f7;
+  border-radius: 14px;
+  border: 2px dashed rgba(26, 51, 34, 0.1);
 }
 
 @media (max-width: 700px) {

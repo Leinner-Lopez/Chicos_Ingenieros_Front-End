@@ -1,1 +1,47 @@
-<p>sales-history works!</p>
+<div class="history-container">
+  <div class="history-header">
+    <div>
+      <h2 class="main-title">Historial de Ventas</h2>
+      <p class="section-desc">Monitoreo de salidas y auditoría de lotes vendidos</p>
+    </div>
+    <div class="today-badge">
+      <span class="label">Balance de Hoy</span>
+      <span class="amount">$ 145.000 COP</span>
+    </div>
+  </div>
+
+  <div class="sales-list">
+    @for (venta of historialVentas(); track venta.saleId) {
+    <div class="sale-ticket-card">
+      <div class="ticket-left">
+        <div class="icon-receipt">receipt_long</div>
+        <div class="meta-info">
+          <span class="sale-id">Transacción #{{ venta.saleId }}</span>
+          <span class="sale-time">{{ venta.saleDate | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+      </div>
+
+      <div class="ticket-center">
+        <div class="product-spec">
+          <h4>{{ venta.productName }}</h4>
+          <span class="lot-tracker">Origen: Lote #{{ venta.lotId }}</span>
+        </div>
+        <div class="quantity-spec">
+          <span class="qty">{{ venta.quantity }} x</span>
+          <span class="unit-p">{{ venta.unitPrice | currency:'COP':'$':'1.0-0' }}</span>
+        </div>
+      </div>
+
+      <div class="ticket-right">
+        <span class="total-label">Total</span>
+        <span class="total-price">{{ venta.totalPrice | currency:'COP':'$':'1.0-0' }} COP</span>
+      </div>
+    </div>
+    } @empty {
+    <div class="empty-history">
+      <span class="icon-empty">receipt</span>
+      <p>Aún no se han registrado ventas en el sistema.</p>
+    </div>
+    }
+  </div>
+</div>

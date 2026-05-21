@@ -1,0 +1,170 @@
+.history-container {
+  padding: 32px;
+  min-height: 100vh;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.today-badge {
+  background-color: #1a3322;
+  color: #ffffff;
+  padding: 10px 18px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.today-badge .label {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.today-badge .amount {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* Lista de Ventas */
+.sales-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Tarjeta Tipo Ticket */
+.sale-ticket-card {
+  background-color: #ffffff;
+  border: 1px solid #e1e5e1;
+  border-radius: 14px;
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.sale-ticket-card:hover {
+  transform: translateX(4px);
+  border-color: #cbd2cb;
+  box-shadow: 0 4px 12px rgba(26, 51, 34, 0.03);
+}
+
+/* Sección Izquierda */
+.ticket-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.icon-receipt {
+  font-family: 'Material Symbols Outlined', sans-serif;
+  font-size: 1.4rem;
+  color: #1a3322;
+  background-color: #ecf3ee;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.meta-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.sale-id {
+  font-weight: 600;
+  color: #1a3322;
+  font-size: 0.95rem;
+}
+
+.sale-time {
+  font-size: 0.8rem;
+  color: #728070;
+}
+
+/* Sección Central */
+.ticket-center {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 2;
+  padding: 0 40px;
+  border-left: 1px dashed #e1e5e1;
+  border-right: 1px dashed #e1e5e1;
+}
+
+.product-spec h4 {
+  margin: 0 0 2px 0;
+  font-size: 1rem;
+  color: #1a3322;
+  font-weight: 600;
+}
+
+.lot-tracker {
+  font-size: 0.8rem;
+  color: #5c6e58;
+  background-color: #ecf3ee;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.quantity-spec {
+  text-align: right;
+}
+
+.qty {
+  font-weight: 600;
+  color: #1a3322;
+  font-size: 0.9rem;
+  margin-right: 4px;
+}
+
+.unit-p {
+  color: #667062;
+  font-size: 0.85rem;
+}
+
+/* Sección Derecha */
+.ticket-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex: 1;
+  justify-content: center;
+}
+
+.total-label {
+  font-size: 0.75rem;
+  color: #728070;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.total-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a3322;
+}
+
+/* Fuentes de Iconos */
+.icon-empty {
+  font-family: 'Material Symbols Outlined', sans-serif;
+  font-size: 2.5rem;
+  color: #cbd2cb;
+}
+
+.empty-history {
+  text-align: center;
+  padding: 60px;
+  color: #728070;
+  background-color: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #e1e5e1;
+}

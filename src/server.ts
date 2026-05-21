@@ -12,7 +12,7 @@ const winston = req('winston');
 const path = req('path');
 const DailyRotateFile = req('winston-daily-rotate-file');
 
-const logPath = process.env['LOG_PATH'] || '/app/logs/frontend';
+const logPath = process.env['LOG_PATH'] || './Logs/frontend';
 
 const logger = winston.createLogger({
   level: 'info',

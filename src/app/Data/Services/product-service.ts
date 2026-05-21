@@ -1,7 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { ProductResponse, ProductDTO, ProductRequest } from '../Interfaces/Product';
+import {
+  ProductResponse,
+  ProductDTO,
+  ProductRequest,
+  ProductInventoryDTO,
+} from '../Interfaces/Product';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -21,6 +26,10 @@ export class ProductService {
 
   getCountProducts(): Observable<number> {
     return this.httpClient.get<number>(`${this.apiUrl}/count`);
+  }
+
+  getInventory(): Observable<ProductInventoryDTO[]> {
+    return this.httpClient.get<ProductInventoryDTO[]>(`${this.apiUrl}/inventory`);
   }
 
   findProductById(id: number): Observable<ProductRequest> {

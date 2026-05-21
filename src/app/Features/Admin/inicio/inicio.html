@@ -7,68 +7,53 @@
 
     <section class="main__summary">
       <article class="summary__card card--green">
-        <p>Hoy se vencen</p>
-        <strong> 9 lotes</strong>
+        <p>Esta semana se vencen</p>
+        <strong> {{lots().length}} lote(s)</strong>
       </article>
       <article class="summary__card card--white">
-        <h2>Tu próxima cita:</h2>
-        <p>No hay citas pendientes</p>
+        <h2>Hay escasez en</h2>
+        <p>{{productsWithLowStock()}} producto(s)</p>
       </article>
       <article class="summary__card card--green">
-        <p>Hoy se gestionan</p>
-        <strong> 9 citas</strong>
+        <p>Mermas del Mes</p>
+        <strong>$ {{costOfShrinksOfTheMonth()}} COP</strong>
       </article>
     </section>
 
     <section class="main__agenda">
       <header class="agenda__header">
-        <h2>Citas de hoy</h2>
+        <h2>Lotes de esta semana</h2>
         <p>{{fechaFormateada}}</p>
-        <div class="header__filter">
-          <button
-            class="filter__btn"
-            (click)="cambiarFiltro('Pendientes')"
-            [class.active]="filtroActual() === 'Pendientes'"
-          >
-            Pendientes
-          </button>
-          <button
-            class="filter__btn"
-            (click)="cambiarFiltro('Completadas')"
-            [class.active]="filtroActual() === 'Completadas'"
-          >
-            Completadas
-          </button>
-        </div>
       </header>
-
-      <ul class="agenda__list">
-        <li class="list__item">
-          <div class="item__info">
-            <p class="info__text">
-              <strong class="text__date">lote</strong>
-              lote
-            </p>
+      <ul class="bento-grid-lotes">
+        @for (lot of lots(); track lot.lotId) {
+        <li class="lote-card">
+          <div class="card-header">
+            <span class="material-symbols-outlined">box</span>
+            <div class="product-details">
+              <h4>{{ lot.productName }}</h4>
+              <span class="lot-id">Lote #{{ lot.lotId }}</span>
+            </div>
           </div>
-          <div class="item__actions">
-            <button class="actions__btn btn--black">
-              <span class="material-symbols-outlined">check</span>
-              Marcar completada
-            </button>
-            <button class="actions__btn btn--grey">
-              <svg width="15" height="15" aria-hidden="true">
-                <use href="/image/sprite.svg#edit"></use>
-              </svg>
-              Editar
-            </button>
+
+          <div class="card-body">
+            <div class="data-row">
+              <span class="label">Stock disponible</span>
+              <span class="value accent">{{ lot.stockQuantity }} unds</span>
+            </div>
+
+            <div class="data-row">
+              <span class="label">Vencimiento</span>
+              <span class="value date-value"> {{ lot.expirationDate | date:'dd/MM/yyyy' }} </span>
+            </div>
           </div>
         </li>
-        <div class="container-image">
-          <svg width="120" height="120">
-            <use href="/image/sprite.svg#celebrate"></use>
-          </svg>
-          <p>No hay citas</p>
+        } @empty {
+        <div class="empty-state">
+          <span class="material-symbols-outlined">verified</span>
+          <p>No hay lotes en riesgo de vencimiento esta semana.</p>
         </div>
+        }
       </ul>
     </section>
   </section>

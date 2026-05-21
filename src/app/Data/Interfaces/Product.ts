@@ -24,3 +24,10 @@ export interface ProductDTO {
   price: number;
   imageUrl: string;
 }
+
+export interface ProductInventoryDTO {
+  productId: number;
+  name: string;
+  minStock: number;
+  totalStock: number;
+}

@@ -1,13 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { signal } from '@angular/core';
+import { AdminService } from '../../../Data/Services/Dashboard/admin.service';
+import { LotDTO } from '../../../Data/Interfaces/Lot';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-inicio-admin',
-  imports: [],
+  imports: [DatePipe],
   templateUrl: './inicio.html',
   styleUrl: './inicio.css',
 })
-export class InicioAdmin {
+export class InicioAdmin implements OnInit {
+  productsWithLowStock = signal<number>(0);
+  lots = signal<LotDTO[]>([]);
+  costOfShrinksOfTheMonth = signal<number>(0);
+
+  dashboardAdminService = inject(AdminService);
+
+  ngOnInit(): void {
+    this.dashboardAdminService.getProductsWithLowStock().subscribe((data: number) => {
+      this.productsWithLowStock.set(data);
+    });
+    this.dashboardAdminService.getLotsExpireThisWeek().subscribe((data: LotDTO[]) => {
+      this.lots.set(data);
+    });
+    this.dashboardAdminService.getCostOfShrinksOfTheMonth().subscribe((data: number) => {
+      this.costOfShrinksOfTheMonth.set(data);
+    });
+  }
+
   filtroActual = signal<'Pendientes' | 'Completadas'>('Pendientes');
 
   cambiarFiltro(nuevoFiltro: 'Pendientes' | 'Completadas'): void {
