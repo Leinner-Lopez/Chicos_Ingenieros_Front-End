@@ -1,6 +1,9 @@
 @import 'tailwindcss';
 @import '@angular/cdk/overlay-prebuilt.css';
 
+body {
+  background-color: var(--color-background-white);
+}
 :root {
   --color-background-white: #f1f3f2;
   --color-background-gray: #e9f5ee;

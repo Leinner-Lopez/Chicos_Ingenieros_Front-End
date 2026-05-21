@@ -37,13 +37,13 @@ export class RegisterCategory {
     if (this.formularioRegistration.invalid) return;
 
     const categoryData: Category = {
-      category_id: null!,
+      categoryId: null!,
       name: this.formularioRegistration.value.name!,
       description: this.formularioRegistration.value.description!,
     };
 
     if (this.data && this.data.categoryId) {
-      categoryData.category_id = this.data.categoryId;
+      categoryData.categoryId = this.data.categoryId;
       this.categoryService.updateCategory(categoryData).subscribe({
         next: () => {
           console.log('Categoría actualizada exitosamente');

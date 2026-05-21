@@ -35,17 +35,16 @@
       </tr>
     </thead>
     <tbody class="table__body">
-      @for (product of products(); track product.product_id) {
+      @for (product of products(); track product.productId) {
       <tr class="body__row">
         <td class="row__content">{{product.name}}</td>
         <td class="row__content">{{product.categoryName}}</td>
         <td class="row__content">{{product.price}}</td>
-        <td class="row__content">{{product.description}}</td>
         <td class="row__content row__actions">
-          <button class="button edit__button" (click)="updateProduct(product.product_id)">
-            <span class="material-symbols-outlined" > edit </span>
+          <button class="button edit__button" (click)="updateProduct(product.productId)">
+            <span class="material-symbols-outlined"> edit </span>
           </button>
-          <button class="button delete__button" (click)="deleteProduct(product.product_id)">
+          <button class="button delete__button" (click)="deleteProduct(product.productId)">
             <span class="material-symbols-outlined"> delete </span>
           </button>
         </td>

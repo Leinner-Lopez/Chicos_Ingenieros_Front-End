@@ -1,8 +1,8 @@
 import { Dialog, DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-import { Component, Inject, inject} from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProductService } from '../../../Data/Services/product-service';
-import { Product, } from '../../../Data/Interfaces/Product';
+import { ProductResponse } from '../../../Data/Interfaces/Product';
 import { CategoryService } from '../../../Data/Services/category-service';
 import { Category } from '../../../Data/Interfaces/Category';
 import { MessageModal } from '../message-modal/message-modal';
@@ -17,23 +17,26 @@ export class RegisterProduct {
   dialog = inject(Dialog);
   dialogRef: DialogRef<string> = inject(DialogRef);
   categoryService = inject(CategoryService);
-  categories: Category[] = []; 
+  categories: Category[] = [];
   form = inject(FormBuilder);
   productService: ProductService = inject(ProductService);
+  selectedImage: File | null = null;
 
   constructor(@Inject(DIALOG_DATA) public data: any) {
     this.categoryService.getAllCategories().subscribe((categories: Category[]) => {
       this.categories = categories;
     });
     if (data && data.productId) {
-      this.productService.findProductById(data.productId).subscribe((product: Product) => {
+      this.productService.findProductById(data.productId).subscribe((product: ProductResponse) => {
         this.formularioRegistration.patchValue({
-          minStock: product.min_stock,
+          minStock: product.minStock,
           name: product.name,
           description: product.description,
           price: product.price,
-          categories: product.category.category_id,
+          categories: product.categoryId,
         });
+        this.formularioRegistration.get('image')?.clearValidators();
+        this.formularioRegistration.get('image')?.updateValueAndValidity();
       });
     }
   }
@@ -47,21 +50,21 @@ export class RegisterProduct {
   });
 
   onSubmit(): void {
-    if(this.formularioRegistration.invalid) return;
+    if (this.formularioRegistration.invalid) return;
 
-    const productData: Product ={
-      product_id: null!,
+    const formData: FormData = new FormData();
+
+    const productData: ProductResponse = {
+      productId: null!,
       name: this.formularioRegistration.value.name!,
       description: this.formularioRegistration.value.description!,
       price: this.formularioRegistration.value.price!,
-      min_stock: this.formularioRegistration.value.minStock!,
-      category: {
-        category_id: Number(this.formularioRegistration.value.categories!),
-      }
-    }
+      minStock: this.formularioRegistration.value.minStock!,
+      categoryId: Number(this.formularioRegistration.value.categories!),
+    };
 
     if (this.data && this.data.productId) {
-      productData.product_id = this.data.productId;
+      productData.productId = this.data.productId;
       this.productService.updateProduct(productData).subscribe({
         next: () => {
           const dialogRef = this.dialog.open<string>(MessageModal, {
@@ -79,8 +82,12 @@ export class RegisterProduct {
       return;
     }
 
-    this.productService.saveProduct(productData).subscribe({
-      next: () => {
+    formData.append('data', new Blob([JSON.stringify(productData)], { type: 'application/json' }));
+    formData.append('image', this.selectedImage as File);
+
+    this.productService.saveProduct(formData).subscribe({
+      next: (response) => {
+        console.log(response);
         const dialogRef = this.dialog.open<string>(MessageModal, {
           data: {
             title: 'Producto Registrado',
@@ -95,8 +102,15 @@ export class RegisterProduct {
     });
   }
 
-  closeModal():void{
+  closeModal(): void {
     this.dialogRef.close('Producto registrado');
+  }
+
+  onImageChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedImage = input.files[0];
+    }
   }
 
   hasError(controlName: string, errorType: string): boolean {

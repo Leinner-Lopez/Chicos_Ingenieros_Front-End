@@ -21,18 +21,41 @@
       </div>
       <div class="input__container">
         <label for="productMinStock">Stock Mínimo</label>
-        <input type="number" formControlName="minStock" name="productMinStock" id="productMinStock" />
+        <input
+          type="number"
+          formControlName="minStock"
+          name="productMinStock"
+          id="productMinStock"
+        />
         @if (hasError("minStock","required")) {
         <p class="error__message">El campo es requerido</p>
         }
       </div>
       <div class="input__container">
         <label for="productCategory">Categoría</label>
-        <select name="productCategory" id="productCategory" formControlName="categories" class="input__select">
-          @for (category of categories; track category.category_id) {
-            <option value="{{ category.category_id }}">{{ category.name }}</option>
+        <select
+          name="productCategory"
+          id="productCategory"
+          formControlName="categories"
+          class="input__select"
+        >
+          @for (category of categories; track category.categoryId) {
+          <option value="{{ category.categoryId }}">{{ category.name }}</option>
           }
         </select>
+      </div>
+      <div class="input__container input__container--full">
+        <label for="productImage">Imagen</label>
+        <input
+          type="file"
+          name="productImage"
+          id="productImage"
+          accept="image/**"
+          (change)="onImageChange($event)"
+        />
+        @if (hasError("image","required")) {
+        <p class="error__message">El campo es requerido</p>
+        }
       </div>
       <div class="input__container input__container--full">
         <label for="productDescription">Descripción</label>
@@ -46,6 +69,6 @@
         }
       </div>
     </div>
-      <button type="submit" class="submit__button">Registrar</button>
+    <button type="submit" class="submit__button">Registrar</button>
   </form>
 </div>

@@ -1,1 +1,75 @@
-<p>inicio works!</p>
+<main class="inicio__view">
+  <section class="view__main">
+    <header class="main__header">
+      <h1 class="header__title">Hola, Zenkai</h1>
+      <p class="header__date">{{fechaFormateada}}</p>
+    </header>
+
+    <section class="main__summary">
+      <article class="summary__card card--green">
+        <p>Hoy se vencen</p>
+        <strong> 9 lotes</strong>
+      </article>
+      <article class="summary__card card--white">
+        <h2>Tu próxima cita:</h2>
+        <p>No hay citas pendientes</p>
+      </article>
+      <article class="summary__card card--green">
+        <p>Hoy se gestionan</p>
+        <strong> 9 citas</strong>
+      </article>
+    </section>
+
+    <section class="main__agenda">
+      <header class="agenda__header">
+        <h2>Citas de hoy</h2>
+        <p>{{fechaFormateada}}</p>
+        <div class="header__filter">
+          <button
+            class="filter__btn"
+            (click)="cambiarFiltro('Pendientes')"
+            [class.active]="filtroActual() === 'Pendientes'"
+          >
+            Pendientes
+          </button>
+          <button
+            class="filter__btn"
+            (click)="cambiarFiltro('Completadas')"
+            [class.active]="filtroActual() === 'Completadas'"
+          >
+            Completadas
+          </button>
+        </div>
+      </header>
+
+      <ul class="agenda__list">
+        <li class="list__item">
+          <div class="item__info">
+            <p class="info__text">
+              <strong class="text__date">lote</strong>
+              lote
+            </p>
+          </div>
+          <div class="item__actions">
+            <button class="actions__btn btn--black">
+              <span class="material-symbols-outlined">check</span>
+              Marcar completada
+            </button>
+            <button class="actions__btn btn--grey">
+              <svg width="15" height="15" aria-hidden="true">
+                <use href="/image/sprite.svg#edit"></use>
+              </svg>
+              Editar
+            </button>
+          </div>
+        </li>
+        <div class="container-image">
+          <svg width="120" height="120">
+            <use href="/image/sprite.svg#celebrate"></use>
+          </svg>
+          <p>No hay citas</p>
+        </div>
+      </ul>
+    </section>
+  </section>
+</main>

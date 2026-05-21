@@ -1,103 +1,129 @@
 <div class="form">
-    <h1>Formulario de Registro</h1>
-    <button class="modal__close" (click)="closeModal()">
-        <span class="material-symbols-outlined"> close </span>
-    </button>
-    <form class="form__form" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
-        <fieldset class="form__info-group">
-            <legend class="info-group__description">Información del Usuario</legend>
-            <div class="info-group__input-container">
-                <div class="input-container">
-                    <label>Nombre(s)<input type="text" formControlName="names" placeholder="Andres" required /></label>
-                    @if (hasError('names','required')) {
-                    <p class="error__message">El campo es requerido</p>
-                    }
-                </div>
-                <div class="input-container">
-                    <label>Apellido(s)<input type="text" formControlName="lastNames" placeholder="Torres"
-                            required /></label>
-                    @if (hasError('lastNames','required')) {
-                    <p class="error__message">El campo es requerido</p>
-                    }
-                </div>
-                <div class="input-container">
-                    <label>Número de Documento<input type="text" formControlName="documentNumber" minlength="8"
-                            required /></label>
-                    @if (hasError('documentNumber','required')) {
-                    <p class="error__message">El campo es requerido</p>
-                    }
-                    @if(hasError('documentNumber','minlength')){
-                    <p class="error__message">Debe contener mínimo 8 caracteres</p>
-                    }
-                </div>
-                <div class="input-container">
-                    <label for="userRole">Rol</label>
-                    <select id="userRole" formControlName="userRole" class="input__select" required>
-                        <option value="">Seleccionar rol</option>
-                        <option value="CUSTOMER">Cliente</option>
-                        <option value="ADMIN">Administrador</option>
-                        <option value="STORE">Almacén</option>
-                    </select>
-                    @if (hasError('userRole','required')) {
-                    <p class="error__message">El campo es requerido</p>
-                    }
-                </div>
-            </div>
-        </fieldset>
-        <fieldset class="form__info-group">
-            <legend class="info-group__description">Información de contacto</legend>
-            <div class="info-group__input-container">
-                <div class="input-container">
-                    <label>Email<input type="email" formControlName="email" placeholder="email@gmail.com"
-                            required /></label>
-                    @if (hasError('email','required')) {
-                    <p class="error__message">El campo es requerido</p>
-                    }
-                    @if(hasError('email','email')){
-                    <p class="error__message">Correo electrónico inválido</p>
-                    }
-                </div>
-                <div class="input-container">
-                    <label>Teléfono<input type="text" formControlName="phone_number" placeholder="0123456789"
-                            required /></label>
-                    @if (hasError('phone_number','required')) {
-                    <p class="error__message">El campo es requerido</p>
-                    }
-                    @if(hasError('phone_number','minlength')){
-                    <p class="error__message">Debe contener mínimo 10 caracteres</p>
-                    }
-                </div>
-            </div>
-        </fieldset>
-        <fieldset class="form__info-group">
-            <legend class="info-group__description">Información de la cuenta</legend>
-            <div class="info-group__input-container">
-                <div class="input-container">
-                    <label>Contraseña<input type="password" id="Contraseña" formControlName="password" /></label>
-                    @if (hasError('password','required')) {
-                    <p class="error__message">El campo es requerido</p>
-                    }
-                    @if (registrationForm.hasError('passwordMismatch') &&
-                    registrationForm.get('confirmPassword')?.touched) {
-                    <p class="error__message">Las contraseñas no coinciden.</p>
-                    }
-                </div>
-                <div class="input-container">
-                    <label>Confirmar Contraseña<input type="password" id="CContraseña"
-                            formControlName="confirmPassword" /></label>
-                    @if (hasError('confirmPassword','required')) {
-                    <p class="error__message">El campo es requerido</p>
-                    }
-                    @if (registrationForm.hasError('passwordMismatch') &&
-                    registrationForm.get('confirmPassword')?.touched) {
-                    <p class="error__message">Las contraseñas no coinciden.</p>
-                    }
-                </div>
-            </div>
-        </fieldset>
-        <div class="form__button-container">
-            <input type="submit" value="Registrarse" class="form__button" [disabled]="registrationForm.invalid" />
+  <h1>Formulario de Registro</h1>
+  <button class="modal__close" (click)="closeModal()">
+    <span class="material-symbols-outlined"> close </span>
+  </button>
+  <form class="form__form" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+    <fieldset class="form__info-group">
+      <legend class="info-group__description">Información del Usuario</legend>
+      <div class="info-group__input-container">
+        <div class="input-container">
+          <label
+            >Nombre(s)<input type="text" formControlName="names" placeholder="Andres" required
+          /></label>
+          @if (hasError('names','required')) {
+          <p class="error__message">El campo es requerido</p>
+          }
         </div>
-        <p>¿Ya tienes una cuenta? <a routerLink="/login">Inicia sesión</a></p>
-    </form>
+        <div class="input-container">
+          <label
+            >Apellido(s)<input
+              type="text"
+              formControlName="lastNames"
+              placeholder="Torres"
+              required
+          /></label>
+          @if (hasError('lastNames','required')) {
+          <p class="error__message">El campo es requerido</p>
+          }
+        </div>
+        <div class="input-container">
+          <label
+            >Número de Documento<input
+              type="number"
+              formControlName="documentNumber"
+              placeholder="12345678"
+          /></label>
+          @if (hasError('documentNumber','required')) {
+          <p class="error__message">El campo es requerido</p>
+          } @if(hasError('documentNumber','min')){
+          <p class="error__message">Debe contener mínimo 8 caracteres</p>
+          } @if(hasError('documentNumber','max')){
+          <p class="error__message">Debe contener como máximo 10 caracteres</p>
+          }
+        </div>
+        <div class="input-container">
+          <label for="userRole">Rol</label>
+          <select id="userRole" formControlName="userRole" class="input__select" required>
+            <option value="">Seleccionar rol</option>
+            <option value="CUSTOMER">Cliente</option>
+            <option value="ADMIN">Administrador</option>
+            <option value="STORE">Almacén</option>
+          </select>
+          @if (hasError('userRole','required')) {
+          <p class="error__message">El campo es requerido</p>
+          }
+        </div>
+      </div>
+    </fieldset>
+    <fieldset class="form__info-group">
+      <legend class="info-group__description">Información de contacto</legend>
+      <div class="info-group__input-container">
+        <div class="input-container">
+          <label
+            >Email<input
+              type="email"
+              formControlName="email"
+              placeholder="email@gmail.com"
+              required
+          /></label>
+          @if (hasError('email','required')) {
+          <p class="error__message">El campo es requerido</p>
+          } @if(hasError('email','email')){
+          <p class="error__message">Correo electrónico inválido</p>
+          }
+        </div>
+        <div class="input-container">
+          <label
+            >Teléfono<input type="number" formControlName="phoneNumber" placeholder="0123456789"
+          /></label>
+          @if (hasError('phoneNumber','required')) {
+          <p class="error__message">El campo es requerido</p>
+          } @if(hasError('phoneNumber','min')){
+          <p class="error__message">Debe contener mínimo 10 caracteres</p>
+          }@if(hasError('phoneNumber','max')){
+          <p class="error__message">Debe contener como máximo 10 caracteres</p>
+          }
+        </div>
+      </div>
+    </fieldset>
+    <fieldset class="form__info-group">
+      <legend class="info-group__description">Información de la cuenta</legend>
+      <div class="info-group__input-container">
+        <div class="input-container">
+          <label
+            >Contraseña<input type="password" id="Contraseña" formControlName="password"
+          /></label>
+          @if (hasError('password','required')) {
+          <p class="error__message">El campo es requerido</p>
+          } @if (registrationForm.hasError('passwordMismatch') &&
+          registrationForm.get('confirmPassword')?.touched) {
+          <p class="error__message">Las contraseñas no coinciden.</p>
+          }
+        </div>
+        <div class="input-container">
+          <label
+            >Confirmar Contraseña<input
+              type="password"
+              id="CContraseña"
+              formControlName="confirmPassword"
+          /></label>
+          @if (hasError('confirmPassword','required')) {
+          <p class="error__message">El campo es requerido</p>
+          } @if (registrationForm.hasError('passwordMismatch') &&
+          registrationForm.get('confirmPassword')?.touched) {
+          <p class="error__message">Las contraseñas no coinciden.</p>
+          }
+        </div>
+      </div>
+    </fieldset>
+    <div class="form__button-container">
+      <input
+        type="submit"
+        value="Registrar"
+        class="form__button"
+        [disabled]="registrationForm.invalid"
+      />
+    </div>
+  </form>
 </div>

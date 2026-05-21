@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { Product, ProductDTO,} from '../Interfaces/Product';
+import { ProductResponse, ProductDTO, ProductRequest } from '../Interfaces/Product';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -11,8 +11,8 @@ export class ProductService {
   httpClient = inject(HttpClient);
   private readonly apiUrl = `${environment.apiUrl}/products`;
 
-  saveProduct(product: Product): Observable<Product> {
-    return this.httpClient.post<Product>(this.apiUrl, product);
+  saveProduct(formData: FormData): Observable<ProductRequest> {
+    return this.httpClient.post<ProductRequest>(this.apiUrl, formData);
   }
 
   getAllProducts(): Observable<ProductDTO[]> {
@@ -23,12 +23,12 @@ export class ProductService {
     return this.httpClient.get<number>(`${this.apiUrl}/count`);
   }
 
-  findProductById(id: number): Observable<Product> {
-    return this.httpClient.get<Product>(`${this.apiUrl}/${id}`);
+  findProductById(id: number): Observable<ProductRequest> {
+    return this.httpClient.get<ProductRequest>(`${this.apiUrl}/${id}`);
   }
 
-  updateProduct(product: Product): Observable<Product> {
-    return this.httpClient.put<Product>(this.apiUrl, product);
+  updateProduct(product: ProductResponse): Observable<ProductRequest> {
+    return this.httpClient.put<ProductRequest>(this.apiUrl, product);
   }
 
   deleteProduct(id: number): Observable<void> {

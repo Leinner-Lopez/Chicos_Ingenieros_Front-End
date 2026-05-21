@@ -37,15 +37,15 @@
       </tr>
     </thead>
     <tbody class="table__body">
-      @for (category of categories(); track category.category_id) {
+      @for (category of categories(); track category.categoryId) {
       <tr class="body__row">
         <td class="row__content">{{ category.name }}</td>
         <td class="row__content">{{ category.description }}</td>
         <td class="row__content row__actions">
-          <button class="button edit__button" (click)="updateCategory(category.category_id)">
+          <button class="button edit__button" (click)="updateCategory(category.categoryId)">
             <span class="material-symbols-outlined"> edit </span>
           </button>
-          <button class="button delete__button" (click)="deleteCategory(category.category_id)">
+          <button class="button delete__button" (click)="deleteCategory(category.categoryId)">
             <span class="material-symbols-outlined"> delete </span>
           </button>
         </td>

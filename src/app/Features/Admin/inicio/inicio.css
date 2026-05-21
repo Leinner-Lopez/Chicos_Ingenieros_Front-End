@@ -1,0 +1,295 @@
+.inicio__view {
+  display: grid;
+  padding: 20px 5px;
+  gap: 20px;
+  height: 100dvh;
+  background-color: var(--color-background-white);
+}
+
+.view__main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1400px;
+  padding-right: 30px;
+}
+
+.header__title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--color-font-1);
+}
+
+.header__date {
+  color: var(--color-font-2);
+}
+
+.main__summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+.summary__card {
+  border: 1px solid var(--color-background-green);
+  border-radius: 30px;
+  padding: 30px;
+}
+
+.card--green {
+  background-color: var(--color-background-green);
+  color: #fff;
+  position: relative;
+  font-size: 1.3rem;
+}
+
+.card--green p {
+  color: var(--color-font-3);
+}
+
+.card--green strong {
+  font-size: 2.3rem;
+  font-weight: 600;
+}
+
+.card__button {
+  position: absolute;
+  right: 10px;
+  border: none;
+  border-radius: 50%;
+  padding: 10px;
+  bottom: 10px;
+  background-color: var(--color-background);
+  display: flex;
+  cursor: pointer;
+  transition: scale 0.4s;
+}
+
+.card__button:hover {
+  scale: 1.2;
+}
+
+.card--white {
+  display: flex;
+  font-size: 1.3rem;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--color-background-gray);
+}
+
+.card--white h2 {
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+
+.card--white p {
+  font-weight: 600;
+  color: var(--color-font-2);
+}
+
+.main__agenda {
+  padding: 10px;
+  border: 1px solid var(--color-background-green);
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-grow: 1;
+}
+
+.agenda__header {
+  padding: 10px;
+}
+
+.agenda__header h2 {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.agenda__header p {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.header__filter {
+  padding: 10px 0;
+  display: flex;
+  gap: 10px;
+}
+
+.filter__btn {
+  border: none;
+  padding: 8px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition:
+    color 0.4s,
+    background-color 0.4s;
+}
+
+.filter__btn:is(:active, :hover),
+.active {
+  color: var(--color-font-3);
+  background-color: var(--color-background-green);
+}
+
+.agenda__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+}
+
+.list__item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+  background-color: var(--color-background-gray);
+  border-radius: 10px;
+  border: 1px solid var(--color-background-green);
+}
+
+.info__text p {
+  display: flex;
+  gap: 10px;
+}
+.item__actions {
+  display: flex;
+  gap: 5px;
+}
+
+.actions__btn {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  gap: 5px;
+  border: 1px solid var(--color-background-green);
+  transition: scale 0.4s;
+}
+
+.actions__btn:is(:hover, :active) {
+  scale: 0.92;
+}
+
+.btn--green {
+  background-color: var(--color-background-green);
+  color: #fff;
+}
+
+.dashboard__aside {
+  display: flex;
+  flex-direction: column;
+  padding-right: 10px;
+  gap: 6px;
+}
+
+.aside__header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px;
+  color: rgb(110, 110, 110);
+}
+
+.aside__header h2 {
+  font-weight: 500;
+  color: #000;
+}
+
+.header__btn {
+  padding: 10px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  border: none;
+  border: 1px solid rgb(110, 110, 110);
+  color: inherit;
+  background-color: #fff;
+  border-radius: 15px;
+  transition:
+    color 0.4s,
+    border-color 0.4s,
+    scale 0.4s;
+}
+
+.header__btn:is(:hover, :active) {
+  border-color: #000;
+  color: #000;
+  scale: 0.92;
+  cursor: pointer;
+}
+
+.aside__list {
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  flex-grow: 1;
+  list-style: none;
+}
+
+.list__date {
+  border: 1px solid var(--color-border);
+  border-radius: 15px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.date__details {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--color-notifications);
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+.list__date h3 {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.date__buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.text__date {
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.container-image {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  color: var(--color-background);
+}
+
+@media (max-width: 700px) {
+  .view__inicio {
+    padding-right: 0;
+  }
+
+  .dashboard {
+    display: flex;
+    padding: 0;
+    padding: 20px 15px;
+    height: auto;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .main__summary {
+    display: flex;
+    flex-direction: column;
+  }
+}

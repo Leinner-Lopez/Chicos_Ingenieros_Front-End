@@ -7,26 +7,62 @@ import {
 import express from 'express';
 import { join } from 'node:path';
 
-const browserDistFolder = join(import.meta.dirname, '../browser');
+const req = new Function('m', 'return require(m)');
+const winston = req('winston');
+const path = req('path');
+const DailyRotateFile = req('winston-daily-rotate-file');
 
+const logPath = process.env['LOG_PATH'] || '/app/logs/frontend';
+
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.combine(
+    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
+    winston.format.printf(
+      ({ timestamp, level, message }: any) =>
+        `${timestamp} [SSR] ${level.toUpperCase()} - ${message}`,
+    ),
+  ),
+  transports: [
+    new DailyRotateFile({
+      filename: path.join(logPath, 'history', 'frontend-%DATE%.log'),
+      datePattern: 'YYYY-MM-DD',
+      maxFiles: '7d',
+      maxSize: '50m',
+      auditFile: path.join(logPath, '.audit.json'),
+    }),
+    new winston.transports.File({
+      filename: path.join(logPath, 'frontend.log'),
+      level: 'info',
+    }),
+    new winston.transports.Console(),
+  ],
+});
+
+logger.info('SSR server iniciando...');
+
+// ✅ Intercepta fetch global para capturar peticiones HTTP del SSR al back
+const originalFetch = globalThis.fetch;
+globalThis.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+  const url =
+    typeof input === 'string' ? input : input instanceof URL ? input.href : (input as Request).url;
+  logger.info(`FETCH → ${url}`);
+  try {
+    const response = await originalFetch(input, init);
+    if (!response.ok) {
+      logger.error(`FETCH ${url} respondió con status ${response.status}`);
+    }
+    return response;
+  } catch (error: any) {
+    logger.error(`FETCH ${url} falló: ${error.message}`);
+    throw error;
+  }
+};
+
+const browserDistFolder = join(import.meta.dirname, '../browser');
 const app = express();
 const angularApp = new AngularNodeAppEngine();
 
-/**
- * Example Express Rest API endpoints can be defined here.
- * Uncomment and define endpoints as necessary.
- *
- * Example:
- * ```ts
- * app.get('/api/{*splat}', (req, res) => {
- *   // Handle API request
- * });
- * ```
- */
-
-/**
- * Serve static files from /browser
- */
 app.use(
   express.static(browserDistFolder, {
     maxAge: '1y',
@@ -35,34 +71,31 @@ app.use(
   }),
 );
 
-/**
- * Handle all other requests by rendering the Angular application.
- */
-app.use((req, res, next) => {
-  angularApp
-    .handle(req)
-    .then((response) =>
-      response ? writeResponseToNodeResponse(response, res) : next(),
-    )
-    .catch(next);
+// ✅ Log de cada request de navegación que llega al SSR
+app.use((req: any, res: any, next: any) => {
+  logger.info(`HTTP ${req.method} → ${req.path}`);
+  next();
 });
 
-/**
- * Start the server if this module is the main entry point, or it is ran via PM2.
- * The server listens on the port defined by the `PORT` environment variable, or defaults to 4000.
- */
+app.use((req: any, res: any, next: any) => {
+  angularApp
+    .handle(req)
+    .then((response) => (response ? writeResponseToNodeResponse(response, res) : next()))
+    .catch((error: any) => {
+      logger.error(`Error manejando ${req.path}: ${error.message}`);
+      next(error);
+    });
+});
+
 if (isMainModule(import.meta.url) || process.env['pm_id']) {
   const port = process.env['PORT'] || 4000;
   app.listen(port, (error) => {
     if (error) {
       throw error;
     }
-
+    logger.info(`Node Express server escuchando en puerto ${port}`);
     console.log(`Node Express server listening on http://localhost:${port}`);
   });
 }
 
-/**
- * Request handler used by the Angular CLI (for dev-server and during build) or Firebase Cloud Functions.
- */
 export const reqHandler = createNodeRequestHandler(app);

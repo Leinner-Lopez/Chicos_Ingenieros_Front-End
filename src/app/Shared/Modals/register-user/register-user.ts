@@ -24,12 +24,12 @@ export class RegisterUser {
     if (data && data.userId) {
       this.userService.findUserById(data.userId).subscribe((user: User) => {
         this.registrationForm.patchValue({
-          names: user.first_name,
-          lastNames: user.last_name,
+          names: user.firstName,
+          lastNames: user.lastName,
           documentNumber: user.documentNumber,
           email: user.email,
           userRole: user.role,
-          phone_number: user.phone_number,
+          phoneNumber: user.phoneNumber,
         });
       });
       this.registrationForm.get('documentNumber')?.disable();
@@ -38,17 +38,22 @@ export class RegisterUser {
       this.registrationForm.get('confirmPassword')?.clearValidators();
       this.registrationForm.get('confirmPassword')?.updateValueAndValidity();
     }
-    
   }
 
   registrationForm: FormGroup = this.form.group(
     {
       names: ['', Validators.required],
       lastNames: ['', Validators.required],
-      documentNumber: ['', Validators.required],
+      documentNumber: [
+        null,
+        [Validators.required, Validators.min(10000000), Validators.max(9999999999)],
+      ],
       email: ['', [Validators.required, Validators.email]],
       userRole: ['', Validators.required],
-      phone_number: ['', [Validators.required, Validators.minLength(10)]],
+      phoneNumber: [
+        null,
+        [Validators.required, Validators.min(1000000000), Validators.max(9999999999)],
+      ],
       password: ['', [Validators.required]],
       confirmPassword: ['', Validators.required],
     },
@@ -61,19 +66,19 @@ export class RegisterUser {
     const formValue = this.registrationForm.getRawValue();
 
     const userData: User = {
-      user_id: null!,
-      first_name: formValue.names,
-      last_name: formValue.lastNames,
+      userId: null!,
+      firstName: formValue.names,
+      lastName: formValue.lastNames,
       documentNumber: formValue.documentNumber,
       email: formValue.email,
-      phone_number: formValue.phone_number,
+      phoneNumber: formValue.phoneNumber,
       password: formValue.password,
       role: formValue.userRole,
-      status: UserStatus.ACTIVE
+      status: UserStatus.ACTIVE,
     };
 
     if (this.data && this.data.userId) {
-      userData.user_id = this.data.userId;
+      userData.userId = this.data.userId;
       this.userService.updateUser(userData).subscribe({
         next: () => {
           const dialogRef = this.dialog.open<string>(MessageModal, {
@@ -114,5 +119,12 @@ export class RegisterUser {
 
   closeModal(): void {
     this.dialogRef.close('Usuario registrado');
+  }
+
+  onlyNumbers(event: KeyboardEvent): void {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (charCode < 48 || charCode > 57) {
+      event.preventDefault();
+    }
   }
 }

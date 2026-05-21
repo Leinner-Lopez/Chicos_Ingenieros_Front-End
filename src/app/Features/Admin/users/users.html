@@ -35,17 +35,17 @@
       </tr>
     </thead>
     <tbody class="table__body">
-      @for (user of users(); track user.user_id) {
+      @for (user of users(); track user.userId) {
       <tr class="body__row">
-        <td class="row__content">{{user.first_name}}</td>
-        <td class="row__content">{{user.last_name}}</td>
+        <td class="row__content">{{user.firstName}}</td>
+        <td class="row__content">{{user.lastName}}</td>
         <td class="row__content">{{user.email}}</td>
         <td class="row__content">{{user.role}}</td>
         <td class="row__content row__actions">
-          <button class="button edit__button" (click)="updateUser(user.user_id)">
+          <button class="button edit__button" (click)="updateUser(user.userId)">
             <span class="material-symbols-outlined"> edit </span>
           </button>
-          <button class="button delete__button" (click)="deleteUser(user.user_id)">
+          <button class="button delete__button" (click)="deleteUser(user.userId)">
             <span class="material-symbols-outlined"> delete </span>
           </button>
         </td>

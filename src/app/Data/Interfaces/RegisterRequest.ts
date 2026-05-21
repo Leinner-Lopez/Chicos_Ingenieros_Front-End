@@ -1,8 +1,8 @@
-export interface RegisterRequest{
-    document_number: string;
-    first_name: string;
-    last_name:string;
-    phone_number:string;
-    email:string;
-    password:string;
+export interface RegisterRequest {
+  documentNumber: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  password: string;
 }

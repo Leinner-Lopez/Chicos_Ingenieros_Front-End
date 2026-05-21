@@ -26,7 +26,7 @@ export class Register {
       lastNames: ['', Validators.required],
       documentNumber: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phone_number: ['', [Validators.required, Validators.minLength(10)]],
+      phoneNumber: ['', [Validators.required, Validators.minLength(10)]],
       password: ['', [Validators.required]],
       confirmPassword: ['', Validators.required],
     },
@@ -37,11 +37,11 @@ export class Register {
     if (this.registrationForm.invalid) return;
 
     const userData: RegisterRequest = {
-      first_name: this.registrationForm.value.names,
-      last_name: this.registrationForm.value.lastNames,
-      document_number: this.registrationForm.value.documentNumber,
+      firstName: this.registrationForm.value.names,
+      lastName: this.registrationForm.value.lastNames,
+      documentNumber: this.registrationForm.value.documentNumber,
       email: this.registrationForm.value.email,
-      phone_number: this.registrationForm.value.phone_number,
+      phoneNumber: this.registrationForm.value.phoneNumber,
       password: this.registrationForm.value.password,
     };
 
