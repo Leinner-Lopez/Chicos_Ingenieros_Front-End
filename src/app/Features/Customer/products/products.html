@@ -1,1 +1,58 @@
-<p>products works!</p>
+<div class="shop-container">
+  <div class="shop-header">
+    <div class="welcome-text">
+      <h2>Descubre Productos Frescos</h2>
+      <p>Calidad garantizada bajo control estricto de frescura</p>
+    </div>
+  </div>
+
+  <div class="categories-chips">
+    <button class="chip" (click)="loadProducts(0)" [class.active]="selectedCategoryId() === 0">
+      Todos
+    </button>
+    @for (category of categories(); track category.categoryId) {
+    <button
+      class="chip"
+      (click)="loadProducts(category.categoryId)"
+      [class.active]="selectedCategoryId() === category.categoryId"
+    >
+      {{ category.name }}
+    </button>
+    }
+  </div>
+
+  <div class="products-grid">
+    @for (prod of catalogProduct(); track prod.productId) {
+    <div class="product-item-card">
+      <div class="product-image-wrapper">
+        <img [src]="prod.imageUrl || 'assets/placeholder-food.png'" alt="{{ prod.name }}" />
+        <span class="category-tag">{{prod.categoryName}}</span>
+      </div>
+
+      <div class="product-details">
+        <h3>{{ prod.name }}</h3>
+        <p class="product-desc">{{ prod.description || 'Sin descripción disponible' }}</p>
+
+        <div class="price-action-row">
+          <div class="price-stock-info">
+            <p class="stock-availability">Disponible: {{ prod.totalStock }}</p>
+            <span class="product-price">{{ prod.price | currency:'COP':'$':'1.0-0' }}</span>
+          </div>
+          @if (prod.totalStock > 0) {
+          <button class="btn-add-cart" (click)="registerSale(prod.productId)">
+            <span class="material-symbols-outlined">shopping_bag</span>
+            Comprar
+          </button>
+          } @else {
+          <button class="btn-out-of-stock" disabled>Agotado</button>}
+        </div>
+      </div>
+    </div>
+    } @empty {
+    <div class="empty-shop">
+      <span class="icon">storefront</span>
+      <p>No hay productos disponibles en este momento.</p>
+    </div>
+    }
+  </div>
+</div>

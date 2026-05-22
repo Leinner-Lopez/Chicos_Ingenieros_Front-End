@@ -28,6 +28,10 @@ export class ProductService {
     return this.httpClient.get<number>(`${this.apiUrl}/count`);
   }
 
+  getProductsByCategory(categoryId: number): Observable<ProductDTO[]> {
+    return this.httpClient.get<ProductDTO[]>(`${this.apiUrl}/category/${categoryId}`);
+  }
+
   getInventory(): Observable<ProductInventoryDTO[]> {
     return this.httpClient.get<ProductInventoryDTO[]>(`${this.apiUrl}/inventory`);
   }

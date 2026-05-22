@@ -8,6 +8,7 @@ import { jwtDecode } from 'jwt-decode';
 import { JwtPayload } from '../../Data/Interfaces/JwtPayload';
 import { RegisterRequest } from '../../Data/Interfaces/RegisterRequest';
 import { environment } from '../../../environments/environment';
+import { AuthResponse } from '../../Data/Interfaces/AuthResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,7 @@ export class AuthService {
   token = signal<string | null>(null);
   userRole = signal<string | null>(null);
   userEmail = signal<string | null>(null);
+  userId = signal<number | null>(null);
   isAuthenticated = signal<boolean>(false);
 
   /** Inicializa el servicio verificando el token guardado en sessionStorage y establece el estado de autenticación. */
@@ -42,8 +44,8 @@ export class AuthService {
 
   /** Realiza el login enviando las credenciales al servidor, guarda el token y decodifica la información del usuario. */
   login(credenciales: LoginRequest) {
-    return this.httpCLient.post<{ token: string }>(`${this.apiUrl}/login`, credenciales).pipe(
-      tap(respuesta => {
+    return this.httpCLient.post<AuthResponse>(`${this.apiUrl}/login`, credenciales).pipe(
+      tap((respuesta: AuthResponse) => {
         if (isPlatformBrowser(this.platformId)) {
           sessionStorage.setItem('token', respuesta.token);
         }
@@ -53,9 +55,10 @@ export class AuthService {
         if (decodedToken) {
           this.userRole.set(decodedToken.role);
           this.userEmail.set(decodedToken.sub);
+          this.userId.set(respuesta.userId);
         }
-      })
-    )
+      }),
+    );
   }
 
   register(userData: RegisterRequest) {
@@ -71,6 +74,7 @@ export class AuthService {
     this.isAuthenticated.set(false);
     this.userRole.set(null);
     this.userEmail.set(null);
+    this.userId.set(null);
     if (this.router.url !== '/login') {
       this.router.navigate(['/login']);
     }
@@ -99,17 +103,21 @@ export class AuthService {
   }
 
   /** Devuelve el token de autenticación actual. */
-  getToken() {
+  public getToken() {
     return this.token();
   }
 
   /** Devuelve el rol del usuario autenticado. */
-  getUserRole() {
+  public getUserRole() {
     return this.userRole();
   }
 
   /** Devuelve el ID del usuario autenticado. */
-  getUserEmail() {
+  public getUserEmail() {
     return this.userEmail();
+  }
+
+  public getUserId() {
+    return this.userId();
   }
 }

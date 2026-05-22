@@ -1,3 +1,5 @@
-export interface AuthResponse{
-    token:string;
+export interface AuthResponse {
+  token: string;
+  userId: number;
+  userRole: string;
 }

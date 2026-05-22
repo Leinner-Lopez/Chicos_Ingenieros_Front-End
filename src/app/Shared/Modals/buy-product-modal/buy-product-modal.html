@@ -1,0 +1,18 @@
+<div class="modal">
+  <h2 class="modal__title">Registrar Compra</h2>
+  <button class="modal__close" (click)="closeModal()">
+    <span class="material-symbols-outlined"> close </span>
+  </button>
+  <form class="modal__form" (ngSubmit)="onSubmit()" [formGroup]="salesForm">
+    <div class="form__input-container">
+      <div class="input__container">
+        <label for="quantity">Cantidad</label>
+        <input type="number" formControlName="quantity" name="quantity" id="quantity" />
+      </div>
+      @if (hasError("quantity","required")) {
+      <p class="error__message">El campo es requerido</p>
+      }
+    </div>
+    <button type="submit" class="submit__button">Registrar</button>
+  </form>
+</div>

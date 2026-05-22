@@ -1,0 +1,225 @@
+.shop-container {
+  padding: 32px;
+  min-height: 100vh;
+}
+
+/* Header */
+.shop-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 20px;
+}
+
+.welcome-text h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1a3322;
+  margin: 0 0 4px 0;
+}
+
+.welcome-text p {
+  color: #667062;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Buscador */
+.search-bar {
+  background-color: #ffffff;
+  border: 1px solid #e1e5e1;
+  border-radius: 12px;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 35%;
+  box-shadow: 0 2px 8px rgba(26, 51, 34, 0.02);
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  font-size: 0.9rem;
+  color: #1a3322;
+  width: 100%;
+}
+
+/* Filtros de Categorías rápidos */
+.categories-chips {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.chip {
+  background-color: #ffffff;
+  border: 1px solid #e1e5e1;
+  color: #667062;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chip:hover,
+.chip.active {
+  background-color: #1a3322;
+  color: #ffffff;
+  border-color: #1a3322;
+}
+
+/* Cuadrícula Bento de Productos */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+/* Tarjeta de Producto */
+.product-item-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e1e5e1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.product-item-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(26, 51, 34, 0.06);
+}
+
+/* Imagen Contenedor */
+.product-image-wrapper {
+  position: relative;
+  background-color: #f0f3f0;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-image-wrapper img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  padding: 16px;
+}
+
+.category-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #1a3322;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+}
+
+/* Detalles del Producto */
+.product-details {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.product-details h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a3322;
+  margin: 0 0 6px 0;
+}
+
+.product-desc {
+  font-size: 0.85rem;
+  color: #728070;
+  margin: 0 0 16px 0;
+  line-height: 1.4;
+  height: 38px; /* Forzar el corte simétrico de texto */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
+/* Fila Inferior Precio/Acción */
+/* Contenedor de la fila inferior (Precio y Botón) */
+.price-action-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto; /* Empuja el contenido al fondo de la tarjeta */
+  gap: 12px;
+}
+
+/* Bloque para agrupar el precio y las existencias a la izquierda */
+.price-stock-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Estilo del Precio */
+.product-price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a3322;
+  line-height: 1.2;
+}
+
+/* Indicador de Unidades Disponibles sutil */
+.stock-availability {
+  font-size: 0.78rem;
+  color: #728070;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Botón Comprar (Activo) */
+.btn-add-cart {
+  background-color: #ecf3ee;
+  color: #1a3322;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-add-cart:hover {
+  background-color: #1a3322;
+  color: #ffffff;
+}
+
+/* Botón Agotado (Deshabilitado) */
+.btn-out-of-stock {
+  background-color: #f5f7f5;
+  color: #a3b0a2;
+  border: 1px solid #e1e5e1;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: not-allowed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

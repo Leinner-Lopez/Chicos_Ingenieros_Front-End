@@ -23,6 +23,8 @@ export interface ProductDTO {
   categoryName: string;
   price: number;
   imageUrl: string;
+  description: string;
+  totalStock: number;
 }
 
 export interface ProductInventoryDTO {
