@@ -1,1 +1,58 @@
-<p>inicio works!</p>
+<main class="inicio__view">
+  <section class="view__main">
+    <header class="main__header">
+      <h1 class="header__title">Hola, Bodega</h1>
+      <p class="header__date">{{fechaFormateada}}</p>
+    </header>
+
+    <section class="main__summary">
+      <article class="summary__card card--green">
+        <p>Lotes por vencer esta semana</p>
+        <strong>{{lots().length}} lote(s)</strong>
+      </article>
+      <article class="summary__card card--white">
+        <h2>Total de lotes registrados</h2>
+        <p>{{totalLots()}}</p>
+      </article>
+      <article class="summary__card card--green">
+        <p>Mermas del Mes</p>
+        <strong>$ {{lossesOfTheMonth()}} COP</strong>
+      </article>
+    </section>
+
+    <section class="main__agenda">
+      <header class="agenda__header">
+        <h2>Lotes por vencer esta semana</h2>
+        <p>{{fechaFormateada}}</p>
+      </header>
+      <ul class="bento-grid-lotes">
+        @for (lot of lots(); track lot.lotId) {
+        <li class="lote-card">
+          <div class="card-header">
+            <span class="material-symbols-outlined">box</span>
+            <div class="product-details">
+              <h4>{{ lot.productName }}</h4>
+              <span class="lot-id">Lote #{{ lot.lotId }}</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="data-row">
+              <span class="label">Stock disponible</span>
+              <span class="value accent">{{ lot.stockQuantity }} unds</span>
+            </div>
+            <div class="data-row">
+              <span class="label">Vencimiento</span>
+              <span class="value date-value">{{ lot.expirationDate | date:'dd/MM/yyyy' }}</span>
+            </div>
+          </div>
+        </li>
+        } @empty {
+        <div class="empty-state">
+          <span class="material-symbols-outlined">verified</span>
+          <p>No hay lotes en riesgo de vencimiento esta semana.</p>
+        </div>
+        }
+      </ul>
+    </section>
+  </section>
+</main>

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ProductService } from '../../../Data/Services/product-service';
 import { ProductInventoryDTO } from '../../../Data/Interfaces/Product';
 
@@ -8,7 +8,7 @@ import { ProductInventoryDTO } from '../../../Data/Interfaces/Product';
   templateUrl: './inventory.html',
   styleUrl: './inventory.css',
 })
-export class Inventory {
+export class Inventory implements OnInit {
   inventory = signal<ProductInventoryDTO[]>([]);
   productService = inject(ProductService);
   productCount = signal<number>(0);

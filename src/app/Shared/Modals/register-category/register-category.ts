@@ -1,4 +1,4 @@
-import { Component, Inject, inject, model } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CategoryService } from '../../../Data/Services/category-service';
 import { Dialog, DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
@@ -18,7 +18,7 @@ export class RegisterCategory {
   categoryService: CategoryService = inject(CategoryService);
 
   constructor(@Inject(DIALOG_DATA) public data: any) {
-    if (data && data.categoryId) {
+    if (data?.categoryId) {
       this.categoryService.findCategoryById(data.categoryId).subscribe((category) => {
         this.formularioRegistration.patchValue({
           name: category.name,
@@ -42,7 +42,7 @@ export class RegisterCategory {
       description: this.formularioRegistration.value.description!,
     };
 
-    if (this.data && this.data.categoryId) {
+    if (this.data?.categoryId) {
       categoryData.categoryId = this.data.categoryId;
       this.categoryService.updateCategory(categoryData).subscribe({
         next: () => {

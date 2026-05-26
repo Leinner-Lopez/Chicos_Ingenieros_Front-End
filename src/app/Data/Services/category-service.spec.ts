@@ -9,6 +9,12 @@ describe('CategoryService', () => {
   let httpMock: HttpTestingController;
   const apiUrl = `${environment.apiUrl}/categories`;
 
+  const mockCategory: Category = { categoryId: 1, name: 'Lácteos', description: 'Lácteos y derivados' };
+  const mockCategories: Category[] = [
+    { categoryId: 1, name: 'Lácteos', description: 'Lácteos y derivados' },
+    { categoryId: 2, name: 'Cárnicos', description: 'Cárnicos y derivados' },
+  ];
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -26,62 +32,80 @@ describe('CategoryService', () => {
     expect(service).toBeTruthy();
   });
 
-  // Test para Obtener Categorías
-  it('obtener todas las categorías (GET)', () => {
-    const mockCategories: Category[] = [
-      { category_id: 1, name: 'Lácteos', description: 'Lácteos y derivados' },
-      { category_id: 2, name: 'Cárnicos', description: 'Cárnicos y derivados' },
-    ];
+  describe('getAllCategories()', () => {
+    it('debe retornar la lista de categorías (GET)', () => {
+      service.getAllCategories().subscribe((categories) => {
+        expect(categories.length).toBe(2);
+        expect(categories).toEqual(mockCategories);
+      });
 
-    service.getAllCategories().subscribe((categories) => {
-      expect(categories.length).toBe(2);
-      expect(categories).toEqual(mockCategories);
+      const req = httpMock.expectOne(apiUrl);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockCategories);
     });
-
-    const req = httpMock.expectOne(apiUrl);
-    expect(req.request.method).toBe('GET');
-    req.flush(mockCategories);
   });
 
-  // Test para Guardar Categoría
-  it('guardar una nueva categoría (POST)', () => {
-    const newCategory: Category = {
-      category_id: 3,
-      name: 'Verduras',
-      description: 'Verduras frescas',
-    };
+  describe('getCountCategories()', () => {
+    it('debe retornar el total de categorías (GET)', () => {
+      service.getCountCategories().subscribe((count) => {
+        expect(count).toBe(5);
+      });
 
-    service.saveCategory(newCategory).subscribe((category) => {
-      expect(category.name).toBe('Verduras');
+      const req = httpMock.expectOne(`${apiUrl}/count`);
+      expect(req.request.method).toBe('GET');
+      req.flush(5);
     });
-
-    const req = httpMock.expectOne(apiUrl);
-    expect(req.request.method).toBe('POST');
-    expect(req.request.body).toEqual(newCategory);
-    req.flush({ id: 3, ...newCategory });
   });
 
-  // Test para Eliminar Categoría
-  it('eliminar una categoría por ID (DELETE)', () => {
-    const categoryId = 1;
+  describe('findCategoryById()', () => {
+    it('debe retornar la categoría correspondiente al ID (GET)', () => {
+      service.findCategoryById(1).subscribe((category) => {
+        expect(category).toEqual(mockCategory);
+      });
 
-    service.deleteCategory(categoryId).subscribe();
-
-    const req = httpMock.expectOne(`${apiUrl}/${categoryId}`);
-    expect(req.request.method).toBe('DELETE');
-    req.flush(null);
+      const req = httpMock.expectOne(`${apiUrl}/1`);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockCategory);
+    });
   });
 
-  // Test para Buscar por ID
-  it('encontrar una categoría por su ID (GET)', () => {
-    const mockCategory: Category = { category_id: 10, name: 'Bebidas' };
+  describe('saveCategory()', () => {
+    it('debe crear una nueva categoría (POST)', () => {
+      const newCategory: Category = { categoryId: 3, name: 'Verduras', description: 'Verduras frescas' };
 
-    service.findCategoryById(10).subscribe((category) => {
-      expect(category).toEqual(mockCategory);
+      service.saveCategory(newCategory).subscribe((category) => {
+        expect(category.name).toBe('Verduras');
+      });
+
+      const req = httpMock.expectOne(apiUrl);
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(newCategory);
+      req.flush(newCategory);
     });
+  });
 
-    const req = httpMock.expectOne(`${apiUrl}/10`);
-    expect(req.request.method).toBe('GET');
-    req.flush(mockCategory);
+  describe('updateCategory()', () => {
+    it('debe actualizar una categoría existente (PUT)', () => {
+      const updated: Category = { categoryId: 1, name: 'Lácteos Premium', description: 'Actualizado' };
+
+      service.updateCategory(updated).subscribe((category) => {
+        expect(category.name).toBe('Lácteos Premium');
+      });
+
+      const req = httpMock.expectOne(apiUrl);
+      expect(req.request.method).toBe('PUT');
+      expect(req.request.body).toEqual(updated);
+      req.flush(updated);
+    });
+  });
+
+  describe('deleteCategory()', () => {
+    it('debe eliminar la categoría por ID (DELETE)', () => {
+      service.deleteCategory(1).subscribe();
+
+      const req = httpMock.expectOne(`${apiUrl}/1`);
+      expect(req.request.method).toBe('DELETE');
+      req.flush(null);
+    });
   });
 });

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ProductService } from '../../../Data/Services/product-service';
 import { ProductDTO } from '../../../Data/Interfaces/Product';
 import { CurrencyPipe } from '@angular/common';
@@ -13,7 +13,7 @@ import { BuyProductModal } from '../../../Shared/Modals/buy-product-modal/buy-pr
   templateUrl: './products.html',
   styleUrl: './products.css',
 })
-export class ProductsCustomer {
+export class ProductsCustomer implements OnInit {
   dialog = inject(Dialog);
   productService = inject(ProductService);
   categoryService = inject(CategoryService);

@@ -1,8 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../../Core/Services/auth-service';
-import { Router } from '@angular/router';
 import { LoginRequest } from '../../../Data/Interfaces/LoginRequest';
 import { Dialog } from '@angular/cdk/dialog';
 import { MessageModal } from '../../../Shared/Modals/message-modal/message-modal';
@@ -19,31 +18,31 @@ export class Login {
   authService = inject(AuthService);
   router = inject(Router);
 
-
   formularioLogin: FormGroup = this.form.group({
     Username: ['', [Validators.required, Validators.email]],
-    Password: ['', Validators.required]
-  })
+    Password: ['', Validators.required],
+  });
 
   onSubmit() {
     if (this.formularioLogin.invalid) return;
     const credentials: LoginRequest = {
       username: this.formularioLogin.value.Username,
-      password: this.formularioLogin.value.Password
-    }
+      password: this.formularioLogin.value.Password,
+    };
     this.authService.login(credentials).subscribe({
       next: () => {
         const role = this.authService.getUserRole();
         this.redirectByUserRole(role);
-      }, error: (err) => {
-        this.dialog.open<string>(MessageModal,{
-          data:{
+      },
+      error: (err) => {
+        this.dialog.open<string>(MessageModal, {
+          data: {
             title: 'Error de autenticación',
-            message: 'Email o contraseña incorrectos. Por favor, inténtelo de nuevo.'
-          }
-        })
-      }
-    })
+            message: 'Email o contraseña incorrectos. Por favor, inténtelo de nuevo.',
+          },
+        });
+      },
+    });
   }
 
   private redirectByUserRole(role: string | null) {
@@ -65,6 +64,6 @@ export class Login {
 
   hasError(controlName: string, errorType: string): boolean {
     const control = this.formularioLogin.get(controlName);
-    return control?.hasError(errorType) && (control.dirty || control.touched) || false;
+    return (control?.hasError(errorType) && (control.dirty || control.touched)) || false;
   }
 }

@@ -16,7 +16,7 @@ import { AuthResponse } from '../../Data/Interfaces/AuthResponse';
 export class AuthService {
   httpCLient = inject(HttpClient);
   router = inject(Router);
-  private platformId = inject(PLATFORM_ID);
+  private readonly platformId = inject(PLATFORM_ID);
   private readonly apiUrl = `${environment.apiUrl}/auth`;
 
   token = signal<string | null>(null);
@@ -88,6 +88,7 @@ export class AuthService {
       const decodedToken: any = this.decodeToken(Token);
       return Math.floor(Date.now() / 1000) >= decodedToken.exp;
     } catch (error) {
+      console.error('Error al validar la expiración del token:', error);
       return true;
     }
   }
@@ -98,6 +99,7 @@ export class AuthService {
     try {
       return jwtDecode(Token);
     } catch (error) {
+      console.error('Error al validar la expiración del token:', error);
       return null;
     }
   }

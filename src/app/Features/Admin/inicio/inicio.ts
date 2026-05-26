@@ -1,5 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { AdminService } from '../../../Data/Services/Dashboard/admin.service';
 import { LotDTO } from '../../../Data/Interfaces/Lot';
 import { DatePipe } from '@angular/common';

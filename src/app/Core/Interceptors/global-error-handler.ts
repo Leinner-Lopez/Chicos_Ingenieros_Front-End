@@ -3,7 +3,7 @@ import { LoggerService } from '../Services/logger.service';
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
-  private logger = inject(LoggerService);
+  private readonly logger = inject(LoggerService);
 
   handleError(error: unknown): void {
     const message = error instanceof Error ? error.message : String(error);

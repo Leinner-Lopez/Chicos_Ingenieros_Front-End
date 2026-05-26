@@ -1,0 +1,69 @@
+<section class="lots-view">
+
+  <header class="view-header">
+    <div class="header-text">
+      <h2 class="header-title">Lotes</h2>
+      <p class="header-subtitle">{{ lotsNumber() }} lotes registrados</p>
+    </div>
+    <button class="btn-primary" (click)="registerLot()">
+      <span class="material-symbols-outlined">add</span>
+      Registrar
+    </button>
+  </header>
+
+  <div class="bento-grid">
+    @for (lot of lots(); track lot.lotId) {
+      <article class="lot-card">
+
+        <div class="card-top">
+          <div class="icon-wrap">
+            <span class="material-symbols-outlined">package_2</span>
+          </div>
+          <div class="card-meta">
+            <h3 class="lot-name">{{ lot.productName }}</h3>
+            <span class="lot-id-badge">Lote #{{ lot.lotId }}</span>
+          </div>
+          <span [class]="'status-dot ' + getLotStatusClass(lot.expirationDate)"></span>
+        </div>
+
+        <div class="card-divider"></div>
+
+        <div class="lot-data">
+          <div class="data-row">
+            <span class="data-label">
+              <span class="material-symbols-outlined icon-sm">layers</span>
+              Stock
+            </span>
+            <span class="data-value">{{ lot.stockQuantity }} <small>uds</small></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">
+              <span class="material-symbols-outlined icon-sm">event</span>
+              Vencimiento
+            </span>
+            <span [class]="'data-date ' + getLotStatusClass(lot.expirationDate)">
+              {{ lot.expirationDate | date:'dd/MM/yyyy' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <button class="btn-action btn-edit" (click)="updateLot(lot.lotId)">
+            <span class="material-symbols-outlined">edit</span>
+            Editar
+          </button>
+          <button class="btn-action btn-delete" (click)="deleteLot(lot.lotId)">
+            <span class="material-symbols-outlined">delete</span>
+          </button>
+        </div>
+
+      </article>
+    } @empty {
+      <div class="empty-state">
+        <span class="material-symbols-outlined">package_2</span>
+        <p>No hay lotes registrados aún.</p>
+      </div>
+    }
+  </div>
+
+</section>

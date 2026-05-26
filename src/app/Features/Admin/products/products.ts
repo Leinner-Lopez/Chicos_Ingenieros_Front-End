@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { CurrencyPipe } from '@angular/common';
 import { ProductService } from '../../../Data/Services/product-service';
 import { ProductDTO } from '../../../Data/Interfaces/Product';
 import { Dialog } from '@angular/cdk/dialog';
@@ -7,7 +8,7 @@ import { ConfirmModal } from '../../../Shared/Modals/confirm-modal/confirm-modal
 
 @Component({
   selector: 'app-products',
-  imports: [],
+  imports: [CurrencyPipe],
   templateUrl: './products.html',
   styleUrl: './products.css',
 })

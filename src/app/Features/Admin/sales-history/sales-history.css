@@ -163,8 +163,8 @@
 .empty-history {
   text-align: center;
   padding: 60px;
-  color: #728070;
-  background-color: #ffffff;
+  color: var(--color-font-2);
+  background-color: var(--color-background-white);
   border-radius: 14px;
   border: 1px solid #e1e5e1;
 }

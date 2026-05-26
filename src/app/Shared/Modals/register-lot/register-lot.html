@@ -16,7 +16,7 @@
         <label for="productPrice">Estado</label>
         <select name="status" id="status" formControlName="status" class="input__select">
           <option value="AVAILABLE">Disponible</option>
-          <option value="EXPIRED">Agotado</option>
+          <option value="EXPIRED">Expirado</option>
         </select>
         @if (hasError("status","required")) {
         <p class="error__message">El campo es requerido</p>
@@ -29,9 +29,13 @@
           formControlName="expirationDate"
           name="expirationDate"
           id="expirationDate"
+          [min]="today"
         />
         @if (hasError("expirationDate","required")) {
         <p class="error__message">El campo es requerido</p>
+        }
+        @if (hasError("expirationDate","minDate")) {
+        <p class="error__message">La fecha no puede ser anterior a hoy</p>
         }
       </div>
       <div class="input__container">

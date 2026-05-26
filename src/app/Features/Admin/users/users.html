@@ -1,56 +1,50 @@
-<section class="users__view">
-  <header class="view__header">
-    <h2 class="header__title">Usuarios</h2>
-    <button class="header__button" (click)="registerUser()">
-      <span class="material-symbols-outlined"> add </span>
+<section class="users-view">
+  <header class="view-header">
+    <div class="header-text">
+      <h2 class="header-title">Usuarios</h2>
+      <p class="header-subtitle">{{ usersNumber() }} usuarios registrados</p>
+    </div>
+    <button class="btn-primary" (click)="registerUser()">
+      <span class="material-symbols-outlined">add</span>
       Registrar
     </button>
   </header>
 
-  <section class="view__cards">
-    <ul class="cards__list">
-      <li class="list__item">
-        <small class="item__title">Totales</small>
-        <strong class="item__content">{{usersNumber()}}</strong>
-      </li>
-      <li class="list__item">
-        <small class="item__title">Activas</small>
-        <strong class="item__content"></strong>
-      </li>
-      <li class="list__item">
-        <small class="item__title">Inactivas</small>
-        <strong class="item__content"></strong>
-      </li>
-    </ul>
-  </section>
+  <div class="bento-grid">
+    @for (user of users(); track user.userId) {
+    <article class="user-card">
+      <div class="card-top">
+        <div class="avatar">{{ user.firstName[0] }}{{ user.lastName[0] }}</div>
+        <div class="card-meta">
+          <h3 class="user-name">{{ user.firstName }} {{ user.lastName }}</h3>
+          <span [class]="'role-badge role-'">{{ user.role }}</span>
+        </div>
+      </div>
 
-  <table class="view__table">
-    <thead class="table__title">
-      <tr class="title__row">
-        <th class="row__title">Nombre</th>
-        <th class="row__title">Apellido</th>
-        <th class="row__title">Email</th>
-        <th class="row__title">Rol</th>
-        <th class="row__title">Acciones</th>
-      </tr>
-    </thead>
-    <tbody class="table__body">
-      @for (user of users(); track user.userId) {
-      <tr class="body__row">
-        <td class="row__content">{{user.firstName}}</td>
-        <td class="row__content">{{user.lastName}}</td>
-        <td class="row__content">{{user.email}}</td>
-        <td class="row__content">{{user.role}}</td>
-        <td class="row__content row__actions">
-          <button class="button edit__button" (click)="updateUser(user.userId)">
-            <span class="material-symbols-outlined"> edit </span>
-          </button>
-          <button class="button delete__button" (click)="deleteUser(user.userId)">
-            <span class="material-symbols-outlined"> delete </span>
-          </button>
-        </td>
-      </tr>
-      }
-    </tbody>
-  </table>
+      <div class="card-divider"></div>
+
+      <div class="user-info">
+        <span class="info-row">
+          <span class="material-symbols-outlined icon-sm">mail</span>
+          <span class="info-text">{{ user.email }}</span>
+        </span>
+      </div>
+
+      <div class="card-actions">
+        <button class="btn-action btn-edit" (click)="updateUser(user.userId)">
+          <span class="material-symbols-outlined">edit</span>
+          Editar
+        </button>
+        <button class="btn-action btn-delete" (click)="deleteUser(user.userId)">
+          <span class="material-symbols-outlined">delete</span>
+        </button>
+      </div>
+    </article>
+    } @empty {
+    <div class="empty-state">
+      <span class="material-symbols-outlined">group</span>
+      <p>No hay usuarios registrados aún.</p>
+    </div>
+    }
+  </div>
 </section>

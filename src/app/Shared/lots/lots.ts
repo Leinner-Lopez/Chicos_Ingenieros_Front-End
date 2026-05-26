@@ -1,17 +1,18 @@
 import { Dialog } from '@angular/cdk/dialog';
-import { Component, inject, signal } from '@angular/core';
-import { LotService } from '../../../Data/Services/lot-service';
-import { LotDTO } from '../../../Data/Interfaces/Lot';
-import { ConfirmModal } from '../../../Shared/Modals/confirm-modal/confirm-modal';
-import { RegisterLot } from '../../../Shared/Modals/register-lot/register-lot';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { LotService } from '../../Data/Services/lot-service';
+import { LotDTO } from '../../Data/Interfaces/Lot';
+import { ConfirmModal } from '../Modals/confirm-modal/confirm-modal';
+import { RegisterLot } from '../Modals/register-lot/register-lot';
 
 @Component({
   selector: 'app-lots',
-  imports: [],
+  imports: [DatePipe],
   templateUrl: './lots.html',
   styleUrl: './lots.css',
 })
-export class Lots {
+export class Lots implements OnInit {
   dialog = inject(Dialog);
   lotService: LotService = inject(LotService);
   lots = signal<LotDTO[]>([]);
@@ -63,5 +64,16 @@ export class Lots {
         this.getLots();
       }
     });
+  }
+
+  getLotStatusClass(expirationDate: string): 'status-expired' | 'status-soon' | 'status-ok' {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const expiry = new Date(expirationDate);
+    expiry.setHours(0, 0, 0, 0);
+    const daysLeft = Math.floor((expiry.getTime() - today.getTime()) / 86_400_000);
+    if (daysLeft <= 0) return 'status-expired';
+    if (daysLeft <= 7) return 'status-soon';
+    return 'status-ok';
   }
 }

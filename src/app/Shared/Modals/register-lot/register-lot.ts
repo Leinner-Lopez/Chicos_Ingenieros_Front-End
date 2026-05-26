@@ -26,7 +26,7 @@ export class RegisterLot {
     this.productService.getAllProducts().subscribe((products) => {
       this.products.set(products);
     });
-    if (data && data.lotId) {
+    if (data?.lotId) {
       this.lotService.findLotById(data.lotId).subscribe((lot) => {
         this.formularioRegistration.patchValue({
           stock: lot.stockQuantity,
@@ -38,11 +38,16 @@ export class RegisterLot {
     }
   }
 
+  today = new Date().toLocaleDateString('en-CA');
+
   formularioRegistration = this.form.group({
     stock: [0, [Validators.required]],
     product: [0, [Validators.required]],
     status: [LotStatus.AVAILABLE, [Validators.required]],
-    expirationDate: ['', [Validators.required]],
+    expirationDate: ['', [Validators.required, (control: { value: string }) => {
+      if (!control.value) return null;
+      return control.value < new Date().toLocaleDateString('en-CA') ? { minDate: true } : null;
+    }]],
   });
 
   onSubmit() {
@@ -58,7 +63,7 @@ export class RegisterLot {
 
     console.log(lotData);
 
-    if (this.data && this.data.lotId) {
+    if (this.data?.lotId) {
       lotData.lotId = this.data.lotId;
       this.lotService.updateLot(lotData).subscribe({
         next: () => {

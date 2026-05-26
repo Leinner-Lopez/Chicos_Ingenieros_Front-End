@@ -1,1 +1,62 @@
-<main></main>
+<main class="inicio__view">
+  <section class="view__main">
+    <header class="main__header">
+      <h1 class="header__title">Hola, Cliente</h1>
+      <p class="header__date">{{fechaFormateada}}</p>
+    </header>
+
+    <section class="main__summary">
+      <article class="summary__card card--white">
+        <h2>Productos disponibles</h2>
+        <p>{{availableProducts()}}</p>
+      </article>
+      <article class="summary__card card--green">
+        <p>Total de compras realizadas</p>
+        <strong>{{totalPurchases()}} compra(s)</strong>
+      </article>
+      <article class="summary__card card--green">
+        <p>Total gastado</p>
+        <strong>$ {{totalSpent() | number:'1.0-0'}} COP</strong>
+      </article>
+    </section>
+
+    <section class="main__agenda">
+      <header class="agenda__header">
+        <h2>Últimas compras</h2>
+        <p>{{fechaFormateada}}</p>
+      </header>
+      <ul class="bento-grid-lotes">
+        @for (purchase of recentPurchases(); track purchase.saleId) {
+        <li class="lote-card">
+          <div class="card-header">
+            <span class="material-symbols-outlined">shopping_bag</span>
+            <div class="product-details">
+              <h4>{{ purchase.productName }}</h4>
+              <span class="lot-id">Venta #{{ purchase.saleId }}</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="data-row">
+              <span class="label">Cantidad</span>
+              <span class="value accent">{{ purchase.quantity }} unds</span>
+            </div>
+            <div class="data-row">
+              <span class="label">Total</span>
+              <span class="value">$ {{ purchase.totalPrice | number:'1.0-0' }} COP</span>
+            </div>
+            <div class="data-row">
+              <span class="label">Fecha</span>
+              <span class="value date-value">{{ purchase.saleDate | date:'dd/MM/yyyy' }}</span>
+            </div>
+          </div>
+        </li>
+        } @empty {
+        <div class="empty-state">
+          <span class="material-symbols-outlined">shopping_cart</span>
+          <p>Aún no has realizado ninguna compra.</p>
+        </div>
+        }
+      </ul>
+    </section>
+  </section>
+</main>

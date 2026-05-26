@@ -1,13 +1,38 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ProductService } from './product-service';
-import { Product, ProductDTO } from '../Interfaces/Product';
+import {
+  ProductDTO,
+  ProductInventoryDTO,
+  ProductRequest,
+  ProductResponse,
+} from '../Interfaces/Product';
 import { environment } from '../../../environments/environment';
 
 describe('ProductService', () => {
   let service: ProductService;
   let httpMock: HttpTestingController;
   const apiUrl = `${environment.apiUrl}/products`;
+
+  const mockProductRequest: ProductRequest = {
+    productId: 1,
+    name: 'Arroz Diana',
+    description: 'Bolsa 1kg',
+    price: 3500,
+    minStock: 10,
+    categoryId: 2,
+    imageUrl: 'https://res.cloudinary.com/test/image/upload/arroz.jpg',
+  };
+
+  const mockProductDTO: ProductDTO = {
+    productId: 1,
+    name: 'Arroz Diana',
+    categoryName: 'Granos',
+    price: 3500,
+    imageUrl: 'https://res.cloudinary.com/test/image/upload/arroz.jpg',
+    description: 'Bolsa 1kg',
+    totalStock: 50,
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -22,89 +47,131 @@ describe('ProductService', () => {
     httpMock.verify();
   });
 
-  // Test para getAllProducts (Usa ProductDTO)
-  it('debe retornar una lista de ProductDTO (GET)', () => {
-    const mockProductsDTO: ProductDTO[] = [
-      {
-        product_id: 1,
-        name: 'Arroz Diana',
-        categoryName: 'Granos',
-        price: 3500,
-        description: 'Bolsa de 1kg',
-      },
-    ];
-
-    service.getAllProducts().subscribe((products) => {
-      expect(products[0].product_id).toBe(1);
-      expect(products[0].categoryName).toBe('Granos');
-      expect(products).toEqual(mockProductsDTO);
-    });
-
-    const req = httpMock.expectOne(apiUrl);
-    expect(req.request.method).toBe('GET');
-    req.flush(mockProductsDTO);
+  it('debe ser creado', () => {
+    expect(service).toBeTruthy();
   });
 
-  // Test para saveProduct (Usa Product con objeto category)
-  it('debe guardar un producto nuevo (POST)', () => {
-    const newProduct: Product = {
-      product_id: 0, // O el valor que manejes antes de persistir
-      name: 'Leche Entera',
-      description: 'Bolsa 1L',
-      price: 4200,
-      min_stock: 10,
-      category: { category_id: 1, name: 'Lácteos' }, // Asumiendo estructura de Category
-    };
+  describe('saveProduct()', () => {
+    it('debe enviar FormData mediante POST y retornar el producto creado', () => {
+      const formData = new FormData();
+      formData.append('data', JSON.stringify({ name: 'Arroz Diana', price: 3500 }));
+      formData.append('image', new Blob([''], { type: 'image/jpeg' }), 'arroz.jpg');
 
-    service.saveProduct(newProduct).subscribe((product) => {
-      expect(product.name).toBe('Leche Entera');
-      expect(product.category.name).toBe('Lácteos');
+      service.saveProduct(formData).subscribe((product) => {
+        expect(product.name).toBe('Arroz Diana');
+        expect(product.productId).toBe(1);
+      });
+
+      const req = httpMock.expectOne(apiUrl);
+      expect(req.request.method).toBe('POST');
+      req.flush(mockProductRequest);
     });
-
-    const req = httpMock.expectOne(apiUrl);
-    expect(req.request.method).toBe('POST');
-    req.flush({ ...newProduct, product_id: 101 });
   });
 
-  // Test para findProductById (Usa Product)
-  it('debe buscar un producto por product_id (GET)', () => {
-    const productId = 5;
-    const mockProduct: Product = {
-      product_id: 5,
-      name: 'Aceite de Girasol',
-      description: 'Envase 1000ml',
-      price: 12000,
-      min_stock: 5,
-      category: { category_id: 2, name: 'Aceites' },
-    };
+  describe('getAllProducts()', () => {
+    it('debe retornar la lista de ProductDTO (GET)', () => {
+      const mockList: ProductDTO[] = [mockProductDTO];
 
-    service.findProductById(productId).subscribe((product) => {
-      expect(product.product_id).toBe(5);
-      expect(product.category.name).toBe('Aceites');
+      service.getAllProducts().subscribe((products) => {
+        expect(products.length).toBe(1);
+        expect(products[0].categoryName).toBe('Granos');
+        expect(products).toEqual(mockList);
+      });
+
+      const req = httpMock.expectOne(apiUrl);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockList);
     });
-
-    const req = httpMock.expectOne(`${apiUrl}/${productId}`);
-    expect(req.request.method).toBe('GET');
-    req.flush(mockProduct);
   });
 
-  // Test para updateProduct
-  it('debe actualizar un producto existente (PUT)', () => {
-    const updatedProduct: Product = {
-      product_id: 1,
-      name: 'Arroz Premium',
-      description: 'Bolsa de 1kg',
-      price: 3800,
-      min_stock: 20,
-      category: { category_id: 3, name: 'Granos' },
-    };
+  describe('getCountProducts()', () => {
+    it('debe retornar el total de productos (GET)', () => {
+      service.getCountProducts().subscribe((count) => {
+        expect(count).toBe(12);
+      });
 
-    service.updateProduct(updatedProduct).subscribe((product) => {
-      expect(product.price).toBe(3800);
+      const req = httpMock.expectOne(`${apiUrl}/count`);
+      expect(req.request.method).toBe('GET');
+      req.flush(12);
     });
+  });
 
-    const req = httpMock.expectOne(apiUrl);
-    expect(req.request.method).toBe('PUT');
-    req.flush(updatedProduct);
+  describe('getProductsByCategory()', () => {
+    it('debe retornar productos filtrados por categoría (GET)', () => {
+      const mockList: ProductDTO[] = [mockProductDTO];
+
+      service.getProductsByCategory(2).subscribe((products) => {
+        expect(products.length).toBe(1);
+        expect(products[0].productId).toBe(1);
+      });
+
+      const req = httpMock.expectOne(`${apiUrl}/category/2`);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockList);
+    });
+  });
+
+  describe('getInventory()', () => {
+    it('debe retornar la lista de inventario (GET)', () => {
+      const mockInventory: ProductInventoryDTO[] = [
+        { productId: 1, name: 'Arroz Diana', minStock: 10, totalStock: 50 },
+        { productId: 2, name: 'Leche Entera', minStock: 5, totalStock: 3 },
+      ];
+
+      service.getInventory().subscribe((inventory) => {
+        expect(inventory.length).toBe(2);
+        expect(inventory[1].totalStock).toBe(3);
+      });
+
+      const req = httpMock.expectOne(`${apiUrl}/inventory`);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockInventory);
+    });
+  });
+
+  describe('findProductById()', () => {
+    it('debe retornar el producto correspondiente al ID (GET)', () => {
+      service.findProductById(1).subscribe((product) => {
+        expect(product.productId).toBe(1);
+        expect(product.name).toBe('Arroz Diana');
+      });
+
+      const req = httpMock.expectOne(`${apiUrl}/1`);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockProductRequest);
+    });
+  });
+
+  describe('updateProduct()', () => {
+    it('debe actualizar un producto existente (PUT)', () => {
+      const updated: ProductResponse = {
+        productId: 1,
+        name: 'Arroz Premium',
+        description: 'Bolsa 1kg mejorada',
+        price: 3800,
+        minStock: 15,
+        categoryId: 2,
+      };
+
+      service.updateProduct(updated).subscribe((product) => {
+        expect(product.price).toBe(3800);
+        expect(product.name).toBe('Arroz Premium');
+      });
+
+      const req = httpMock.expectOne(apiUrl);
+      expect(req.request.method).toBe('PUT');
+      expect(req.request.body).toEqual(updated);
+      req.flush({ ...updated, imageUrl: mockProductRequest.imageUrl });
+    });
+  });
+
+  describe('deleteProduct()', () => {
+    it('debe eliminar el producto por ID (DELETE)', () => {
+      service.deleteProduct(1).subscribe();
+
+      const req = httpMock.expectOne(`${apiUrl}/1`);
+      expect(req.request.method).toBe('DELETE');
+      req.flush(null);
+    });
   });
 });

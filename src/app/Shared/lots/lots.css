@@ -1,4 +1,4 @@
-.products-view {
+.lots-view {
   display: flex;
   flex-direction: column;
   padding: 28px 28px 28px 8px;
@@ -59,143 +59,165 @@
 }
 
 /* ── Card ────────────────────────────────── */
-.product-card {
+.lot-card {
   background-color: var(--color-background-gray);
   border: 1px solid rgba(27, 67, 50, 0.18);
   border-radius: 18px;
-  overflow: hidden;
+  padding: 20px;
   display: flex;
   flex-direction: column;
+  gap: 14px;
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
 }
 
-.product-card:hover {
+.lot-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 24px rgba(27, 67, 50, 0.09);
 }
 
-/* ── Image ───────────────────────────────── */
-.product-image-wrap {
-  position: relative;
-  height: 160px;
-  background-color: rgba(27, 67, 50, 0.06);
-  flex-shrink: 0;
+/* ── Card Top ────────────────────────────── */
+.card-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
-.product-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.product-img-placeholder {
-  width: 100%;
-  height: 100%;
+.icon-wrap {
+  background-color: var(--color-background-green);
+  color: #fff;
+  border-radius: 12px;
+  padding: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(27, 67, 50, 0.25);
+  flex-shrink: 0;
 }
 
-.product-img-placeholder .material-symbols-outlined {
-  font-size: 2.5rem;
+.icon-wrap .material-symbols-outlined {
+  font-size: 1.4rem;
 }
 
-.category-chip {
-  position: absolute;
-  bottom: 10px;
-  left: 12px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-  background-color: var(--color-background-green);
-  color: #fff;
-  padding: 3px 10px;
-  border-radius: 20px;
-}
-
-/* ── Body ────────────────────────────────── */
-.product-body {
-  padding: 16px 20px;
+.card-meta {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  flex: 1;
+  gap: 5px;
+  min-width: 0;
 }
 
-.product-name {
-  font-size: 1.05rem;
+.lot-name {
+  font-size: 1rem;
   font-weight: 600;
   color: var(--color-font-1);
-  line-height: 1.3;
-}
-
-.product-desc {
-  font-size: 0.82rem;
-  color: var(--color-font-2);
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  white-space: nowrap;
   overflow: hidden;
-  line-height: 1.5;
+  text-overflow: ellipsis;
 }
 
-.product-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-top: 4px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(27, 67, 50, 0.1);
+.lot-id-badge {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-font-2);
+  background-color: rgba(27, 67, 50, 0.08);
+  padding: 2px 8px;
+  border-radius: 20px;
+  width: fit-content;
 }
 
-.price-block {
+/* ── Divider ─────────────────────────────── */
+.card-divider {
+  height: 1px;
+  background-color: rgba(27, 67, 50, 0.1);
+}
+
+/* ── Lot Data ────────────────────────────── */
+.lot-data {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 10px;
 }
 
-.price-label {
-  font-size: 0.72rem;
-  color: var(--color-font-2);
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
+.data-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.price-value {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--color-font-1);
-}
-
-.stock-block {
+.data-label {
   display: flex;
   align-items: center;
-  gap: 4px;
-  background-color: rgba(27, 67, 50, 0.08);
-  padding: 4px 10px;
-  border-radius: 20px;
+  gap: 5px;
+  font-size: 0.85rem;
+  color: var(--color-font-2);
 }
 
 .icon-sm {
   font-size: 1rem !important;
+}
+
+.data-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-font-1);
+}
+
+.data-value small {
+  font-size: 0.78rem;
+  font-weight: 400;
   color: var(--color-font-2);
 }
 
-.stock-number {
-  font-size: 0.85rem;
+.data-date {
+  font-size: 0.9rem;
   font-weight: 600;
-  color: var(--color-font-1);
+  padding: 3px 10px;
+  border-radius: 8px;
+}
+
+/* ── Status dot ──────────────────────────── */
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-left: auto;
+  align-self: flex-start;
+}
+
+/* ── Semáforo ────────────────────────────── */
+.status-ok {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.status-soon {
+  background-color: #fef9c3;
+  color: #854d0e;
+}
+
+.status-expired {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.status-dot.status-ok {
+  background-color: #22c55e;
+}
+
+.status-dot.status-soon {
+  background-color: #eab308;
+}
+
+.status-dot.status-expired {
+  background-color: #ef4444;
 }
 
 /* ── Card Actions ────────────────────────── */
 .card-actions {
   display: flex;
   gap: 8px;
-  padding: 0 20px 16px;
+  padding-top: 4px;
 }
 
 .btn-action {
@@ -252,7 +274,7 @@
 
 /* ── Responsive ──────────────────────────── */
 @media (max-width: 700px) {
-  .products-view {
+  .lots-view {
     padding: 20px 16px;
   }
 

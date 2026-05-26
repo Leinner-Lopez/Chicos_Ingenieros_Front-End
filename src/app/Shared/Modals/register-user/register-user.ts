@@ -2,7 +2,6 @@ import { Dialog, DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Component, Inject, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { passwordMatchValidator } from '../../Utilities/PasswordValidator';
-import { HttpErrorResponse } from '@angular/common/http';
 import { MessageModal } from '../message-modal/message-modal';
 import { User } from '../../../Data/Interfaces/User';
 import { UserStatus } from '../../../Data/Enum/UserStatus';
@@ -21,7 +20,7 @@ export class RegisterUser {
   userService = inject(UserService);
 
   constructor(@Inject(DIALOG_DATA) public data: any) {
-    if (data && data.userId) {
+    if (data?.userId) {
       this.userService.findUserById(data.userId).subscribe((user: User) => {
         this.registrationForm.patchValue({
           names: user.firstName,
@@ -77,7 +76,7 @@ export class RegisterUser {
       status: UserStatus.ACTIVE,
     };
 
-    if (this.data && this.data.userId) {
+    if (this.data?.userId) {
       userData.userId = this.data.userId;
       this.userService.updateUser(userData).subscribe({
         next: () => {
@@ -119,12 +118,5 @@ export class RegisterUser {
 
   closeModal(): void {
     this.dialogRef.close('Usuario registrado');
-  }
-
-  onlyNumbers(event: KeyboardEvent): void {
-    const charCode = event.which ? event.which : event.keyCode;
-    if (charCode < 48 || charCode > 57) {
-      event.preventDefault();
-    }
   }
 }

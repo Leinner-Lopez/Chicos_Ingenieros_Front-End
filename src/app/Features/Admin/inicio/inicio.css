@@ -165,7 +165,6 @@
   display: flex;
   align-items: center;
   padding: 8px;
-  border: none;
   border-radius: 10px;
   cursor: pointer;
   gap: 5px;
@@ -367,7 +366,7 @@
 }
 
 .date-value {
-  color: #c45a5a; /* Un tono rojizo/ladrillo suave si está muy cerca de vencer */
+  color: #c45a5a;
 }
 
 /* Footer de la tarjeta */
@@ -378,22 +377,13 @@
   justify-content: flex-start;
 }
 
-.status-badge {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #2b5c3f;
-  background-color: rgba(43, 92, 63, 0.1);
-  padding: 4px 8px;
-  border-radius: 20px;
-}
-
 /* Estado Vacío */
 .empty-state {
   grid-column: 1 / -1; /* Ocupa todo el ancho disponible */
   text-align: center;
   padding: 40px;
-  color: #728070;
-  background-color: #f7f9f7;
+  color: var(--color-font-2);
+  background-color: var(--color-background-white);
   border-radius: 14px;
   border: 2px dashed rgba(26, 51, 34, 0.1);
 }

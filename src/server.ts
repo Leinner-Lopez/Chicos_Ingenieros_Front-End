@@ -41,11 +41,16 @@ const logger = winston.createLogger({
 
 logger.info('SSR server iniciando...');
 
-// ✅ Intercepta fetch global para capturar peticiones HTTP del SSR al back
 const originalFetch = globalThis.fetch;
 globalThis.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
-  const url =
-    typeof input === 'string' ? input : input instanceof URL ? input.href : (input as Request).url;
+  let url: string;
+  if (typeof input === 'string') {
+    url = input;
+  } else if (input instanceof URL) {
+    url = input.href;
+  } else {
+    url = input.url;
+  }
   logger.info(`FETCH → ${url}`);
   try {
     const response = await originalFetch(input, init);

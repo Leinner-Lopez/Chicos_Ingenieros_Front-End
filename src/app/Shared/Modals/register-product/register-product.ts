@@ -26,7 +26,7 @@ export class RegisterProduct {
     this.categoryService.getAllCategories().subscribe((categories: Category[]) => {
       this.categories = categories;
     });
-    if (data && data.productId) {
+    if (data?.productId) {
       this.productService.findProductById(data.productId).subscribe((product: ProductResponse) => {
         this.formularioRegistration.patchValue({
           minStock: product.minStock,
@@ -63,7 +63,7 @@ export class RegisterProduct {
       categoryId: Number(this.formularioRegistration.value.categories!),
     };
 
-    if (this.data && this.data.productId) {
+    if (this.data?.productId) {
       productData.productId = this.data.productId;
       this.productService.updateProduct(productData).subscribe({
         next: () => {

@@ -13,7 +13,7 @@ export class LoggerService {
     }
   }
 
-  private async initWinston() {
+  private initWinston() {
     try {
       // Usamos Function() para que Angular no detecte los imports en compilación
       const req = new Function('m', 'return require(m)');
@@ -62,7 +62,14 @@ export class LoggerService {
   }
 
   error(message: string, error?: unknown) {
-    const detail = error instanceof Error ? error.message : String(error ?? '');
+    let detail = '';
+    if (error instanceof Error) {
+      detail = error.message;
+    } else if (typeof error === 'object' && error !== null) {
+      detail = JSON.stringify(error);
+    } else {
+      detail = String((error as string | number) ?? '');
+    }
     const full = detail ? `${message} | ${detail}` : message;
     this.isServer && this.logger ? this.logger.error(full) : console.error(`[ERROR] ${full}`);
   }

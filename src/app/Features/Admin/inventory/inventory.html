@@ -1,45 +1,50 @@
-<section class="categories__view">
-  <header class="view__header">
-    <h2 class="header__title">Inventario</h2>
+<section class="inventory-view">
+
+  <header class="view-header">
+    <div class="header-text">
+      <h2 class="header-title">Inventario</h2>
+      <p class="header-subtitle">{{ productCount() }} productos registrados</p>
+    </div>
   </header>
 
-  <section class="view__cards">
-    <ul class="cards__list">
-      <li class="list__item">
-        <small class="item__title">Productos Totales</small>
-        <strong class="item__content">{{ productCount() }}</strong>
-      </li>
-      <li class="list__item">
-        <small class="item__title">Activas</small>
-        <strong class="item__content"></strong>
-      </li>
-      <li class="list__item">
-        <small class="item__title">Inactivas</small>
-        <strong class="item__content"></strong>
-      </li>
-      <li class="list__item">
-        <small class="item__title">Sin Productos</small>
-        <strong class="item__content"></strong>
-      </li>
-    </ul>
-  </section>
+  <div class="bento-grid">
+    @for (item of inventory(); track item.productId) {
+      <article class="item-card" [class.low-stock]="item.totalStock <= item.minStock">
 
-  <table class="view__table">
-    <thead class="table__title">
-      <tr class="title__row">
-        <th class="row__title">Nombre</th>
-        <th class="row__title">Stock Minimo</th>
-        <th class="row__title">Stock Total</th>
-      </tr>
-    </thead>
-    <tbody class="table__body">
-      @for (inventario of inventory(); track inventario.productId) {
-      <tr class="body__row">
-        <td class="row__content">{{ inventario.name }}</td>
-        <td class="row__content">{{ inventario.minStock }}</td>
-        <td class="row__content">{{ inventario.totalStock }}</td>
-      </tr>
-      }
-    </tbody>
-  </table>
+        <div class="card-top">
+          <div class="icon-wrap">
+            <span class="material-symbols-outlined">inventory_2</span>
+          </div>
+          <div class="card-meta">
+            <h3 class="item-name">{{ item.name }}</h3>
+            @if (item.totalStock <= item.minStock) {
+              <span class="status-badge badge-warn">Stock bajo</span>
+            } @else {
+              <span class="status-badge badge-ok">En stock</span>
+            }
+          </div>
+        </div>
+
+        <div class="card-divider"></div>
+
+        <div class="stock-info">
+          <div class="stock-row">
+            <span class="stock-label">Stock total</span>
+            <span class="stock-value">{{ item.totalStock }} <small>uds</small></span>
+          </div>
+          <div class="stock-row muted-row">
+            <span class="stock-label">Stock mínimo</span>
+            <span class="stock-min">{{ item.minStock }} uds</span>
+          </div>
+        </div>
+
+      </article>
+    } @empty {
+      <div class="empty-state">
+        <span class="material-symbols-outlined">inventory</span>
+        <p>No hay productos en el inventario.</p>
+      </div>
+    }
+  </div>
+
 </section>

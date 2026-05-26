@@ -21,7 +21,7 @@ export class BuyProductModal {
   productId = signal<number | null>(null);
 
   constructor(@Inject(DIALOG_DATA) public data: any) {
-    if (data && data.productId) {
+    if (data?.productId) {
       this.productId.set(data.productId);
     }
   }

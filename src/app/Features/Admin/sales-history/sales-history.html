@@ -6,7 +6,7 @@
     </div>
     <div class="today-badge">
       <span class="label">Balance de Hoy</span>
-      <span class="amount">$ 145.000 COP</span>
+      <span class="amount">{{ balanceHoy() | currency:'COP':'$':'1.0-0' }} COP</span>
     </div>
   </div>
 
