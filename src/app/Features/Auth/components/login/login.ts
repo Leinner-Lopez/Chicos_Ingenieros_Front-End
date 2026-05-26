@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
-import { AuthService } from '../../../Core/Services/auth-service';
-import { LoginRequest } from '../../../Data/Interfaces/LoginRequest';
+import { AuthService } from '../../../../Core/Services/auth-service';
+import { LoginRequest } from '../../../../Data/Interfaces/LoginRequest';
 import { Dialog } from '@angular/cdk/dialog';
-import { MessageModal } from '../../../Shared/Modals/message-modal/message-modal';
+import { MessageModal } from '../../../../Shared/Modals/message-modal/message-modal';
 
 @Component({
   selector: 'app-login',
@@ -30,10 +30,7 @@ export class Login {
       password: this.formularioLogin.value.Password,
     };
     this.authService.login(credentials).subscribe({
-      next: () => {
-        const role = this.authService.getUserRole();
-        this.redirectByUserRole(role);
-      },
+      next: () => this.router.navigate([this.authService.getHomeRoute()]),
       error: (err) => {
         this.dialog.open<string>(MessageModal, {
           data: {
@@ -43,23 +40,6 @@ export class Login {
         });
       },
     });
-  }
-
-  private redirectByUserRole(role: string | null) {
-    switch (role) {
-      case 'ADMIN':
-        this.router.navigate(['/admin/inicio']);
-        break;
-      case 'CUSTOMER':
-        this.router.navigate(['/customer/inicio']);
-        break;
-      case 'STORE':
-        this.router.navigate(['/store/inicio']);
-        break;
-      default:
-        this.router.navigate(['/login']);
-        break;
-    }
   }
 
   hasError(controlName: string, errorType: string): boolean {

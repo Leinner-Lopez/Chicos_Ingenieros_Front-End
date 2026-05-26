@@ -1,10 +1,14 @@
 import { Dialog, DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Component, Inject, inject } from '@angular/core';
-import { CategoryService } from '../../../Data/Services/category-service';
 import { MessageModal } from '../message-modal/message-modal';
-import { ProductService } from '../../../Data/Services/product-service';
-import { UserService } from '../../../Data/Services/user-service';
-import { LotService } from '../../../Data/Services/lot-service';
+import { Observable } from 'rxjs';
+
+interface ConfirmModalData {
+  message: string;
+  successTitle: string;
+  successMessage: string;
+  onConfirm: () => Observable<unknown>;
+}
 
 @Component({
   selector: 'app-confirm-modal',
@@ -14,23 +18,11 @@ import { LotService } from '../../../Data/Services/lot-service';
 })
 export class ConfirmModal {
   dialog = inject(Dialog);
-
-  productService: ProductService = inject(ProductService);
-  categoryService: CategoryService = inject(CategoryService);
-  userService: UserService = inject(UserService);
-  lotService: LotService = inject(LotService);
-
   dialogRef: DialogRef<string> = inject(DialogRef);
-  message: string = '';
-  entity: string = '';
-  id: number = 0;
+  message: string;
 
-  constructor(@Inject(DIALOG_DATA) public data: any) {
-    if (data) {
-      this.entity = data.entity || '';
-      this.message = data.message || '';
-      this.id = data.Id || 0;
-    }
+  constructor(@Inject(DIALOG_DATA) public data: ConfirmModalData) {
+    this.message = data.message;
   }
 
   closeModal() {
@@ -38,83 +30,10 @@ export class ConfirmModal {
   }
 
   confirmAction() {
-    switch (this.entity) {
-      case 'category':
-        this.deleteCategory();
-        break;
-      case 'product':
-        this.deleteProduct();
-        break;
-      case 'user':
-        this.deleteUser();
-        break;
-      case 'lot':
-        this.deleteLot();
-        break;
-      default:
-        console.warn('Entidad no reconocida para eliminación');
-        break;
-    }
-  }
-
-  deleteCategory() {
-    this.categoryService.deleteCategory(this.id).subscribe({
+    this.data.onConfirm().subscribe({
       next: () => {
         const dialogRef = this.dialog.open<string>(MessageModal, {
-          data: {
-            title: 'Categoría Eliminada',
-            message: 'La categoría ha sido eliminada exitosamente.',
-          },
-        });
-        setTimeout(() => {
-          dialogRef.close();
-          this.closeModal();
-        }, 1500);
-      },
-    });
-  }
-
-  deleteProduct() {
-    this.productService.deleteProduct(this.id).subscribe({
-      next: () => {
-        const dialogRef = this.dialog.open<string>(MessageModal, {
-          data: {
-            title: 'Producto Eliminado',
-            message: 'El producto ha sido eliminado exitosamente.',
-          },
-        });
-        setTimeout(() => {
-          dialogRef.close();
-          this.closeModal();
-        }, 1500);
-      },
-    });
-  }
-
-  deleteUser() {
-    this.userService.deleteUser(this.id).subscribe({
-      next: () => {
-        const dialogRef = this.dialog.open<string>(MessageModal, {
-          data: {
-            title: 'Usuario Eliminado',
-            message: 'El usuario ha sido eliminado exitosamente.',
-          },
-        });
-        setTimeout(() => {
-          dialogRef.close();
-          this.closeModal();
-        }, 1500);
-      },
-    });
-  }
-  deleteLot() {
-    this.lotService.deleteLot(this.id).subscribe({
-      next: () => {
-        const dialogRef = this.dialog.open<string>(MessageModal, {
-          data: {
-            title: 'Lote Eliminado',
-            message: 'El lote ha sido eliminado exitosamente.',
-          },
+          data: { title: this.data.successTitle, message: this.data.successMessage },
         });
         setTimeout(() => {
           dialogRef.close();

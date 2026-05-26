@@ -1,11 +1,11 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { ProductService } from '../../../Data/Services/product-service';
-import { ProductDTO } from '../../../Data/Interfaces/Product';
+import { ProductService } from '../../../../Data/Services/product-service';
+import { ProductDTO } from '../../../../Data/Interfaces/Product';
 import { CurrencyPipe } from '@angular/common';
-import { CategoryService } from '../../../Data/Services/category-service';
-import { Category } from '../../../Data/Interfaces/Category';
+import { CategoryService } from '../../../../Data/Services/category-service';
+import { Category } from '../../../../Data/Interfaces/Category';
 import { Dialog } from '@angular/cdk/dialog';
-import { BuyProductModal } from '../../../Shared/Modals/buy-product-modal/buy-product-modal';
+import { BuyProductModal } from '../../../../Shared/Modals/buy-product-modal/buy-product-modal';
 
 @Component({
   selector: 'app-products',

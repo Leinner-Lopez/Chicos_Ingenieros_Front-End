@@ -9,6 +9,7 @@ import { JwtPayload } from '../../Data/Interfaces/JwtPayload';
 import { RegisterRequest } from '../../Data/Interfaces/RegisterRequest';
 import { environment } from '../../../environments/environment';
 import { AuthResponse } from '../../Data/Interfaces/AuthResponse';
+import { TokenStorageService } from './token-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,13 @@ export class AuthService {
   httpCLient = inject(HttpClient);
   router = inject(Router);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly tokenStorage = inject(TokenStorageService);
   private readonly apiUrl = `${environment.apiUrl}/auth`;
+  private readonly homeRouteByRole: Record<string, string> = {
+    ADMIN: '/admin/inicio',
+    CUSTOMER: '/customer/inicio',
+    STORE: '/store/inicio',
+  };
 
   token = signal<string | null>(null);
   userRole = signal<string | null>(null);
@@ -28,8 +35,7 @@ export class AuthService {
   /** Inicializa el servicio verificando el token guardado en sessionStorage y establece el estado de autenticación. */
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
-      const savedToken = sessionStorage.getItem('token');
-
+      const savedToken = this.tokenStorage.get();
       if (savedToken && !this.isTokenExpired(savedToken)) {
         this.token.set(savedToken);
         this.isAuthenticated.set(true);
@@ -46,9 +52,7 @@ export class AuthService {
   login(credenciales: LoginRequest) {
     return this.httpCLient.post<AuthResponse>(`${this.apiUrl}/login`, credenciales).pipe(
       tap((respuesta: AuthResponse) => {
-        if (isPlatformBrowser(this.platformId)) {
-          sessionStorage.setItem('token', respuesta.token);
-        }
+        this.tokenStorage.save(respuesta.token);
         this.token.set(respuesta.token);
         this.isAuthenticated.set(true);
         const decodedToken: JwtPayload | null = this.decodeToken(respuesta.token);
@@ -66,10 +70,12 @@ export class AuthService {
   }
 
   /** Cierra la sesión eliminando el token, restableciendo el estado y redirigiendo al login. */
+  getHomeRoute(): string {
+    return this.homeRouteByRole[this.userRole() ?? ''] ?? '/login';
+  }
+
   logout() {
-    if (isPlatformBrowser(this.platformId)) {
-      sessionStorage.removeItem('token');
-    }
+    this.tokenStorage.clear();
     this.token.set(null);
     this.isAuthenticated.set(false);
     this.userRole.set(null);

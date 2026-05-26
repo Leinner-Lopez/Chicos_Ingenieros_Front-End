@@ -1,7 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { RouterLinkActive, RouterLink } from '@angular/router';
 import { AuthService } from '../../Core/Services/auth-service';
-import { MenuItem } from '../../Data/Interfaces/MenuItem';
+import { MenuConfigService } from '../../Core/Services/menu-config.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,36 +10,10 @@ import { MenuItem } from '../../Data/Interfaces/MenuItem';
   styleUrl: './sidebar.css',
 })
 export class Sidebar {
-  authService: AuthService = inject(AuthService);
+  authService = inject(AuthService);
+  menuConfigService = inject(MenuConfigService);
 
-  menuItems = computed<MenuItem[]>(() => {
-    const role = this.authService.getUserRole();
-    
-    if (role === 'ADMIN') {
-      return [
-        { label: 'Inicio', icon: 'home', route: '/admin/inicio' },
-        { label: 'Usuarios', icon: 'groups', route: '/admin/users' },
-        { label: 'Lotes', icon: 'package_2', route: '/admin/lotes' },
-        { label: 'Productos', icon: 'glass_cup', route: '/admin/productos' },
-        { label: 'Categorías', icon: 'category', route: '/admin/categorias' },
-        { label: 'Inventario', icon: 'inventory', route: '/admin/inventario' },
-        { label: 'Historial Ventas', icon: 'article', route: '/admin/ventas' }
-      ];
-    }
-
-    if (role === 'STORE') {
-      return [
-        { label: 'Inicio', icon: 'home', route: '/store/inicio' },
-        { label: 'Lotes', icon: 'package_2', route: '/store/lotes' },
-      ]
-    }
-
-    return [
-      { label: 'Inicio', icon: 'home', route: '/customer/inicio' },
-      { label: 'Productos', icon: 'glass_cup', route: '/customer/productos' },
-
-    ]
-  });
+  menuItems = computed(() => this.menuConfigService.getMenuByRole(this.authService.getUserRole()));
 
   logout() {
     this.authService.logout();

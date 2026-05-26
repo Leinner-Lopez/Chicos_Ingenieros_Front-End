@@ -1,10 +1,10 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
-import { ProductService } from '../../../Data/Services/product-service';
-import { ProductDTO } from '../../../Data/Interfaces/Product';
+import { ProductService } from '../../../../Data/Services/product-service';
+import { ProductDTO } from '../../../../Data/Interfaces/Product';
 import { Dialog } from '@angular/cdk/dialog';
-import { RegisterProduct } from '../../../Shared/Modals/register-product/register-product';
-import { ConfirmModal } from '../../../Shared/Modals/confirm-modal/confirm-modal';
+import { RegisterProduct } from '../../../../Shared/Modals/register-product/register-product';
+import { ConfirmModal } from '../../../../Shared/Modals/confirm-modal/confirm-modal';
 
 @Component({
   selector: 'app-products',
@@ -54,15 +54,14 @@ export class Products implements OnInit {
   deleteProduct(productId: number): void {
     const dialogRef = this.dialog.open<string>(ConfirmModal, {
       data: {
-        entity: 'product',
         message: '¿Deseas eliminar este producto?',
-        Id: productId,
+        successTitle: 'Producto Eliminado',
+        successMessage: 'El producto ha sido eliminado exitosamente.',
+        onConfirm: () => this.productService.deleteProduct(productId),
       },
     });
     dialogRef.closed.subscribe((result) => {
-      if (result === 'Eliminación Exitosa') {
-        this.getProducts();
-      }
+      if (result === 'Eliminación Exitosa') this.getProducts();
     });
   }
 }

@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { passwordMatchValidator } from '../../../Shared/Utilities/PasswordValidator';
+import { passwordMatchValidator } from '../../../../Shared/Utilities/PasswordValidator';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../../Core/Services/auth-service';
-import { RegisterRequest } from '../../../Data/Interfaces/RegisterRequest';
+import { AuthService } from '../../../../Core/Services/auth-service';
+import { RegisterRequest } from '../../../../Data/Interfaces/RegisterRequest';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Dialog } from '@angular/cdk/dialog';
-import { MessageModal } from '../../../Shared/Modals/message-modal/message-modal';
+import { MessageModal } from '../../../../Shared/Modals/message-modal/message-modal';
 
 @Component({
   selector: 'app-register',

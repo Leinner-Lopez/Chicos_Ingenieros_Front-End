@@ -1,19 +1,19 @@
 import { Routes } from '@angular/router';
-import { Login } from './Features/Auth/login/login';
-import { Register } from './Features/Auth/register/register';
+import { Login } from './Features/Auth/components/login/login';
+import { Register } from './Features/Auth/components/register/register';
 import { Layout } from './Shared/layout/layout';
 import { authGuard } from './Core/Guards/auth-guard';
 import { roleGuard } from './Core/Guards/role-guard';
-import { InicioAdmin } from './Features/Admin/inicio/inicio';
-import { Users } from './Features/Admin/users/users';
+import { InicioAdmin } from './Features/Admin/components/inicio/inicio';
+import { Users } from './Features/Admin/components/users/users';
 import { Lots } from './Shared/lots/lots';
-import { Products } from './Features/Admin/products/products';
-import { Categories } from './Features/Admin/categories/categories';
-import { Inventory } from './Features/Admin/inventory/inventory';
-import { SalesHistory } from './Features/Admin/sales-history/sales-history';
-import { InicioStore } from './Features/Store/inicio/inicio';
-import { InicioCustomer } from './Features/Customer/inicio/inicio';
-import { ProductsCustomer } from './Features/Customer/products/products';
+import { Products } from './Features/Admin/components/products/products';
+import { Categories } from './Features/Admin/components/categories/categories';
+import { Inventory } from './Features/Admin/components/inventory/inventory';
+import { SalesHistory } from './Features/Admin/components/sales-history/sales-history';
+import { InicioStore } from './Features/Store/components/inicio/inicio';
+import { InicioCustomer } from './Features/Customer/components/inicio/inicio';
+import { ProductsCustomer } from './Features/Customer/components/products/products';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },

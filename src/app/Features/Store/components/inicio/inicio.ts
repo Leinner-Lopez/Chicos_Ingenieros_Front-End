@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { StoreService } from '../../../Data/Services/Dashboard/store.service';
-import { LotDTO } from '../../../Data/Interfaces/Lot';
+import { StoreService } from '../../services/store.service';
+import { LotDTO } from '../../../../Data/Interfaces/Lot';
 import { DatePipe } from '@angular/common';
 
 @Component({

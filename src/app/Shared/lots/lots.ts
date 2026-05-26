@@ -43,15 +43,14 @@ export class Lots implements OnInit {
   deleteLot(lotId: number) {
     const dialogRef = this.dialog.open<string>(ConfirmModal, {
       data: {
-        entity: 'lot',
         message: '¿Deseas eliminar este lote?',
-        Id: lotId,
+        successTitle: 'Lote Eliminado',
+        successMessage: 'El lote ha sido eliminado exitosamente.',
+        onConfirm: () => this.lotService.deleteLot(lotId),
       },
     });
     dialogRef.closed.subscribe((result) => {
-      if (result === 'Eliminación Exitosa') {
-        this.getLots();
-      }
+      if (result === 'Eliminación Exitosa') this.getLots();
     });
   }
 

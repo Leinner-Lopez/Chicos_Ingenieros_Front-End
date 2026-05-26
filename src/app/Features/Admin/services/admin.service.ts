@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { inject } from '@angular/core/primitives/di';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
-import { LotDTO } from '../../Interfaces/Lot';
+import { LotDTO } from '../../../Data/Interfaces/Lot';
 
 @Injectable({
   providedIn: 'root',

@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { ProductService } from '../../../Data/Services/product-service';
-import { ProductInventoryDTO } from '../../../Data/Interfaces/Product';
+import { ProductService } from '../../../../Data/Services/product-service';
+import { ProductInventoryDTO } from '../../../../Data/Interfaces/Product';
 
 @Component({
   selector: 'app-inventory',

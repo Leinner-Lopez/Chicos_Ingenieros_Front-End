@@ -1,9 +1,9 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
-import { UserService } from '../../../Data/Services/user-service';
-import { UserDTO } from '../../../Data/Interfaces/User';
+import { UserService } from '../../../../Data/Services/user-service';
+import { UserDTO } from '../../../../Data/Interfaces/User';
 import { Dialog } from '@angular/cdk/dialog';
-import { RegisterUser } from '../../../Shared/Modals/register-user/register-user';
-import { ConfirmModal } from '../../../Shared/Modals/confirm-modal/confirm-modal';
+import { RegisterUser } from '../../../../Shared/Modals/register-user/register-user';
+import { ConfirmModal } from '../../../../Shared/Modals/confirm-modal/confirm-modal';
 
 @Component({
   selector: 'app-users',
@@ -53,15 +53,14 @@ export class Users implements OnInit {
   deleteUser(userId: number): void {
     const dialogRef = this.dialog.open<string>(ConfirmModal, {
       data: {
-        entity: 'user',
         message: '¿Deseas eliminar este usuario?',
-        Id: userId,
+        successTitle: 'Usuario Eliminado',
+        successMessage: 'El usuario ha sido eliminado exitosamente.',
+        onConfirm: () => this.userService.deleteUser(userId),
       },
     });
     dialogRef.closed.subscribe((result) => {
-      if (result === 'Eliminación Exitosa') {
-        this.getUsers();
-      }
+      if (result === 'Eliminación Exitosa') this.getUsers();
     });
   }
 }

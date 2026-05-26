@@ -1,9 +1,9 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { CategoryService } from '../../../Data/Services/category-service';
-import { Category } from '../../../Data/Interfaces/Category';
-import { RegisterCategory } from '../../../Shared/Modals/register-category/register-category';
+import { CategoryService } from '../../../../Data/Services/category-service';
+import { Category } from '../../../../Data/Interfaces/Category';
+import { RegisterCategory } from '../../../../Shared/Modals/register-category/register-category';
 import { Dialog } from '@angular/cdk/dialog';
-import { ConfirmModal } from '../../../Shared/Modals/confirm-modal/confirm-modal';
+import { ConfirmModal } from '../../../../Shared/Modals/confirm-modal/confirm-modal';
 
 @Component({
   selector: 'app-categories',
@@ -42,15 +42,14 @@ export class Categories implements OnInit {
   deleteCategory(categoryId: number) {
     const dialogRef = this.dialog.open<string>(ConfirmModal, {
       data: {
-        entity: 'category',
         message: '¿Deseas eliminar esta categoría?',
-        Id: categoryId,
+        successTitle: 'Categoría Eliminada',
+        successMessage: 'La categoría ha sido eliminada exitosamente.',
+        onConfirm: () => this.categoryService.deleteCategory(categoryId),
       },
     });
     dialogRef.closed.subscribe((result) => {
-      if (result === 'Eliminación Exitosa') {
-        this.getCategories();
-      }
+      if (result === 'Eliminación Exitosa') this.getCategories();
     });
   }
 

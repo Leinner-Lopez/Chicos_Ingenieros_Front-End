@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
-import { LotDTO } from '../../Interfaces/Lot';
+import { LotDTO } from '../../../Data/Interfaces/Lot';
 
 @Injectable({ providedIn: 'root' })
 export class StoreService {

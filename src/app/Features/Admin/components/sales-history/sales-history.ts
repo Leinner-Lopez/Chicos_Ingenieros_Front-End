@@ -1,6 +1,6 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { SaleService } from '../../../Data/Services/sale-service';
-import { SaleHistoryDTO } from '../../../Data/Interfaces/Sale';
+import { SaleService } from '../../../../Data/Services/sale-service';
+import { SaleHistoryDTO } from '../../../../Data/Interfaces/Sale';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 
 @Component({
