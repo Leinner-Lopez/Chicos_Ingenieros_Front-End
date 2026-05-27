@@ -7,7 +7,7 @@ import { tap } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { JwtPayload } from '../../Data/Interfaces/JwtPayload';
 import { RegisterRequest } from '../../Data/Interfaces/RegisterRequest';
-import { environment } from '../../../environments/environment';
+import { API_URL } from '../../tokens/api-url.token';
 import { AuthResponse } from '../../Data/Interfaces/AuthResponse';
 import { TokenStorageService } from './token-storage.service';
 
@@ -19,7 +19,7 @@ export class AuthService {
   router = inject(Router);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly tokenStorage = inject(TokenStorageService);
-  private readonly apiUrl = `${environment.apiUrl}/auth`;
+  private readonly apiUrl = `${inject(API_URL)}/auth`;
   private readonly homeRouteByRole: Record<string, string> = {
     ADMIN: '/admin/inicio',
     CUSTOMER: '/customer/inicio',

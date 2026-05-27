@@ -8,24 +8,7 @@
       <legend class="info-group__description">Información del Usuario</legend>
       <div class="info-group__input-container">
         <div class="input-container">
-          <label
-            >Nombre(s)<input type="text" formControlName="names" placeholder="Andres" required
-          /></label>
-          @if (hasError('names','required')) {
-          <p class="error__message">El campo es requerido</p>
-          }
-        </div>
-        <div class="input-container">
-          <label
-            >Apellido(s)<input
-              type="text"
-              formControlName="lastNames"
-              placeholder="Torres"
-              required
-          /></label>
-          @if (hasError('lastNames','required')) {
-          <p class="error__message">El campo es requerido</p>
-          }
+          <app-name-inputs />
         </div>
         <div class="input-container">
           <label
@@ -41,8 +24,6 @@
           } @if(hasError('documentNumber','max')){
           <p class="error__message">Debe contener como máximo 10 caracteres</p>
           }
-        </div>
-        <div class="input-container">
           <label for="userRole">Rol</label>
           <select id="userRole" formControlName="userRole" class="input__select" required>
             <option value="">Seleccionar rol</option>
@@ -87,36 +68,9 @@
         </div>
       </div>
     </fieldset>
-    <fieldset class="form__info-group">
-      <legend class="info-group__description">Información de la cuenta</legend>
-      <div class="info-group__input-container">
-        <div class="input-container">
-          <label
-            >Contraseña<input type="password" id="Contraseña" formControlName="password"
-          /></label>
-          @if (hasError('password','required')) {
-          <p class="error__message">El campo es requerido</p>
-          } @if (registrationForm.hasError('passwordMismatch') &&
-          registrationForm.get('confirmPassword')?.touched) {
-          <p class="error__message">Las contraseñas no coinciden.</p>
-          }
-        </div>
-        <div class="input-container">
-          <label
-            >Confirmar Contraseña<input
-              type="password"
-              id="CContraseña"
-              formControlName="confirmPassword"
-          /></label>
-          @if (hasError('confirmPassword','required')) {
-          <p class="error__message">El campo es requerido</p>
-          } @if (registrationForm.hasError('passwordMismatch') &&
-          registrationForm.get('confirmPassword')?.touched) {
-          <p class="error__message">Las contraseñas no coinciden.</p>
-          }
-        </div>
-      </div>
-    </fieldset>
+    @if (!data?.userId) {
+    <app-password-fieldset />
+    }
     <div class="form__button-container">
       <input
         type="submit"

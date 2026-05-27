@@ -1,0 +1,18 @@
+<div class="input-container">
+  <label>Nombre(s)<input type="text" formControlName="names" placeholder="Andres" required /></label>
+  @if (hasError('names', 'required')) {
+  <p class="error__message">El campo es requerido</p>
+  }
+</div>
+<div class="input-container">
+  <label
+    >Apellido(s)<input
+      type="text"
+      formControlName="lastNames"
+      placeholder="Torres"
+      required
+  /></label>
+  @if (hasError('lastNames', 'required')) {
+  <p class="error__message">El campo es requerido</p>
+  }
+</div>

@@ -1,26 +1,54 @@
-import { Dialog, DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Component, Inject, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { passwordMatchValidator } from '../../Utilities/PasswordValidator';
-import { MessageModal } from '../message-modal/message-modal';
 import { User } from '../../../Data/Interfaces/User';
 import { UserStatus } from '../../../Data/Enum/UserStatus';
 import { UserService } from '../../../Data/Services/user-service';
+import { ModalNotificationService } from '../../../Core/Services/modal-notification.service';
+import { hasFormError } from '../../Utilities/form-utils';
+import { PasswordFieldset } from '../../password-fieldset/password-fieldset';
+import { NameInputs } from '../../name-inputs/name-inputs';
 
 @Component({
   selector: 'app-register-user',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, PasswordFieldset, NameInputs],
   templateUrl: './register-user.html',
   styleUrl: './register-user.css',
 })
 export class RegisterUser {
-  dialog = inject(Dialog);
-  dialogRef: DialogRef<string> = inject(DialogRef);
-  form = inject(FormBuilder);
-  userService = inject(UserService);
+  private readonly dialogRef: DialogRef<string> = inject(DialogRef);
+  private readonly form = inject(FormBuilder);
+  private readonly userService = inject(UserService);
+  private readonly modalNotification = inject(ModalNotificationService);
+
+  registrationForm: FormGroup;
 
   constructor(@Inject(DIALOG_DATA) public data: any) {
-    if (data?.userId) {
+    const isEditMode = !!data?.userId;
+
+    this.registrationForm = this.form.group(
+      {
+        names: ['', Validators.required],
+        lastNames: ['', Validators.required],
+        documentNumber: [
+          null,
+          [Validators.required, Validators.min(10000000), Validators.max(9999999999)],
+        ],
+        email: ['', [Validators.required, Validators.email]],
+        userRole: ['', Validators.required],
+        phoneNumber: [
+          null,
+          [Validators.required, Validators.min(1000000000), Validators.max(9999999999)],
+        ],
+        password: ['', isEditMode ? [] : [Validators.required]],
+        confirmPassword: ['', isEditMode ? [] : Validators.required],
+      },
+      { validators: passwordMatchValidator },
+    );
+
+    if (isEditMode) {
+      this.registrationForm.get('documentNumber')?.disable();
       this.userService.findUserById(data.userId).subscribe((user: User) => {
         this.registrationForm.patchValue({
           names: user.firstName,
@@ -31,33 +59,8 @@ export class RegisterUser {
           phoneNumber: user.phoneNumber,
         });
       });
-      this.registrationForm.get('documentNumber')?.disable();
-      this.registrationForm.get('password')?.clearValidators();
-      this.registrationForm.get('password')?.updateValueAndValidity();
-      this.registrationForm.get('confirmPassword')?.clearValidators();
-      this.registrationForm.get('confirmPassword')?.updateValueAndValidity();
     }
   }
-
-  registrationForm: FormGroup = this.form.group(
-    {
-      names: ['', Validators.required],
-      lastNames: ['', Validators.required],
-      documentNumber: [
-        null,
-        [Validators.required, Validators.min(10000000), Validators.max(9999999999)],
-      ],
-      email: ['', [Validators.required, Validators.email]],
-      userRole: ['', Validators.required],
-      phoneNumber: [
-        null,
-        [Validators.required, Validators.min(1000000000), Validators.max(9999999999)],
-      ],
-      password: ['', [Validators.required]],
-      confirmPassword: ['', Validators.required],
-    },
-    { validators: passwordMatchValidator },
-  );
 
   onSubmit() {
     if (this.registrationForm.invalid) return;
@@ -79,41 +82,28 @@ export class RegisterUser {
     if (this.data?.userId) {
       userData.userId = this.data.userId;
       this.userService.updateUser(userData).subscribe({
-        next: () => {
-          const dialogRef = this.dialog.open<string>(MessageModal, {
-            data: {
-              title: 'Usuario Actualizado',
-              message: 'El usuario ha sido actualizado exitosamente.',
-            },
-          });
-          setTimeout(() => {
-            dialogRef.close();
-            this.closeModal();
-          }, 1500);
-        },
+        next: () =>
+          this.modalNotification.showSuccess(
+            'Usuario Actualizado',
+            'El usuario ha sido actualizado exitosamente.',
+            () => this.closeModal(),
+          ),
       });
       return;
     }
 
     this.userService.saveUser(userData).subscribe({
-      next: () => {
-        const dialogRef = this.dialog.open<string>(MessageModal, {
-          data: {
-            title: 'Usuario Registrado',
-            message: 'El usuario ha sido registrado exitosamente.',
-          },
-        });
-        setTimeout(() => {
-          dialogRef.close();
-          this.closeModal();
-        }, 1500);
-      },
+      next: () =>
+        this.modalNotification.showSuccess(
+          'Usuario Registrado',
+          'El usuario ha sido registrado exitosamente.',
+          () => this.closeModal(),
+        ),
     });
   }
 
   hasError(controlName: string, errorType: string): boolean {
-    const control = this.registrationForm.get(controlName);
-    return (control?.hasError(errorType) && (control.dirty || control.touched)) || false;
+    return hasFormError(this.registrationForm, controlName, errorType);
   }
 
   closeModal(): void {

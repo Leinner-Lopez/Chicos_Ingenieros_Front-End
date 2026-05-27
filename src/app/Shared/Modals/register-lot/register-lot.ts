@@ -1,12 +1,13 @@
 import { Component, inject, Inject, signal } from '@angular/core';
-import { MessageModal } from '../message-modal/message-modal';
-import { Dialog, DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LotService } from '../../../Data/Services/lot-service';
 import { LotStatus } from '../../../Data/Enum/LotStatus';
 import { Lot } from '../../../Data/Interfaces/Lot';
 import { ProductService } from '../../../Data/Services/product-service';
 import { ProductDTO } from '../../../Data/Interfaces/Product';
+import { ModalNotificationService } from '../../../Core/Services/modal-notification.service';
+import { hasFormError } from '../../Utilities/form-utils';
 
 @Component({
   selector: 'app-register-lot',
@@ -15,11 +16,11 @@ import { ProductDTO } from '../../../Data/Interfaces/Product';
   styleUrl: './register-lot.css',
 })
 export class RegisterLot {
-  dialog = inject(Dialog);
-  dialogRef: DialogRef<string> = inject(DialogRef);
-  form = inject(FormBuilder);
-  lotService: LotService = inject(LotService);
-  productService: ProductService = inject(ProductService);
+  private readonly dialogRef: DialogRef<string> = inject(DialogRef);
+  private readonly form = inject(FormBuilder);
+  private readonly lotService: LotService = inject(LotService);
+  private readonly productService: ProductService = inject(ProductService);
+  private readonly modalNotification = inject(ModalNotificationService);
   products = signal<ProductDTO[]>([]);
 
   constructor(@Inject(DIALOG_DATA) public data: any) {
@@ -44,10 +45,16 @@ export class RegisterLot {
     stock: [0, [Validators.required]],
     product: [0, [Validators.required]],
     status: [LotStatus.AVAILABLE, [Validators.required]],
-    expirationDate: ['', [Validators.required, (control: { value: string }) => {
-      if (!control.value) return null;
-      return control.value < new Date().toLocaleDateString('en-CA') ? { minDate: true } : null;
-    }]],
+    expirationDate: [
+      '',
+      [
+        Validators.required,
+        (control: { value: string }) => {
+          if (!control.value) return null;
+          return control.value < new Date().toLocaleDateString('en-CA') ? { minDate: true } : null;
+        },
+      ],
+    ],
   });
 
   onSubmit() {
@@ -75,18 +82,12 @@ export class RegisterLot {
     }
 
     this.lotService.saveLot(lotData).subscribe({
-      next: () => {
-        const dialogRef = this.dialog.open<string>(MessageModal, {
-          data: {
-            title: 'Lote Registrado',
-            message: 'El lote ha sido registrado exitosamente.',
-          },
-        });
-        setTimeout(() => {
-          dialogRef.close();
-          this.closeModal();
-        }, 1500);
-      },
+      next: () =>
+        this.modalNotification.showSuccess(
+          'Lote Registrado',
+          'El lote ha sido registrado exitosamente.',
+          () => this.closeModal(),
+        ),
     });
   }
 
@@ -95,7 +96,6 @@ export class RegisterLot {
   }
 
   hasError(controlName: string, errorType: string): boolean {
-    const control = this.formularioRegistration.get(controlName);
-    return (control?.hasError(errorType) && (control.dirty || control.touched)) || false;
+    return hasFormError(this.formularioRegistration, controlName, errorType);
   }
 }

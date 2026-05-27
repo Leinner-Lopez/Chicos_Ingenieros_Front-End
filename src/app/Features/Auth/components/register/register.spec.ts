@@ -4,7 +4,7 @@ import { Dialog } from '@angular/cdk/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
 import { Register } from './register';
-import { AuthService } from '../../../Core/Services/auth-service';
+import { AuthService } from '../../../../Core/Services/auth-service';
 
 describe('Register', () => {
   let component: Register;

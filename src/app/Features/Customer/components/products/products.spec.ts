@@ -4,9 +4,11 @@ import { PLATFORM_ID } from '@angular/core';
 import { Dialog } from '@angular/cdk/dialog';
 import { Subject } from 'rxjs';
 import { ProductsCustomer } from './products';
-import { BuyProductModal } from '../../../Shared/Modals/buy-product-modal/buy-product-modal';
-import { AuthService } from '../../../Core/Services/auth-service';
-import { environment } from '../../../../environments/environment';
+import { BuyProductModal } from '../../../../Shared/Modals/buy-product-modal/buy-product-modal';
+import { AuthService } from '../../../../Core/Services/auth-service';
+import { environment } from '../../../../../environments/environment';
+import { API_URL } from '../../../../tokens/api-url.token';
+
 
 describe('ProductsCustomer', () => {
   let component: ProductsCustomer;
@@ -20,8 +22,24 @@ describe('ProductsCustomer', () => {
   const categoryUrl = (id: number) => `${environment.apiUrl}/products/category/${id}`;
 
   const mockProducts = [
-    { productId: 1, name: 'Arroz Diana', categoryName: 'Granos', price: 3500, imageUrl: '', description: '', totalStock: 50 },
-    { productId: 2, name: 'Leche Entera', categoryName: 'Lácteos', price: 4200, imageUrl: '', description: '', totalStock: 20 },
+    {
+      productId: 1,
+      name: 'Arroz Diana',
+      categoryName: 'Granos',
+      price: 3500,
+      imageUrl: '',
+      description: '',
+      totalStock: 50,
+    },
+    {
+      productId: 2,
+      name: 'Leche Entera',
+      categoryName: 'Lácteos',
+      price: 4200,
+      imageUrl: '',
+      description: '',
+      totalStock: 20,
+    },
   ];
 
   const mockCategories = [
@@ -30,7 +48,15 @@ describe('ProductsCustomer', () => {
   ];
 
   const granoProducts = [
-    { productId: 1, name: 'Arroz Diana', categoryName: 'Granos', price: 3500, imageUrl: '', description: '', totalStock: 50 },
+    {
+      productId: 1,
+      name: 'Arroz Diana',
+      categoryName: 'Granos',
+      price: 3500,
+      imageUrl: '',
+      description: '',
+      totalStock: 50,
+    },
   ];
 
   beforeEach(async () => {
@@ -43,6 +69,7 @@ describe('ProductsCustomer', () => {
         { provide: Dialog, useValue: mockDialog },
         { provide: AuthService, useValue: { getUserId: vi.fn().mockReturnValue(1) } },
         { provide: PLATFORM_ID, useValue: 'browser' },
+          { provide: API_URL, useValue: environment.apiUrl },
       ],
     }).compileComponents();
 

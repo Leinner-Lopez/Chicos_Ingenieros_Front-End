@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { inject } from '@angular/core/primitives/di';
-import { environment } from '../../../environments/environment';
+import { Injectable, inject } from '@angular/core';
+import { API_URL } from '../../tokens/api-url.token';
 import { Lot, LotDTO } from '../Interfaces/Lot';
 import { Observable } from 'rxjs';
 
@@ -10,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class LotService {
   httpClient = inject(HttpClient);
-  private readonly apiUrl = `${environment.apiUrl}/lots`;
+  private readonly apiUrl = `${inject(API_URL)}/lots`;
 
   saveLot(lot: Lot): Observable<Lot> {
     return this.httpClient.post<Lot>(this.apiUrl, lot);

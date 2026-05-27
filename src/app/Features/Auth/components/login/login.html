@@ -1,37 +1,52 @@
 <div class="login__container">
-    <main class="login">
-        <div class="login__icon-container">
-            <span class="material-symbols-outlined">person</span>
+  <main class="login">
+    <div class="login__icon-container">
+      <span class="material-symbols-outlined">person</span>
+    </div>
+    <form class="login__form" [formGroup]="formularioLogin" (ngSubmit)="onSubmit()">
+      <div class="form__input-container">
+        <div class="input-container">
+          <span class="material-symbols-outlined icono">mail</span>
+          <input
+            type="email"
+            id="email"
+            formControlName="Username"
+            placeholder="Email"
+            name="username"
+          />
         </div>
-        <form class="login__form" [formGroup]="formularioLogin" (ngSubmit)="onSubmit()">
-            <div class="form__input-container">
-                <div class="input-container">
-                    <span class="material-symbols-outlined icono">mail</span>
-                    <input type="email" id="email" formControlName="Username" placeholder="Email"
-                        name="username">
-                </div>
-                @if (hasError('Username','required')) {
-                <p class="error__message">El campo es requerido</p>
-                }
-                @if(hasError('Username','email')){
-                <p class="error__message">Debe contener un email valido</p>
-                }
-            </div>
-            <div class="form__input-container">
-                <div class="form__input-container">
-                    <div class="input-container">
-                        <span class="material-symbols-outlined icono">password</span>
-                        <input type="password" id="Contraseña" placeholder="Contraseña" name="password"
-                            formControlName="Password" required>
-                    </div>
-                    @if (hasError('Password','required')) {
-                    <p class="error__message">El campo es requerido</p>
-                    }
-                </div>
-            </div>
+        @if (hasError('Username','required')) {
+        <p class="error__message">El campo es requerido</p>
+        } @if(hasError('Username','email')){
+        <p class="error__message">Debe contener un email valido</p>
+        }
+      </div>
+      <div class="form__input-container">
+        <div class="form__input-container">
+          <div class="input-container">
+            <span class="material-symbols-outlined icono">password</span>
+            <input
+              type="password"
+              id="Contraseña"
+              placeholder="Contraseña"
+              name="password"
+              formControlName="Password"
+              required
+            />
+          </div>
+          @if (hasError('Password','required')) {
+          <p class="error__message">El campo es requerido</p>
+          }
+        </div>
+      </div>
 
-            <input type="submit" value="Login" [disabled]="formularioLogin.invalid" class="form__button">
-        </form>
-        <p>¿No tienes una cuenta? <a routerLink="/register">Regístrate</a></p>
-    </main>
+      <input
+        type="submit"
+        value="Login"
+        [disabled]="formularioLogin.invalid"
+        class="form__button"
+      />
+    </form>
+    <p>¿No tienes una cuenta? <a routerLink="/register" id="register">Regístrate</a></p>
+  </main>
 </div>

@@ -133,7 +133,7 @@
 }
 
 .role-store {
-  background-color: rgba(29, 78, 216, 0.1);
+  background-color: var(--color-background-white);
   color: #1d4ed8;
 }
 
@@ -205,7 +205,7 @@
 }
 
 .btn-delete {
-  background-color: rgba(185, 28, 28, 0.08);
+  background-color: var(--color-background-white);
   color: #b91c1c;
   padding: 7px 12px;
 }

@@ -5,6 +5,7 @@ import { User } from '../Interfaces/User';
 import { Role } from '../Enum/Role';
 import { UserStatus } from '../Enum/UserStatus';
 import { environment } from '../../../environments/environment';
+import { API_URL } from '../../tokens/api-url.token';
 
 describe('UserService', () => {
   let service: UserService;
@@ -26,7 +27,10 @@ describe('UserService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [UserService],
+      providers: [
+        UserService,
+        { provide: API_URL, useValue: environment.apiUrl },
+      ],
     });
     service = TestBed.inject(UserService);
     httpMock = TestBed.inject(HttpTestingController);

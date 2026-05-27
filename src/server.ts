@@ -6,38 +6,9 @@ import {
 } from '@angular/ssr/node';
 import express from 'express';
 import { join } from 'node:path';
+import { createWinstonLogger } from './winston-logger-factory';
 
-const req = new Function('m', 'return require(m)');
-const winston = req('winston');
-const path = req('path');
-const DailyRotateFile = req('winston-daily-rotate-file');
-
-const logPath = process.env['LOG_PATH'] || './Logs/frontend';
-
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.combine(
-    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
-    winston.format.printf(
-      ({ timestamp, level, message }: any) =>
-        `${timestamp} [SSR] ${level.toUpperCase()} - ${message}`,
-    ),
-  ),
-  transports: [
-    new DailyRotateFile({
-      filename: path.join(logPath, 'history', 'frontend-%DATE%.log'),
-      datePattern: 'YYYY-MM-DD',
-      maxFiles: '7d',
-      maxSize: '50m',
-      auditFile: path.join(logPath, '.audit.json'),
-    }),
-    new winston.transports.File({
-      filename: path.join(logPath, 'frontend.log'),
-      level: 'info',
-    }),
-    new winston.transports.Console(),
-  ],
-});
+const logger = createWinstonLogger();
 
 logger.info('SSR server iniciando...');
 

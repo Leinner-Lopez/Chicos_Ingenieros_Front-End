@@ -3,6 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { AdminService } from './admin.service';
 import { LotDTO } from '../../../Data/Interfaces/Lot';
 import { environment } from '../../../../environments/environment';
+import { API_URL } from '../../../tokens/api-url.token';
 
 describe('AdminService', () => {
   let service: AdminService;
@@ -12,7 +13,10 @@ describe('AdminService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [AdminService],
+      providers: [
+        AdminService,
+        { provide: API_URL, useValue: environment.apiUrl },
+      ],
     });
     service = TestBed.inject(AdminService);
     httpMock = TestBed.inject(HttpTestingController);

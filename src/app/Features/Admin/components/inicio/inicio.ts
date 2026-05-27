@@ -1,11 +1,12 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
 import { LotDTO } from '../../../../Data/Interfaces/Lot';
-import { DatePipe } from '@angular/common';
+import { DateFormatterService } from '../../../../Core/Services/date-formatter.service';
+import { LotExpirationList } from '../../../../Shared/lot-expiration-list/lot-expiration-list';
 
 @Component({
   selector: 'app-inicio-admin',
-  imports: [DatePipe],
+  imports: [LotExpirationList],
   templateUrl: './inicio.html',
   styleUrl: './inicio.css',
 })
@@ -14,7 +15,10 @@ export class InicioAdmin implements OnInit {
   lots = signal<LotDTO[]>([]);
   costOfShrinksOfTheMonth = signal<number>(0);
 
-  dashboardAdminService = inject(AdminService);
+  private readonly dashboardAdminService = inject(AdminService);
+  private readonly dateFormatter = inject(DateFormatterService);
+
+  fechaFormateada = this.dateFormatter.getFechaFormateada();
 
   ngOnInit(): void {
     this.dashboardAdminService.getProductsWithLowStock().subscribe((data: number) => {
@@ -33,16 +37,5 @@ export class InicioAdmin implements OnInit {
   cambiarFiltro(nuevoFiltro: 'Pendientes' | 'Completadas'): void {
     if (this.filtroActual() === nuevoFiltro) return;
     this.filtroActual.set(nuevoFiltro);
-  }
-
-  díasSemana: string[] = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-  fechaFormateada = this.getFechaFormateada();
-
-  getFechaFormateada(): string {
-    const fecha: Date = new Date();
-    const diaSemana: string = this.díasSemana[fecha.getDay()];
-    const dia: number = fecha.getDate();
-    const mes: string = fecha.toLocaleDateString('es-ES', { month: 'long' });
-    return `${diaSemana}, ${dia} de ${mes}`;
   }
 }

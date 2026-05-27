@@ -7,18 +7,21 @@ import { RegisterRequest } from '../../../../Data/Interfaces/RegisterRequest';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Dialog } from '@angular/cdk/dialog';
 import { MessageModal } from '../../../../Shared/Modals/message-modal/message-modal';
+import { PasswordFieldset } from '../../../../Shared/password-fieldset/password-fieldset';
+import { NameInputs } from '../../../../Shared/name-inputs/name-inputs';
+import { hasFormError } from '../../../../Shared/Utilities/form-utils';
 
 @Component({
   selector: 'app-register',
-  imports: [RouterLink, ReactiveFormsModule],
+  imports: [RouterLink, ReactiveFormsModule, PasswordFieldset, NameInputs],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
 export class Register {
-  dialog = inject(Dialog);
-  form = inject(FormBuilder);
-  authService = inject(AuthService);
-  router = inject(Router);
+  private readonly dialog = inject(Dialog);
+  private readonly form = inject(FormBuilder);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
   registrationForm: FormGroup = this.form.group(
     {
@@ -73,7 +76,6 @@ export class Register {
   }
 
   hasError(controlName: string, errorType: string): boolean {
-    const control = this.registrationForm.get(controlName);
-    return (control?.hasError(errorType) && (control.dirty || control.touched)) || false;
+    return hasFormError(this.registrationForm, controlName, errorType);
   }
 }

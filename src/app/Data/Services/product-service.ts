@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { API_URL } from '../../tokens/api-url.token';
 import {
   ProductResponse,
   ProductDTO,
@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
 })
 export class ProductService {
   httpClient = inject(HttpClient);
-  private readonly apiUrl = `${environment.apiUrl}/products`;
+  private readonly apiUrl = `${inject(API_URL)}/products`;
 
   saveProduct(formData: FormData): Observable<ProductRequest> {
     return this.httpClient.post<ProductRequest>(this.apiUrl, formData);

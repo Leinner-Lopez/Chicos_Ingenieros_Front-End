@@ -5,6 +5,8 @@ import { RegisterUser } from './register-user';
 import { Role } from '../../../Data/Enum/Role';
 import { UserStatus } from '../../../Data/Enum/UserStatus';
 import { environment } from '../../../../environments/environment';
+import { API_URL } from '../../../tokens/api-url.token';
+
 
 describe('RegisterUser', () => {
   let component: RegisterUser;
@@ -37,6 +39,7 @@ describe('RegisterUser', () => {
           { provide: DIALOG_DATA, useValue: {} },
           { provide: DialogRef, useValue: mockDialogRef },
           { provide: Dialog, useValue: mockDialog },
+          { provide: API_URL, useValue: environment.apiUrl },
         ],
       }).compileComponents();
 
@@ -125,6 +128,7 @@ describe('RegisterUser', () => {
           { provide: DIALOG_DATA, useValue: { userId: 5 } },
           { provide: DialogRef, useValue: mockDialogRef },
           { provide: Dialog, useValue: mockDialog },
+          { provide: API_URL, useValue: environment.apiUrl },
         ],
       }).compileComponents();
 

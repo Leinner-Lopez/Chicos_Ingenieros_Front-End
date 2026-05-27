@@ -1,5 +1,6 @@
 import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
+import { createWinstonLogger } from '../../../winston-logger-factory';
 
 @Injectable({ providedIn: 'root' })
 export class LoggerService {
@@ -15,39 +16,7 @@ export class LoggerService {
 
   private initWinston() {
     try {
-      // Usamos Function() para que Angular no detecte los imports en compilación
-      const req = new Function('m', 'return require(m)');
-
-      const winston = req('winston');
-      const path = req('path');
-      const DailyRotateFile = req('winston-daily-rotate-file');
-
-      const logPath = process.env['LOG_PATH'] || './Logs/frontend';
-
-      this.logger = winston.createLogger({
-        level: 'info',
-        format: winston.format.combine(
-          winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
-          winston.format.printf(
-            ({ timestamp, level, message }: any) =>
-              `${timestamp} [SSR] ${level.toUpperCase()} - ${message}`,
-          ),
-        ),
-        transports: [
-          new DailyRotateFile({
-            filename: path.join(logPath, 'history', 'frontend-%DATE%.log'),
-            datePattern: 'YYYY-MM-DD',
-            maxFiles: '7d',
-            maxSize: '50m',
-            auditFile: path.join(logPath, '.audit.json'),
-          }),
-          new winston.transports.File({
-            filename: path.join(logPath, 'frontend.log'),
-            level: 'info',
-          }),
-          new winston.transports.Console(),
-        ],
-      });
+      this.logger = createWinstonLogger();
     } catch (e) {
       console.error('[LoggerService] Error iniciando Winston:', e);
     }

@@ -3,6 +3,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { DIALOG_DATA, Dialog, DialogRef } from '@angular/cdk/dialog';
 import { RegisterProduct } from './register-product';
 import { environment } from '../../../../environments/environment';
+import { API_URL } from '../../../tokens/api-url.token';
+
 
 describe('RegisterProduct', () => {
   let component: RegisterProduct;
@@ -38,6 +40,7 @@ describe('RegisterProduct', () => {
           { provide: DIALOG_DATA, useValue: {} },
           { provide: DialogRef, useValue: mockDialogRef },
           { provide: Dialog, useValue: mockDialog },
+          { provide: API_URL, useValue: environment.apiUrl },
         ],
       }).compileComponents();
 
@@ -134,6 +137,7 @@ describe('RegisterProduct', () => {
           { provide: DIALOG_DATA, useValue: { productId: 3 } },
           { provide: DialogRef, useValue: mockDialogRef },
           { provide: Dialog, useValue: mockDialog },
+          { provide: API_URL, useValue: environment.apiUrl },
         ],
       }).compileComponents();
 

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { API_URL } from '../../tokens/api-url.token';
 import { SaleHistoryDTO, SaleRequest, SaleResponse } from '../Interfaces/Sale';
 import { Observable } from 'rxjs';
 
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class SaleService {
   httpClient = inject(HttpClient);
-  private readonly apiUrl = `${environment.apiUrl}/sales`;
+  private readonly apiUrl = `${inject(API_URL)}/sales`;
 
   saveSale(sale: SaleRequest): Observable<SaleResponse> {
     return this.httpClient.post<SaleResponse>(this.apiUrl, sale);

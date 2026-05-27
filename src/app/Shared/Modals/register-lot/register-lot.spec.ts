@@ -4,6 +4,8 @@ import { DIALOG_DATA, Dialog, DialogRef } from '@angular/cdk/dialog';
 import { RegisterLot } from './register-lot';
 import { LotStatus } from '../../../Data/Enum/LotStatus';
 import { environment } from '../../../../environments/environment';
+import { API_URL } from '../../../tokens/api-url.token';
+
 
 describe('RegisterLot', () => {
   let component: RegisterLot;
@@ -38,6 +40,7 @@ describe('RegisterLot', () => {
           { provide: DIALOG_DATA, useValue: {} },
           { provide: DialogRef, useValue: mockDialogRef },
           { provide: Dialog, useValue: mockDialog },
+          { provide: API_URL, useValue: environment.apiUrl },
         ],
       }).compileComponents();
 
@@ -124,6 +127,7 @@ describe('RegisterLot', () => {
           { provide: DIALOG_DATA, useValue: { lotId: 4 } },
           { provide: DialogRef, useValue: mockDialogRef },
           { provide: Dialog, useValue: mockDialog },
+          { provide: API_URL, useValue: environment.apiUrl },
         ],
       }).compileComponents();
 

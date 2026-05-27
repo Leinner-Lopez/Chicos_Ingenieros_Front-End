@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from './auth-service';
 import { LoginRequest } from '../../Data/Interfaces/LoginRequest';
 import { RegisterRequest } from '../../Data/Interfaces/RegisterRequest';
+import { API_URL } from '../../tokens/api-url.token';
 import { environment } from '../../../environments/environment';
 
 const apiUrl = `${environment.apiUrl}/auth`;
@@ -44,6 +45,7 @@ describe('AuthService', () => {
           AuthService,
           { provide: PLATFORM_ID, useValue: 'browser' },
           { provide: Router, useValue: { navigate: vi.fn(), url: '/login' } },
+          { provide: API_URL, useValue: environment.apiUrl },
         ],
       });
       return TestBed.inject(AuthService);
@@ -87,6 +89,7 @@ describe('AuthService', () => {
           AuthService,
           { provide: PLATFORM_ID, useValue: 'browser' },
           { provide: Router, useValue: routerMock },
+          { provide: API_URL, useValue: environment.apiUrl },
         ],
       });
 
@@ -207,6 +210,33 @@ describe('AuthService', () => {
         routerMock.url = '/login';
         service.logout();
         expect(navigateCalls.length).toBe(0);
+      });
+    });
+
+    describe('getHomeRoute()', () => {
+      it('debe retornar /admin/inicio para el rol ADMIN', () => {
+        service.userRole.set('ADMIN');
+        expect(service.getHomeRoute()).toBe('/admin/inicio');
+      });
+
+      it('debe retornar /customer/inicio para el rol CUSTOMER', () => {
+        service.userRole.set('CUSTOMER');
+        expect(service.getHomeRoute()).toBe('/customer/inicio');
+      });
+
+      it('debe retornar /store/inicio para el rol STORE', () => {
+        service.userRole.set('STORE');
+        expect(service.getHomeRoute()).toBe('/store/inicio');
+      });
+
+      it('debe retornar /login para un rol desconocido', () => {
+        service.userRole.set('UNKNOWN');
+        expect(service.getHomeRoute()).toBe('/login');
+      });
+
+      it('debe retornar /login cuando el rol es null', () => {
+        service.userRole.set(null);
+        expect(service.getHomeRoute()).toBe('/login');
       });
     });
 

@@ -3,9 +3,11 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { Dialog } from '@angular/cdk/dialog';
 import { Subject } from 'rxjs';
 import { Products } from './products';
-import { RegisterProduct } from '../../../Shared/Modals/register-product/register-product';
-import { ConfirmModal } from '../../../Shared/Modals/confirm-modal/confirm-modal';
-import { environment } from '../../../../environments/environment';
+import { RegisterProduct } from '../../../../Shared/Modals/register-product/register-product';
+import { ConfirmModal } from '../../../../Shared/Modals/confirm-modal/confirm-modal';
+import { environment } from '../../../../../environments/environment';
+import { API_URL } from '../../../../tokens/api-url.token';
+
 
 describe('Products (Admin)', () => {
   let component: Products;
@@ -18,8 +20,24 @@ describe('Products (Admin)', () => {
   const countUrl = `${environment.apiUrl}/products/count`;
 
   const mockProducts = [
-    { productId: 1, name: 'Arroz Diana', categoryName: 'Granos', price: 3500, imageUrl: '', description: '', totalStock: 50 },
-    { productId: 2, name: 'Leche Entera', categoryName: 'Lácteos', price: 4200, imageUrl: '', description: '', totalStock: 20 },
+    {
+      productId: 1,
+      name: 'Arroz Diana',
+      categoryName: 'Granos',
+      price: 3500,
+      imageUrl: '',
+      description: '',
+      totalStock: 50,
+    },
+    {
+      productId: 2,
+      name: 'Leche Entera',
+      categoryName: 'Lácteos',
+      price: 4200,
+      imageUrl: '',
+      description: '',
+      totalStock: 20,
+    },
   ];
 
   beforeEach(async () => {
@@ -28,7 +46,10 @@ describe('Products (Admin)', () => {
 
     await TestBed.configureTestingModule({
       imports: [Products, HttpClientTestingModule],
-      providers: [{ provide: Dialog, useValue: mockDialog }],
+      providers: [
+        { provide: Dialog, useValue: mockDialog },
+        { provide: API_URL, useValue: environment.apiUrl },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Products);
@@ -67,7 +88,15 @@ describe('Products (Admin)', () => {
     });
 
     it('debe recargar la lista cuando el modal cierra con "Producto registrado"', () => {
-      const nuevoProducto = { productId: 3, name: 'Nuevo', categoryName: 'Otros', price: 1000, imageUrl: '', description: '', totalStock: 10 };
+      const nuevoProducto = {
+        productId: 3,
+        name: 'Nuevo',
+        categoryName: 'Otros',
+        price: 1000,
+        imageUrl: '',
+        description: '',
+        totalStock: 10,
+      };
       component.registerProduct();
       dialogClosed.next('Producto registrado');
       httpMock.expectOne(productsUrl).flush([...mockProducts, nuevoProducto]);
@@ -111,10 +140,15 @@ describe('Products (Admin)', () => {
   });
 
   describe('deleteProduct()', () => {
-    it('debe abrir ConfirmModal con entity="product" y el Id correcto', () => {
+    it('debe abrir ConfirmModal con el mensaje y callbacks correctos', () => {
       component.deleteProduct(4);
       expect(mockDialog.open).toHaveBeenCalledWith(ConfirmModal, {
-        data: { entity: 'product', message: '¿Deseas eliminar este producto?', Id: 4 },
+        data: expect.objectContaining({
+          message: '¿Deseas eliminar este producto?',
+          successTitle: 'Producto Eliminado',
+          successMessage: 'El producto ha sido eliminado exitosamente.',
+          onConfirm: expect.any(Function),
+        }),
       });
     });
 

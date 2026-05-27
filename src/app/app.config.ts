@@ -1,4 +1,4 @@
-import { ApplicationConfig, ErrorHandler, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { ApplicationConfig, ErrorHandler, provideBrowserGlobalErrorListeners, TransferState } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -7,6 +7,8 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { authInterceptor } from './Core/Interceptors/auth-interceptor';
 import { loggingInterceptor } from './Core/Interceptors/logging.interceptor';
 import { GlobalErrorHandler } from './Core/Interceptors/global-error-handler';
+import { API_URL, API_URL_STATE_KEY } from './tokens/api-url.token';
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,5 +17,10 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideBrowserGlobalErrorListeners(),
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
+    {
+      provide: API_URL,
+      useFactory: (ts: TransferState) => ts.get(API_URL_STATE_KEY, environment.apiUrl),
+      deps: [TransferState],
+    },
   ],
 };

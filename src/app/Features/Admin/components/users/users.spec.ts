@@ -3,9 +3,11 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { Dialog } from '@angular/cdk/dialog';
 import { Subject } from 'rxjs';
 import { Users } from './users';
-import { RegisterUser } from '../../../Shared/Modals/register-user/register-user';
-import { ConfirmModal } from '../../../Shared/Modals/confirm-modal/confirm-modal';
-import { environment } from '../../../../environments/environment';
+import { RegisterUser } from '../../../../Shared/Modals/register-user/register-user';
+import { ConfirmModal } from '../../../../Shared/Modals/confirm-modal/confirm-modal';
+import { environment } from '../../../../../environments/environment';
+import { API_URL } from '../../../../tokens/api-url.token';
+
 
 describe('Users', () => {
   let component: Users;
@@ -28,7 +30,10 @@ describe('Users', () => {
 
     await TestBed.configureTestingModule({
       imports: [Users, HttpClientTestingModule],
-      providers: [{ provide: Dialog, useValue: mockDialog }],
+      providers: [
+        { provide: Dialog, useValue: mockDialog },
+        { provide: API_URL, useValue: environment.apiUrl },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Users);
@@ -68,7 +73,13 @@ describe('Users', () => {
     });
 
     it('debe recargar la lista cuando el modal cierra con "Usuario registrado"', () => {
-      const nuevoUsuario = { userId: 3, firstName: 'Nuevo', lastName: 'User', email: 'new@test.com', role: 'CUSTOMER' };
+      const nuevoUsuario = {
+        userId: 3,
+        firstName: 'Nuevo',
+        lastName: 'User',
+        email: 'new@test.com',
+        role: 'CUSTOMER',
+      };
       component.registerUser();
       dialogClosed.next('Usuario registrado');
       httpMock.expectOne(usersUrl).flush([...mockUsers, nuevoUsuario]);
@@ -112,10 +123,15 @@ describe('Users', () => {
   });
 
   describe('deleteUser()', () => {
-    it('debe abrir ConfirmModal con entity="user" y el Id correcto', () => {
+    it('debe abrir ConfirmModal con el mensaje y callbacks correctos', () => {
       component.deleteUser(3);
       expect(mockDialog.open).toHaveBeenCalledWith(ConfirmModal, {
-        data: { entity: 'user', message: '¿Deseas eliminar este usuario?', Id: 3 },
+        data: expect.objectContaining({
+          message: '¿Deseas eliminar este usuario?',
+          successTitle: 'Usuario Eliminado',
+          successMessage: 'El usuario ha sido eliminado exitosamente.',
+          onConfirm: expect.any(Function),
+        }),
       });
     });
 

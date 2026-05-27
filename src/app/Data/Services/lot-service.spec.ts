@@ -3,6 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { LotService } from './lot-service';
 import { Lot, LotDTO } from '../Interfaces/Lot';
 import { LotStatus } from '../Enum/LotStatus';
+import { API_URL } from '../../tokens/api-url.token';
 import { environment } from '../../../environments/environment';
 
 describe('LotService', () => {
@@ -28,7 +29,10 @@ describe('LotService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [LotService],
+      providers: [
+        LotService,
+        { provide: API_URL, useValue: environment.apiUrl },
+      ],
     });
     service = TestBed.inject(LotService);
     httpMock = TestBed.inject(HttpTestingController);

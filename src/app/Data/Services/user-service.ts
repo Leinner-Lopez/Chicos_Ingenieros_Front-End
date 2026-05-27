@@ -2,14 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { User } from '../Interfaces/User';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { API_URL } from '../../tokens/api-url.token';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   httpClient = inject(HttpClient);
-  private readonly apiUrl = `${environment.apiUrl}/users`;
+  private readonly apiUrl = `${inject(API_URL)}/users`;
 
   saveUser(user: User): Observable<User> {
     return this.httpClient.post<User>(this.apiUrl, user);

@@ -3,9 +3,10 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { Dialog } from '@angular/cdk/dialog';
 import { Subject } from 'rxjs';
 import { Lots } from './lots';
-import { RegisterLot } from '../../../Shared/Modals/register-lot/register-lot';
-import { ConfirmModal } from '../../../Shared/Modals/confirm-modal/confirm-modal';
-import { environment } from '../../../../environments/environment';
+import { RegisterLot } from '../Modals/register-lot/register-lot';
+import { ConfirmModal } from '../Modals/confirm-modal/confirm-modal';
+import { API_URL } from '../../tokens/api-url.token';
+import { environment } from '../../../environments/environment';
 
 describe('Lots', () => {
   let component: Lots;
@@ -28,7 +29,10 @@ describe('Lots', () => {
 
     await TestBed.configureTestingModule({
       imports: [Lots, HttpClientTestingModule],
-      providers: [{ provide: Dialog, useValue: mockDialog }],
+      providers: [
+        { provide: Dialog, useValue: mockDialog },
+        { provide: API_URL, useValue: environment.apiUrl },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Lots);
@@ -66,7 +70,12 @@ describe('Lots', () => {
     });
 
     it('debe recargar la lista cuando el modal cierra con "Lote registrado"', () => {
-      const nuevoLote = { lotId: 3, stockQuantity: 100, productName: 'Harina', expirationDate: '2027-12-01' };
+      const nuevoLote = {
+        lotId: 3,
+        stockQuantity: 100,
+        productName: 'Harina',
+        expirationDate: '2027-12-01',
+      };
       component.registerLot();
       dialogClosed.next('Lote registrado');
       httpMock.expectOne(lotsUrl).flush([...mockLots, nuevoLote]);
@@ -110,10 +119,15 @@ describe('Lots', () => {
   });
 
   describe('deleteLot()', () => {
-    it('debe abrir ConfirmModal con entity="lot" y el Id correcto', () => {
+    it('debe abrir ConfirmModal con el mensaje y callbacks correctos', () => {
       component.deleteLot(2);
       expect(mockDialog.open).toHaveBeenCalledWith(ConfirmModal, {
-        data: { entity: 'lot', message: '¿Deseas eliminar este lote?', Id: 2 },
+        data: expect.objectContaining({
+          message: '¿Deseas eliminar este lote?',
+          successTitle: 'Lote Eliminado',
+          successMessage: 'El lote ha sido eliminado exitosamente.',
+          onConfirm: expect.any(Function),
+        }),
       });
     });
 
@@ -130,6 +144,29 @@ describe('Lots', () => {
       component.deleteLot(1);
       dialogClosed.next('Cancelado');
       httpMock.expectNone(lotsUrl);
+    });
+  });
+
+  describe('getLotStatusClass()', () => {
+    function isoDate(offsetDays: number): string {
+      const d = new Date();
+      d.setDate(d.getDate() + offsetDays);
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${y}-${m}-${day}`;
+    }
+
+    it('debe retornar "status-expired" para una fecha en el pasado', () => {
+      expect(component.getLotStatusClass(isoDate(-30))).toBe('status-expired');
+    });
+
+    it('debe retornar "status-soon" para una fecha dentro de los próximos 7 días', () => {
+      expect(component.getLotStatusClass(isoDate(4))).toBe('status-soon');
+    });
+
+    it('debe retornar "status-ok" para una fecha con más de 7 días de vigencia', () => {
+      expect(component.getLotStatusClass(isoDate(14))).toBe('status-ok');
     });
   });
 });

@@ -111,10 +111,9 @@ describe('Sidebar', () => {
       expect(component.menuItems().some((i) => i.route === '/customer/productos')).toBe(true);
     });
 
-    it('un rol desconocido debe devolver el menú de cliente', async () => {
+    it('un rol desconocido debe devolver un menú vacío', async () => {
       await setup('OTRO_ROL');
-      expect(component.menuItems().length).toBe(2);
-      expect(component.menuItems()[0].route).toBe('/customer/inicio');
+      expect(component.menuItems().length).toBe(0);
     });
 
     it('no debe incluir rutas de admin ni store', async () => {

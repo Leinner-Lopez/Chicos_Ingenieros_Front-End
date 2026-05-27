@@ -3,6 +3,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { DIALOG_DATA, Dialog, DialogRef } from '@angular/cdk/dialog';
 import { RegisterCategory } from './register-category';
 import { environment } from '../../../../environments/environment';
+import { API_URL } from '../../../tokens/api-url.token';
+
 
 describe('RegisterCategory', () => {
   let component: RegisterCategory;
@@ -24,6 +26,7 @@ describe('RegisterCategory', () => {
           { provide: DIALOG_DATA, useValue: {} },
           { provide: DialogRef, useValue: mockDialogRef },
           { provide: Dialog, useValue: mockDialog },
+          { provide: API_URL, useValue: environment.apiUrl },
         ],
       }).compileComponents();
 
@@ -93,6 +96,7 @@ describe('RegisterCategory', () => {
           { provide: DIALOG_DATA, useValue: { categoryId: 4 } },
           { provide: DialogRef, useValue: mockDialogRef },
           { provide: Dialog, useValue: mockDialog },
+          { provide: API_URL, useValue: environment.apiUrl },
         ],
       }).compileComponents();
 

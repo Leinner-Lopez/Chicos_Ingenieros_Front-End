@@ -1,9 +1,10 @@
 import { Component, Inject, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CategoryService } from '../../../Data/Services/category-service';
-import { Dialog, DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Category } from '../../../Data/Interfaces/Category';
-import { MessageModal } from '../message-modal/message-modal';
+import { ModalNotificationService } from '../../../Core/Services/modal-notification.service';
+import { hasFormError } from '../../Utilities/form-utils';
 
 @Component({
   selector: 'app-register-category',
@@ -12,10 +13,10 @@ import { MessageModal } from '../message-modal/message-modal';
   styleUrl: './register-category.css',
 })
 export class RegisterCategory {
-  dialog = inject(Dialog);
-  dialogRef: DialogRef<string> = inject(DialogRef);
-  form = inject(FormBuilder);
-  categoryService: CategoryService = inject(CategoryService);
+  private readonly dialogRef: DialogRef<string> = inject(DialogRef);
+  private readonly form = inject(FormBuilder);
+  private readonly categoryService: CategoryService = inject(CategoryService);
+  private readonly modalNotification = inject(ModalNotificationService);
 
   constructor(@Inject(DIALOG_DATA) public data: any) {
     if (data?.categoryId) {
@@ -54,18 +55,12 @@ export class RegisterCategory {
     }
 
     this.categoryService.saveCategory(categoryData).subscribe({
-      next: () => {
-        const dialogRef = this.dialog.open<string>(MessageModal, {
-          data: {
-            title: 'Categoría Registrada',
-            message: 'La categoría ha sido registrada exitosamente.',
-          },
-        });
-        setTimeout(() => {
-          dialogRef.close();
-          this.closeModal();
-        }, 1500);
-      },
+      next: () =>
+        this.modalNotification.showSuccess(
+          'Categoría Registrada',
+          'La categoría ha sido registrada exitosamente.',
+          () => this.closeModal(),
+        ),
     });
   }
 
@@ -74,7 +69,6 @@ export class RegisterCategory {
   }
 
   hasError(controlName: string, errorType: string): boolean {
-    const control = this.formularioRegistration.get(controlName);
-    return (control?.hasError(errorType) && (control.dirty || control.touched)) || false;
+    return hasFormError(this.formularioRegistration, controlName, errorType);
   }
 }

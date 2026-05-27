@@ -3,6 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { CategoryService } from './category-service';
 import { Category } from '../Interfaces/Category';
 import { environment } from '../../../environments/environment';
+import { API_URL } from '../../tokens/api-url.token';
 
 describe('CategoryService', () => {
   let service: CategoryService;
@@ -18,7 +19,10 @@ describe('CategoryService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [CategoryService],
+      providers: [
+        CategoryService,
+        { provide: API_URL, useValue: environment.apiUrl },
+      ],
     });
     service = TestBed.inject(CategoryService);
     httpMock = TestBed.inject(HttpTestingController);

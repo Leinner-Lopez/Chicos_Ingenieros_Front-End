@@ -8,6 +8,7 @@ import {
   ProductResponse,
 } from '../Interfaces/Product';
 import { environment } from '../../../environments/environment';
+import { API_URL } from '../../tokens/api-url.token';
 
 describe('ProductService', () => {
   let service: ProductService;
@@ -37,7 +38,10 @@ describe('ProductService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [ProductService],
+      providers: [
+        ProductService,
+        { provide: API_URL, useValue: environment.apiUrl },
+      ],
     });
     service = TestBed.inject(ProductService);
     httpMock = TestBed.inject(HttpTestingController);

@@ -4,6 +4,7 @@ import { DIALOG_DATA, Dialog, DialogRef } from '@angular/cdk/dialog';
 import { PLATFORM_ID } from '@angular/core';
 import { BuyProductModal } from './buy-product-modal';
 import { AuthService } from '../../../Core/Services/auth-service';
+import { API_URL } from '../../../tokens/api-url.token';
 import { environment } from '../../../../environments/environment';
 
 describe('BuyProductModal', () => {
@@ -29,6 +30,7 @@ describe('BuyProductModal', () => {
         { provide: Dialog, useValue: mockDialog },
         { provide: AuthService, useValue: mockAuthService },
         { provide: PLATFORM_ID, useValue: 'browser' },
+        { provide: API_URL, useValue: environment.apiUrl },
       ],
     }).compileComponents();
 

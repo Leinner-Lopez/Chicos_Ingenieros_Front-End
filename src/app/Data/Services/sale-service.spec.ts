@@ -3,6 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { SaleService } from './sale-service';
 import { SaleHistoryDTO, SaleRequest, SaleResponse } from '../Interfaces/Sale';
 import { environment } from '../../../environments/environment';
+import { API_URL } from '../../tokens/api-url.token';
 
 describe('SaleService', () => {
   let service: SaleService;
@@ -40,7 +41,10 @@ describe('SaleService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [SaleService],
+      providers: [
+        SaleService,
+        { provide: API_URL, useValue: environment.apiUrl },
+      ],
     });
     service = TestBed.inject(SaleService);
     httpMock = TestBed.inject(HttpTestingController);
