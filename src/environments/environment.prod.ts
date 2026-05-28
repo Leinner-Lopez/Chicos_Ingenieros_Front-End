@@ -1,4 +1,4 @@
 export const environment = {
-    production: true,
-    apiUrl: process.env['NG_APP_API_URL'] || ''
+  production: true,
+  apiUrl: 'https://chicosingenierosback-end-production.up.railway.app/api',
 };
