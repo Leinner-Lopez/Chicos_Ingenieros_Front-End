@@ -7,13 +7,20 @@
 .content {
   flex-grow: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  max-width: 100dvw;
 }
 
 @media (max-width: 700px) {
   .main-container {
     flex-direction: column;
+    max-width: 100dvw;
+  }
+
+  .content {
+    width: 100%;
   }
 
   .sidebar {

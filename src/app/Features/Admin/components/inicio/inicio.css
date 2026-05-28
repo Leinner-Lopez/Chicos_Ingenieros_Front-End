@@ -3,6 +3,7 @@
   padding: 20px 5px;
   gap: 20px;
   height: 100dvh;
+  max-width: 100dvw;
   background-color: var(--color-background-white);
 }
 
@@ -276,7 +277,7 @@
 
 .bento-grid-lotes {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(400px, 100%), 1fr));
   gap: 16px;
 }
 
@@ -389,8 +390,12 @@
 }
 
 @media (max-width: 700px) {
-  .view__inicio {
-    padding-right: 0;
+  .inicio__view {
+    max-width: 100dvw;
+    padding: 20px 10px;
+  }
+  .view__main {
+    padding: 0;
   }
 
   .dashboard {
