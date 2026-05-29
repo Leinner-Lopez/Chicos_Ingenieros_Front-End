@@ -19,4 +19,5 @@ export interface UserDTO {
   lastName: string;
   email: string;
   role: Role;
+  status: UserStatus;
 }

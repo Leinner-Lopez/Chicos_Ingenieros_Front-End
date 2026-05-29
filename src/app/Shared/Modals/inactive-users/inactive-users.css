@@ -1,0 +1,197 @@
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  z-index: 10;
+  width: min(680px, 95vw);
+  max-height: 90vh;
+  overflow-y: auto;
+  transition:
+    opacity 0.5s ease-out,
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+    display 0.5s allow-discrete;
+
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 24px;
+  padding: 1.4rem;
+  background: var(--color-background-white);
+  box-shadow: 0 0 50px -12px rgb(0, 0, 0);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal__title {
+  color: var(--color-font-1);
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.modal__close {
+  padding: 8px;
+  background-color: var(--color-background-green);
+  color: #fff;
+  border-radius: 64px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  transition: scale 0.4s;
+}
+
+.modal__close:hover {
+  scale: 1.1;
+}
+
+.users-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.user-card {
+  background-color: var(--color-background-gray);
+  border: 1px solid rgba(27, 67, 50, 0.15);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--color-background-green);
+  color: var(--color-font-3);
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.user-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-font-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.role-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 20px;
+  width: fit-content;
+  background-color: rgba(27, 67, 50, 0.1);
+  color: var(--color-font-2);
+}
+
+.card-divider {
+  height: 1px;
+  background-color: rgba(27, 67, 50, 0.1);
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-font-2);
+}
+
+.icon-sm {
+  font-size: 1rem !important;
+  flex-shrink: 0;
+}
+
+.info-text {
+  font-size: 0.82rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn-reactivate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: var(--color-background-green);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: scale 0.2s ease;
+  width: 100%;
+}
+
+.btn-reactivate:hover {
+  scale: 0.97;
+}
+
+.btn-reactivate .material-symbols-outlined {
+  font-size: 1rem;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 48px;
+  text-align: center;
+  color: var(--color-font-2);
+  border: 2px dashed rgba(27, 67, 50, 0.12);
+  border-radius: 16px;
+}
+
+.empty-state .material-symbols-outlined {
+  font-size: 2.5rem;
+  color: var(--color-background-green);
+  opacity: 0.5;
+}
+
+@starting-style {
+  .modal {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+}

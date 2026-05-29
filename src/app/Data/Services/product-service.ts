@@ -1,12 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { API_URL } from '../../tokens/api-url.token';
-import {
-  ProductResponse,
-  ProductDTO,
-  ProductRequest,
-  ProductInventoryDTO,
-} from '../Interfaces/Product';
+import { ProductDTO, ProductRequest, ProductInventoryDTO } from '../Interfaces/Product';
 import { Observable } from 'rxjs';
 
 @Injectable({

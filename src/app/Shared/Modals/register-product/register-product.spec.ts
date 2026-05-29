@@ -162,7 +162,7 @@ describe('RegisterProduct', () => {
       expect(component.formularioRegistration.get('categories')!.value).toBe(1);
     });
 
-    it('onSubmit() debe llamar a updateProduct() (PUT)', () => {
+    it('onSubmit() debe llamar a updateProduct() (PUT) enviando FormData', () => {
       component.formularioRegistration.setValue({
         name: 'Leche Semidescremada',
         description: 'Bolsa 1L',
@@ -175,8 +175,7 @@ describe('RegisterProduct', () => {
 
       const req = httpMock.expectOne(productsUrl);
       expect(req.request.method).toBe('PUT');
-      expect(req.request.body.productId).toBe(3);
-      expect(req.request.body.name).toBe('Leche Semidescremada');
+      expect(req.request.body instanceof FormData).toBe(true);
       req.flush({ ...mockProduct, name: 'Leche Semidescremada' });
     });
   });

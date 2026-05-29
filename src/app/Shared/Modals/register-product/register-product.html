@@ -47,7 +47,7 @@
       <div class="input__container input__container--full">
         <label for="productImage">Imagen</label>
         @if (isEditMode && currentImageUrl) {
-        <img [src]="currentImageUrl" alt="Imagen actual" class="product__current-image" />
+        <img [src]="currentImageUrl" alt="Actual" class="product__current-image" />
         <p class="input__hint">Dejar en blanco para mantener la imagen actual</p>
         }
         <input
@@ -74,6 +74,8 @@
         }
       </div>
     </div>
-    <button type="submit" class="submit__button">{{ isEditMode ? 'Actualizar' : 'Registrar' }}</button>
+    <button type="submit" class="submit__button">
+      {{ isEditMode ? 'Actualizar' : 'Registrar' }}
+    </button>
   </form>
 </div>

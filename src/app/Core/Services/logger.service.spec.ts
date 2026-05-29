@@ -2,6 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { PLATFORM_ID } from '@angular/core';
 import { LoggerService } from './logger.service';
 
+const GENERIC_ERROR_MSG = '[ERROR] Ha ocurrido un error inesperado. Revisa los logs del servidor.';
+
 describe('LoggerService (browser)', () => {
   let service: LoggerService;
 
@@ -20,56 +22,56 @@ describe('LoggerService (browser)', () => {
   });
 
   describe('info()', () => {
-    it('debe llamar a console.log con el prefijo [INFO]', () => {
+    it('debe ser silencioso en el browser para no exponer URLs en consola', () => {
       const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
       service.info('mensaje de prueba');
-      expect(spy).toHaveBeenCalledWith('[INFO] mensaje de prueba');
+      expect(spy).not.toHaveBeenCalled();
       spy.mockRestore();
     });
   });
 
   describe('warn()', () => {
-    it('debe llamar a console.warn con el prefijo [WARN]', () => {
+    it('debe ser silencioso en el browser para no exponer información interna', () => {
       const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
       service.warn('advertencia de prueba');
-      expect(spy).toHaveBeenCalledWith('[WARN] advertencia de prueba');
+      expect(spy).not.toHaveBeenCalled();
       spy.mockRestore();
     });
   });
 
   describe('error()', () => {
-    it('debe llamar a console.error con el prefijo [ERROR] sin detalle adicional', () => {
+    it('debe llamar a console.error con mensaje genérico sin exponer detalles internos', () => {
       const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
       service.error('error de prueba');
-      expect(spy).toHaveBeenCalledWith('[ERROR] error de prueba');
+      expect(spy).toHaveBeenCalledWith(GENERIC_ERROR_MSG);
       spy.mockRestore();
     });
 
-    it('debe incluir el mensaje del Error cuando se pasa como segundo argumento', () => {
+    it('debe usar mensaje genérico incluso cuando se pasa un Error adicional', () => {
       const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
       service.error('fallo al cargar', new Error('timeout'));
-      expect(spy).toHaveBeenCalledWith('[ERROR] fallo al cargar | timeout');
+      expect(spy).toHaveBeenCalledWith(GENERIC_ERROR_MSG);
       spy.mockRestore();
     });
 
-    it('debe convertir a string un valor primitivo pasado como segundo argumento', () => {
+    it('debe usar mensaje genérico incluso con un valor primitivo como segundo argumento', () => {
       const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
       service.error('código de error', 404);
-      expect(spy).toHaveBeenCalledWith('[ERROR] código de error | 404');
+      expect(spy).toHaveBeenCalledWith(GENERIC_ERROR_MSG);
       spy.mockRestore();
     });
 
-    it('debe serializar un objeto plano como JSON', () => {
+    it('debe usar mensaje genérico incluso con un objeto como segundo argumento', () => {
       const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
       service.error('respuesta inválida', { code: 500, detail: 'Internal Server Error' });
-      expect(spy).toHaveBeenCalledWith('[ERROR] respuesta inválida | {"code":500,"detail":"Internal Server Error"}');
+      expect(spy).toHaveBeenCalledWith(GENERIC_ERROR_MSG);
       spy.mockRestore();
     });
 
-    it('debe mostrar solo el mensaje cuando el segundo argumento es undefined', () => {
+    it('debe usar mensaje genérico cuando el segundo argumento es undefined', () => {
       const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
       service.error('sin detalle', undefined);
-      expect(spy).toHaveBeenCalledWith('[ERROR] sin detalle');
+      expect(spy).toHaveBeenCalledWith(GENERIC_ERROR_MSG);
       spy.mockRestore();
     });
   });
@@ -85,8 +87,6 @@ describe('LoggerService (server — initWinston falla en entorno de test)', () =
         { provide: PLATFORM_ID, useValue: 'server' },
       ],
     });
-    // El constructor llama a initWinston() que falla en test (require no es global),
-    // por lo que logger queda null y los métodos caen al path de console.
     service = TestBed.inject(LoggerService);
   });
 
@@ -94,24 +94,24 @@ describe('LoggerService (server — initWinston falla en entorno de test)', () =
     expect(service).toBeTruthy();
   });
 
-  it('info() debe usar console.log como fallback cuando logger es null', () => {
+  it('info() debe ser silencioso cuando logger es null', () => {
     const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
     service.info('fallback info');
-    expect(spy).toHaveBeenCalledWith('[INFO] fallback info');
+    expect(spy).not.toHaveBeenCalled();
     spy.mockRestore();
   });
 
-  it('warn() debe usar console.warn como fallback cuando logger es null', () => {
+  it('warn() debe ser silencioso cuando logger es null', () => {
     const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     service.warn('fallback warn');
-    expect(spy).toHaveBeenCalledWith('[WARN] fallback warn');
+    expect(spy).not.toHaveBeenCalled();
     spy.mockRestore();
   });
 
-  it('error() debe usar console.error como fallback cuando logger es null', () => {
+  it('error() debe llamar a console.error con mensaje genérico cuando logger es null', () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
     service.error('fallback error');
-    expect(spy).toHaveBeenCalledWith('[ERROR] fallback error');
+    expect(spy).toHaveBeenCalledWith(GENERIC_ERROR_MSG);
     spy.mockRestore();
   });
 });
@@ -130,7 +130,6 @@ describe('LoggerService (server — winston disponible)', () => {
       ],
     });
     service = TestBed.inject(LoggerService);
-    // initWinston() falla en test env → logger = null. Lo reemplazamos para simular el happy path.
     (service as any).logger = mockWinstonLogger;
   });
 

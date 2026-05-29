@@ -5,9 +5,10 @@ import { Subject } from 'rxjs';
 import { Users } from './users';
 import { RegisterUser } from '../../../../Shared/Modals/register-user/register-user';
 import { ConfirmModal } from '../../../../Shared/Modals/confirm-modal/confirm-modal';
+import { InactiveUsers } from '../../../../Shared/Modals/inactive-users/inactive-users';
+import { UserStatus } from '../../../../Data/Enum/UserStatus';
 import { environment } from '../../../../../environments/environment';
 import { API_URL } from '../../../../tokens/api-url.token';
-
 
 describe('Users', () => {
   let component: Users;
@@ -16,12 +17,12 @@ describe('Users', () => {
   let mockDialog: { open: ReturnType<typeof vi.fn> };
   let dialogClosed: Subject<string | undefined>;
 
-  const usersUrl = `${environment.apiUrl}/users`;
-  const countUrl = `${environment.apiUrl}/users/count`;
+  const activeUsersUrl = `${environment.apiUrl}/users/status/${UserStatus.ACTIVE}`;
+  const activeCountUrl = `${environment.apiUrl}/users/count/status/${UserStatus.ACTIVE}`;
 
   const mockUsers = [
-    { userId: 1, firstName: 'Ana', lastName: 'López', email: 'ana@test.com', role: 'CUSTOMER' },
-    { userId: 2, firstName: 'Carlos', lastName: 'Ruiz', email: 'carlos@test.com', role: 'ADMIN' },
+    { userId: 1, firstName: 'Ana', lastName: 'López', email: 'ana@test.com', role: 'CUSTOMER', status: UserStatus.ACTIVE },
+    { userId: 2, firstName: 'Carlos', lastName: 'Ruiz', email: 'carlos@test.com', role: 'ADMIN', status: UserStatus.ACTIVE },
   ];
 
   beforeEach(async () => {
@@ -41,8 +42,8 @@ describe('Users', () => {
     httpMock = TestBed.inject(HttpTestingController);
 
     fixture.detectChanges();
-    httpMock.expectOne(usersUrl).flush(mockUsers);
-    httpMock.expectOne(countUrl).flush(2);
+    httpMock.expectOne(activeUsersUrl).flush(mockUsers);
+    httpMock.expectOne(activeCountUrl).flush(2);
   });
 
   afterEach(() => {
@@ -55,13 +56,13 @@ describe('Users', () => {
       expect(component).toBeTruthy();
     });
 
-    it('debe cargar los usuarios en ngOnInit', () => {
+    it('debe cargar solo usuarios activos en ngOnInit', () => {
       expect(component.users().length).toBe(2);
       expect(component.users()[0].firstName).toBe('Ana');
       expect(component.users()[1].firstName).toBe('Carlos');
     });
 
-    it('debe cargar el conteo de usuarios', () => {
+    it('debe cargar el conteo de usuarios activos', () => {
       expect(component.usersNumber()).toBe(2);
     });
   });
@@ -79,11 +80,12 @@ describe('Users', () => {
         lastName: 'User',
         email: 'new@test.com',
         role: 'CUSTOMER',
+        status: UserStatus.ACTIVE,
       };
       component.registerUser();
       dialogClosed.next('Usuario registrado');
-      httpMock.expectOne(usersUrl).flush([...mockUsers, nuevoUsuario]);
-      httpMock.expectOne(countUrl).flush(3);
+      httpMock.expectOne(activeUsersUrl).flush([...mockUsers, nuevoUsuario]);
+      httpMock.expectOne(activeCountUrl).flush(3);
       expect(component.users().length).toBe(3);
       expect(component.usersNumber()).toBe(3);
     });
@@ -91,13 +93,13 @@ describe('Users', () => {
     it('no debe recargar si el modal cierra con resultado distinto', () => {
       component.registerUser();
       dialogClosed.next('Cancelado');
-      httpMock.expectNone(usersUrl);
+      httpMock.expectNone(activeUsersUrl);
     });
 
     it('no debe recargar si el modal cierra sin resultado', () => {
       component.registerUser();
       dialogClosed.next(undefined);
-      httpMock.expectNone(usersUrl);
+      httpMock.expectNone(activeUsersUrl);
     });
   });
 
@@ -110,44 +112,65 @@ describe('Users', () => {
     it('debe recargar la lista cuando el modal de edición cierra con éxito', () => {
       component.updateUser(1);
       dialogClosed.next('Usuario registrado');
-      httpMock.expectOne(usersUrl).flush(mockUsers);
-      httpMock.expectOne(countUrl).flush(2);
+      httpMock.expectOne(activeUsersUrl).flush(mockUsers);
+      httpMock.expectOne(activeCountUrl).flush(2);
       expect(component.users().length).toBe(2);
     });
 
     it('no debe recargar si el modal de edición cierra con resultado distinto', () => {
       component.updateUser(1);
       dialogClosed.next('Cancelado');
-      httpMock.expectNone(usersUrl);
+      httpMock.expectNone(activeUsersUrl);
     });
   });
 
-  describe('deleteUser()', () => {
+  describe('deactivateUser()', () => {
     it('debe abrir ConfirmModal con el mensaje y callbacks correctos', () => {
-      component.deleteUser(3);
+      component.deactivateUser(3);
       expect(mockDialog.open).toHaveBeenCalledWith(ConfirmModal, {
         data: expect.objectContaining({
-          message: '¿Deseas eliminar este usuario?',
-          successTitle: 'Usuario Eliminado',
-          successMessage: 'El usuario ha sido eliminado exitosamente.',
+          message: '¿Deseas desactivar este usuario?',
+          successTitle: 'Usuario Desactivado',
+          successMessage: 'El usuario ha sido desactivado exitosamente.',
           onConfirm: expect.any(Function),
         }),
       });
     });
 
-    it('debe recargar la lista tras eliminación exitosa', () => {
-      component.deleteUser(1);
+    it('debe recargar la lista tras desactivación exitosa', () => {
+      component.deactivateUser(1);
       dialogClosed.next('Eliminación Exitosa');
-      httpMock.expectOne(usersUrl).flush([mockUsers[1]]);
-      httpMock.expectOne(countUrl).flush(1);
+      httpMock.expectOne(activeUsersUrl).flush([mockUsers[1]]);
+      httpMock.expectOne(activeCountUrl).flush(1);
       expect(component.users().length).toBe(1);
       expect(component.usersNumber()).toBe(1);
     });
 
-    it('no debe recargar si la eliminación fue cancelada', () => {
-      component.deleteUser(1);
+    it('no debe recargar si la desactivación fue cancelada', () => {
+      component.deactivateUser(1);
       dialogClosed.next('Cancelado');
-      httpMock.expectNone(usersUrl);
+      httpMock.expectNone(activeUsersUrl);
+    });
+  });
+
+  describe('openInactiveUsers()', () => {
+    it('debe abrir el modal InactiveUsers', () => {
+      component.openInactiveUsers();
+      expect(mockDialog.open).toHaveBeenCalledWith(InactiveUsers, {});
+    });
+
+    it('debe recargar la lista cuando se reactivó algún usuario', () => {
+      component.openInactiveUsers();
+      dialogClosed.next('reactivated');
+      httpMock.expectOne(activeUsersUrl).flush(mockUsers);
+      httpMock.expectOne(activeCountUrl).flush(2);
+      expect(component.users().length).toBe(2);
+    });
+
+    it('no debe recargar si el modal se cerró sin reactivar', () => {
+      component.openInactiveUsers();
+      dialogClosed.next(undefined);
+      httpMock.expectNone(activeUsersUrl);
     });
   });
 });

@@ -2,12 +2,18 @@
   <header class="view-header">
     <div class="header-text">
       <h2 class="header-title">Usuarios</h2>
-      <p class="header-subtitle">{{ usersNumber() }} usuarios registrados</p>
+      <p class="header-subtitle">{{ usersNumber() }} usuarios activos</p>
     </div>
-    <button class="btn-primary" (click)="registerUser()">
-      <span class="material-symbols-outlined">add</span>
-      Registrar
-    </button>
+    <div class="header-actions">
+      <button class="btn-secondary" (click)="openInactiveUsers()">
+        <span class="material-symbols-outlined">person_off</span>
+        Inactivos
+      </button>
+      <button class="btn-primary" (click)="registerUser()">
+        <span class="material-symbols-outlined">add</span>
+        Registrar
+      </button>
+    </div>
   </header>
 
   <div class="bento-grid">
@@ -35,15 +41,19 @@
           <span class="material-symbols-outlined">edit</span>
           Editar
         </button>
-        <button class="btn-action btn-delete" (click)="deleteUser(user.userId)">
-          <span class="material-symbols-outlined">delete</span>
+        <button
+          class="btn-action btn-delete"
+          (click)="deactivateUser(user.userId)"
+          title="Desactivar usuario"
+        >
+          <span class="material-symbols-outlined">person_off</span>
         </button>
       </div>
     </article>
     } @empty {
     <div class="empty-state">
       <span class="material-symbols-outlined">group</span>
-      <p>No hay usuarios registrados aún.</p>
+      <p>No hay usuarios activos.</p>
     </div>
     }
   </div>

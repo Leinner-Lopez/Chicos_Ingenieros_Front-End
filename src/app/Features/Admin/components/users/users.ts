@@ -1,9 +1,11 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
 import { UserService } from '../../../../Data/Services/user-service';
 import { UserDTO } from '../../../../Data/Interfaces/User';
+import { UserStatus } from '../../../../Data/Enum/UserStatus';
 import { Dialog } from '@angular/cdk/dialog';
 import { RegisterUser } from '../../../../Shared/Modals/register-user/register-user';
 import { ConfirmModal } from '../../../../Shared/Modals/confirm-modal/confirm-modal';
+import { InactiveUsers } from '../../../../Shared/Modals/inactive-users/inactive-users';
 
 @Component({
   selector: 'app-users',
@@ -18,14 +20,14 @@ export class Users implements OnInit {
   usersNumber = signal<number>(0);
 
   ngOnInit(): void {
-    this.getUsers();
+    this.loadActiveUsers();
   }
 
-  getUsers() {
-    this.userService.getAllUsers().subscribe((data) => {
+  loadActiveUsers(): void {
+    this.userService.getUsersByStatus(UserStatus.ACTIVE).subscribe((data) => {
       this.users.set(data);
     });
-    this.userService.getCountUsers().subscribe((data) => {
+    this.userService.getCountUsersByStatus(UserStatus.ACTIVE).subscribe((data) => {
       this.usersNumber.set(data);
     });
   }
@@ -33,34 +35,35 @@ export class Users implements OnInit {
   registerUser(): void {
     const dialogRef = this.dialog.open(RegisterUser, {});
     dialogRef.closed.subscribe((result) => {
-      if (result === 'Usuario registrado') {
-        this.getUsers();
-      }
+      if (result === 'Usuario registrado') this.loadActiveUsers();
     });
   }
 
   updateUser(userId: number): void {
-    const dialogRef = this.dialog.open(RegisterUser, {
-      data: { userId },
-    });
+    const dialogRef = this.dialog.open(RegisterUser, { data: { userId } });
     dialogRef.closed.subscribe((result) => {
-      if (result === 'Usuario registrado') {
-        this.getUsers();
-      }
+      if (result === 'Usuario registrado') this.loadActiveUsers();
     });
   }
 
-  deleteUser(userId: number): void {
+  deactivateUser(userId: number): void {
     const dialogRef = this.dialog.open<string>(ConfirmModal, {
       data: {
-        message: '¿Deseas eliminar este usuario?',
-        successTitle: 'Usuario Eliminado',
-        successMessage: 'El usuario ha sido eliminado exitosamente.',
-        onConfirm: () => this.userService.deleteUser(userId),
+        message: '¿Deseas desactivar este usuario?',
+        successTitle: 'Usuario Desactivado',
+        successMessage: 'El usuario ha sido desactivado exitosamente.',
+        onConfirm: () => this.userService.toggleUserStatus(userId),
       },
     });
     dialogRef.closed.subscribe((result) => {
-      if (result === 'Eliminación Exitosa') this.getUsers();
+      if (result === 'Eliminación Exitosa') this.loadActiveUsers();
+    });
+  }
+
+  openInactiveUsers(): void {
+    const dialogRef = this.dialog.open(InactiveUsers, {});
+    dialogRef.closed.subscribe((result) => {
+      if (result === 'reactivated') this.loadActiveUsers();
     });
   }
 }

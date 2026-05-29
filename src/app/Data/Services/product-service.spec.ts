@@ -68,6 +68,7 @@ describe('ProductService', () => {
 
       const req = httpMock.expectOne(apiUrl);
       expect(req.request.method).toBe('POST');
+      expect(req.request.body instanceof FormData).toBe(true);
       req.flush(mockProductRequest);
     });
   });
@@ -147,25 +148,32 @@ describe('ProductService', () => {
   });
 
   describe('updateProduct()', () => {
-    it('debe actualizar un producto existente (PUT)', () => {
-      const updated: ProductResponse = {
+    it('debe actualizar un producto mediante FormData (PUT)', () => {
+      const updatedProduct: ProductResponse = {
         productId: 1,
         name: 'Arroz Premium',
         description: 'Bolsa 1kg mejorada',
         price: 3800,
         minStock: 15,
         categoryId: 2,
+        imageUrl: 'https://res.cloudinary.com/test/image/upload/arroz.jpg',
       };
 
-      service.updateProduct(updated).subscribe((product) => {
+      const formData = new FormData();
+      formData.append(
+        'data',
+        new Blob([JSON.stringify(updatedProduct)], { type: 'application/json' }),
+      );
+
+      service.updateProduct(formData).subscribe((product) => {
         expect(product.price).toBe(3800);
         expect(product.name).toBe('Arroz Premium');
       });
 
       const req = httpMock.expectOne(apiUrl);
       expect(req.request.method).toBe('PUT');
-      expect(req.request.body).toEqual(updated);
-      req.flush({ ...updated, imageUrl: mockProductRequest.imageUrl });
+      expect(req.request.body instanceof FormData).toBe(true);
+      req.flush({ ...updatedProduct, imageUrl: mockProductRequest.imageUrl });
     });
   });
 

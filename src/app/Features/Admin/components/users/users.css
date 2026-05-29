@@ -12,6 +12,14 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .header-title {
@@ -44,6 +52,30 @@
 
 .btn-primary:hover {
   scale: 0.95;
+}
+
+.btn-secondary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: transparent;
+  color: var(--color-font-1);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 9px 20px;
+  border-radius: 20px;
+  border: 1.5px solid rgba(27, 67, 50, 0.3);
+  cursor: pointer;
+  transition: scale 0.25s ease, background-color 0.2s ease;
+}
+
+.btn-secondary:hover {
+  scale: 0.95;
+  background-color: rgba(27, 67, 50, 0.06);
+}
+
+.btn-secondary .material-symbols-outlined {
+  font-size: 1.1rem;
 }
 
 .btn-primary .material-symbols-outlined {
