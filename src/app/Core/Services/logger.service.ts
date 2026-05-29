@@ -23,11 +23,11 @@ export class LoggerService {
   }
 
   info(message: string) {
-    this.isServer && this.logger ? this.logger.info(message) : console.log(`[INFO] ${message}`);
+    if (this.isServer && this.logger) this.logger.info(message);
   }
 
   warn(message: string) {
-    this.isServer && this.logger ? this.logger.warn(message) : console.warn(`[WARN] ${message}`);
+    if (this.isServer && this.logger) this.logger.warn(message);
   }
 
   error(message: string, error?: unknown) {
@@ -40,6 +40,10 @@ export class LoggerService {
       detail = String((error as string | number) ?? '');
     }
     const full = detail ? `${message} | ${detail}` : message;
-    this.isServer && this.logger ? this.logger.error(full) : console.error(`[ERROR] ${full}`);
+    if (this.isServer && this.logger) {
+      this.logger.error(full);
+    } else {
+      console.error('[ERROR] Ha ocurrido un error inesperado. Revisa los logs del servidor.');
+    }
   }
 }

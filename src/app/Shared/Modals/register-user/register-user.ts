@@ -23,9 +23,10 @@ export class RegisterUser {
   private readonly modalNotification = inject(ModalNotificationService);
 
   registrationForm: FormGroup;
+  isEditMode: boolean;
 
   constructor(@Inject(DIALOG_DATA) public data: any) {
-    const isEditMode = !!data?.userId;
+    this.isEditMode = !!data?.userId;
 
     this.registrationForm = this.form.group(
       {
@@ -41,13 +42,13 @@ export class RegisterUser {
           null,
           [Validators.required, Validators.min(1000000000), Validators.max(9999999999)],
         ],
-        password: ['', isEditMode ? [] : [Validators.required]],
-        confirmPassword: ['', isEditMode ? [] : Validators.required],
+        password: ['', this.isEditMode ? [] : [Validators.required]],
+        confirmPassword: ['', this.isEditMode ? [] : Validators.required],
       },
       { validators: passwordMatchValidator },
     );
 
-    if (isEditMode) {
+    if (this.isEditMode) {
       this.registrationForm.get('documentNumber')?.disable();
       this.userService.findUserById(data.userId).subscribe((user: User) => {
         this.registrationForm.patchValue({

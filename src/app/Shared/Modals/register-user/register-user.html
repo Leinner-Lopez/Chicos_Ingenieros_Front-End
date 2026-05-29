@@ -1,5 +1,5 @@
 <div class="form">
-  <h1>Formulario de Registro</h1>
+  <h1>{{ isEditMode ? 'Editar Usuario' : 'Formulario de Registro' }}</h1>
   <button class="modal__close" (click)="closeModal()">
     <span class="material-symbols-outlined"> close </span>
   </button>
@@ -68,13 +68,14 @@
         </div>
       </div>
     </fieldset>
-    @if (!data?.userId) {
     <app-password-fieldset />
+    @if (isEditMode) {
+    <p class="form__hint">Dejar en blanco para no cambiar la contraseña</p>
     }
     <div class="form__button-container">
       <input
         type="submit"
-        value="Registrar"
+        [value]="isEditMode ? 'Actualizar' : 'Registrar'"
         class="form__button"
         [disabled]="registrationForm.invalid"
       />

@@ -21,13 +21,20 @@ export class RegisterProduct {
   form = inject(FormBuilder);
   productService: ProductService = inject(ProductService);
   selectedImage: File | null = null;
+  isEditMode: boolean;
+  currentImageUrl: string | null = null;
+  imageError: string | null = null;
+  readonly ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+  readonly MAX_SIZE_MB = 10;
 
   constructor(@Inject(DIALOG_DATA) public data: any) {
+    this.isEditMode = !!data?.productId;
     this.categoryService.getAllCategories().subscribe((categories: Category[]) => {
       this.categories = categories;
     });
-    if (data?.productId) {
+    if (this.isEditMode) {
       this.productService.findProductById(data.productId).subscribe((product: ProductResponse) => {
+        this.currentImageUrl = product.imageUrl;
         this.formularioRegistration.patchValue({
           minStock: product.minStock,
           name: product.name,
@@ -35,8 +42,6 @@ export class RegisterProduct {
           price: product.price,
           categories: product.categoryId,
         });
-        this.formularioRegistration.get('image')?.clearValidators();
-        this.formularioRegistration.get('image')?.updateValueAndValidity();
       });
     }
   }
@@ -50,7 +55,7 @@ export class RegisterProduct {
   });
 
   onSubmit(): void {
-    if (this.formularioRegistration.invalid) return;
+    if (this.formularioRegistration.invalid || this.imageError) return;
 
     const formData: FormData = new FormData();
 
@@ -61,11 +66,17 @@ export class RegisterProduct {
       price: this.formularioRegistration.value.price!,
       minStock: this.formularioRegistration.value.minStock!,
       categoryId: Number(this.formularioRegistration.value.categories!),
+      imageUrl: '',
     };
+
+    formData.append('data', new Blob([JSON.stringify(productData)], { type: 'application/json' }));
 
     if (this.data?.productId) {
       productData.productId = this.data.productId;
-      this.productService.updateProduct(productData).subscribe({
+      if (this.selectedImage) {
+        formData.append('image', this.selectedImage);
+      }
+      this.productService.updateProduct(formData).subscribe({
         next: () => {
           const dialogRef = this.dialog.open<string>(MessageModal, {
             data: {
@@ -82,7 +93,6 @@ export class RegisterProduct {
       return;
     }
 
-    formData.append('data', new Blob([JSON.stringify(productData)], { type: 'application/json' }));
     formData.append('image', this.selectedImage as File);
 
     this.productService.saveProduct(formData).subscribe({
@@ -108,9 +118,26 @@ export class RegisterProduct {
 
   onImageChange(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedImage = input.files[0];
+    this.imageError = null;
+    this.selectedImage = null;
+
+    if (!input.files || input.files.length === 0) return;
+
+    const file = input.files[0];
+
+    if (!this.ACCEPTED_TYPES.includes(file.type)) {
+      this.imageError = 'Formato no permitido. Solo se aceptan JPG, PNG y WebP.';
+      input.value = '';
+      return;
     }
+
+    if (file.size > this.MAX_SIZE_MB * 1024 * 1024) {
+      this.imageError = `La imagen no puede superar los ${this.MAX_SIZE_MB} MB.`;
+      input.value = '';
+      return;
+    }
+
+    this.selectedImage = file;
   }
 
   hasError(controlName: string, errorType: string): boolean {

@@ -5,7 +5,9 @@
   transform: translate(-50%, -50%) scale(1);
   opacity: 1;
   z-index: 10;
-  width: 500px;
+  width: min(500px, 95vw);
+  max-height: 90vh;
+  overflow-y: auto;
   transition:
     opacity 0.5s ease-out,
     transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -19,7 +21,6 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
-  overflow: hidden;
 }
 
 .modal__close {
@@ -56,7 +57,7 @@
 .form__input-container {
   display: grid;
   width: 100%;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 15px;
 }
 
@@ -123,6 +124,21 @@ textarea {
   font-weight: 600;
   font-size: 1.1rem;
   color: rgba(240, 20, 20);
+}
+
+.product__current-image {
+  width: 100%;
+  max-height: 150px;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 1px solid var(--color-background-green);
+}
+
+.input__hint {
+  font-size: 0.85rem;
+  color: #666;
+  font-style: italic;
+  margin: 0;
 }
 
 @starting-style {

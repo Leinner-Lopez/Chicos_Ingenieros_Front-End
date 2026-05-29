@@ -15,6 +15,7 @@ export interface ProductResponse {
   price: number;
   minStock: number;
   categoryId: number;
+  imageUrl: string;
 }
 
 export interface ProductDTO {

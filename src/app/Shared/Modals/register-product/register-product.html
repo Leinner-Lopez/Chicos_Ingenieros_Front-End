@@ -1,5 +1,5 @@
 <div class="modal">
-  <h2 class="modal__title">Registrar Producto</h2>
+  <h2 class="modal__title">{{ isEditMode ? 'Editar Producto' : 'Registrar Producto' }}</h2>
   <button class="modal__close" (click)="closeModal()">
     <span class="material-symbols-outlined"> close </span>
   </button>
@@ -46,15 +46,20 @@
       </div>
       <div class="input__container input__container--full">
         <label for="productImage">Imagen</label>
+        @if (isEditMode && currentImageUrl) {
+        <img [src]="currentImageUrl" alt="Imagen actual" class="product__current-image" />
+        <p class="input__hint">Dejar en blanco para mantener la imagen actual</p>
+        }
         <input
           type="file"
           name="productImage"
           id="productImage"
-          accept="image/**"
+          accept="image/jpeg,image/png,image/webp"
           (change)="onImageChange($event)"
         />
-        @if (hasError("image","required")) {
-        <p class="error__message">El campo es requerido</p>
+        <p class="input__hint">Formatos aceptados: JPG, PNG, WebP · Máximo 10 MB</p>
+        @if (imageError) {
+        <p class="error__message">{{ imageError }}</p>
         }
       </div>
       <div class="input__container input__container--full">
@@ -69,6 +74,6 @@
         }
       </div>
     </div>
-    <button type="submit" class="submit__button">Registrar</button>
+    <button type="submit" class="submit__button">{{ isEditMode ? 'Actualizar' : 'Registrar' }}</button>
   </form>
 </div>

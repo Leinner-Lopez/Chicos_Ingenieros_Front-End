@@ -40,8 +40,8 @@ export class ProductService {
     return this.httpClient.get<ProductRequest>(`${this.apiUrl}/${id}`);
   }
 
-  updateProduct(product: ProductResponse): Observable<ProductRequest> {
-    return this.httpClient.put<ProductRequest>(this.apiUrl, product);
+  updateProduct(formData: FormData): Observable<ProductRequest> {
+    return this.httpClient.put<ProductRequest>(this.apiUrl, formData);
   }
 
   deleteProduct(id: number): Observable<void> {
