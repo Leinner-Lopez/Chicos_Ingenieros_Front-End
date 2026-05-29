@@ -57,3 +57,6 @@ node_modules/
 .claude
 .environment.ts
 .environment.prod.ts
+
+# Variables de entorno locales
+.env
