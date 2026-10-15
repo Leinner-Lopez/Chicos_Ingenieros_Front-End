@@ -5,6 +5,7 @@ import { AuthService } from '../../../../Core/Services/auth-service';
 import { LoginRequest } from '../../../../Data/Interfaces/LoginRequest';
 import { Dialog } from '@angular/cdk/dialog';
 import { MessageModal } from '../../../../Shared/Modals/message-modal/message-modal';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -31,13 +32,22 @@ export class Login {
     };
     this.authService.login(credentials).subscribe({
       next: () => this.router.navigate([this.authService.getHomeRoute()]),
-      error: (err) => {
-        this.dialog.open<string>(MessageModal, {
-          data: {
-            title: 'Error de autenticación',
-            message: 'Email o contraseña incorrectos. Por favor, inténtelo de nuevo.',
-          },
-        });
+      error: (err: HttpErrorResponse) => {
+        if (err.status == 403) {
+          this.dialog.open<string>(MessageModal, {
+            data: {
+              title: 'Error de autenticación',
+              message: 'Email o contraseña incorrectos. Por favor, inténtelo de nuevo.',
+            },
+          });
+        } else {
+          this.dialog.open<string>(MessageModal, {
+            data: {
+              title: 'Error de autenticación',
+              message: 'El usuario ha sido inhabilitado de la plataforma.',
+            },
+          });
+        }
       },
     });
   }
