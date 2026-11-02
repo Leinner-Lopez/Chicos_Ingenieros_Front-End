@@ -11,6 +11,7 @@ import { Products } from './Features/Admin/components/products/products';
 import { Categories } from './Features/Admin/components/categories/categories';
 import { Inventory } from './Features/Admin/components/inventory/inventory';
 import { SalesHistory } from './Features/Admin/components/sales-history/sales-history';
+import { BackupView } from './Features/Admin/components/backup/backup';
 import { InicioStore } from './Features/Store/components/inicio/inicio';
 import { InicioCustomer } from './Features/Customer/components/inicio/inicio';
 import { ProductsCustomer } from './Features/Customer/components/products/products';
@@ -32,6 +33,12 @@ export const routes: Routes = [
       { path: 'categorias', component: Categories },
       { path: 'inventario', component: Inventory },
       { path: 'ventas', component: SalesHistory },
+      {
+        path: 'backup',
+        component: BackupView,
+        canActivate: [roleGuard],
+        data: { rol: ['ADMIN'] },
+      },
       { path: '', redirectTo: 'inicio', pathMatch: 'full' },
     ],
   },

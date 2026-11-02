@@ -1,0 +1,234 @@
+.backup-view {
+  display: flex;
+  flex-direction: column;
+  padding: 28px 28px 28px 8px;
+  height: 100dvh;
+  gap: 24px;
+  overflow-y: auto;
+}
+
+/* ── Header ─────────────────────────────── */
+.view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.header-title {
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: var(--color-font-1);
+  line-height: 1;
+}
+
+.header-subtitle {
+  font-size: 0.875rem;
+  color: var(--color-font-2);
+  margin-top: 4px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-separator {
+  width: 1px;
+  height: 28px;
+  background-color: rgba(27, 67, 50, 0.2);
+  margin: 0 12px;
+}
+
+.btn-primary,
+.btn-danger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 9px 20px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  transition: scale 0.25s ease;
+}
+
+.btn-primary {
+  background-color: var(--color-background-green);
+  color: var(--color-font-3);
+}
+
+.btn-danger {
+  background-color: #b91c1c;
+  color: #fff;
+}
+
+.btn-primary:hover:not(:disabled),
+.btn-danger:hover:not(:disabled) {
+  scale: 0.95;
+}
+
+.btn-primary .material-symbols-outlined,
+.btn-danger .material-symbols-outlined {
+  font-size: 1.1rem;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Table ───────────────────────────────── */
+.table-wrap {
+  background-color: var(--color-background-gray);
+  border: 1px solid rgba(27, 67, 50, 0.18);
+  border-radius: 18px;
+  overflow-x: auto;
+}
+
+.backup-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  color: var(--color-font-1);
+}
+
+.backup-table th {
+  text-align: left;
+  font-weight: 600;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(27, 67, 50, 0.12);
+  white-space: nowrap;
+}
+
+.backup-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(27, 67, 50, 0.08);
+  vertical-align: middle;
+}
+
+.backup-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ── Tags ────────────────────────────────── */
+.tag {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.tag--manual {
+  background-color: rgba(27, 67, 50, 0.14);
+  color: var(--color-font-1);
+}
+
+.tag--pre_restore {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.tag--pre_purge {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+/* ── Row actions ─────────────────────────── */
+.row-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-action {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: none;
+  border-radius: 10px;
+  padding: 7px 14px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: scale 0.2s ease;
+}
+
+.btn-action:hover:not(:disabled) {
+  scale: 0.95;
+}
+
+.btn-download {
+  background-color: var(--color-background-white);
+  color: var(--color-font-1);
+}
+
+.btn-restore {
+  background-color: var(--color-background-green);
+  color: #fff;
+}
+
+.btn-action .material-symbols-outlined {
+  font-size: 1rem;
+}
+
+/* ── Empty state ─────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 64px;
+  color: var(--color-font-2);
+}
+
+.empty-state .material-symbols-outlined {
+  font-size: 2.5rem;
+  opacity: 0.35;
+}
+
+/* ── Loading ─────────────────────────────── */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background-color: rgba(241, 243, 242, 0.75);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: var(--color-font-1);
+  font-weight: 500;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid rgba(27, 67, 50, 0.2);
+  border-top-color: var(--color-background-green);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Responsive ──────────────────────────── */
+@media (max-width: 700px) {
+  .backup-view {
+    padding: 20px 16px;
+  }
+
+  .header-actions {
+    flex-wrap: wrap;
+  }
+
+  .header-separator {
+    display: none;
+  }
+}

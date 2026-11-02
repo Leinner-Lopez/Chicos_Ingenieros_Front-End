@@ -5,9 +5,12 @@ import { Observable } from 'rxjs';
 
 interface ConfirmModalData {
   message: string;
-  successTitle: string;
-  successMessage: string;
-  onConfirm: () => Observable<unknown>;
+  title?: string;
+  /** Si es true, solo confirma: cierra con 'confirmed' y deja la acción al llamador. */
+  confirmOnly?: boolean;
+  successTitle?: string;
+  successMessage?: string;
+  onConfirm?: () => Observable<unknown>;
 }
 
 @Component({
@@ -20,20 +23,26 @@ export class ConfirmModal {
   dialog = inject(Dialog);
   dialogRef: DialogRef<string> = inject(DialogRef);
   message: string;
+  title: string;
 
   constructor(@Inject(DIALOG_DATA) public data: ConfirmModalData) {
     this.message = data.message;
+    this.title = data.title ?? 'Confirmar Eliminación';
   }
 
   closeModal() {
-    this.dialogRef.close('Eliminación Exitosa');
+    this.dialogRef.close(this.data.confirmOnly ? undefined : 'Eliminación Exitosa');
   }
 
   confirmAction() {
+    if (this.data.confirmOnly || !this.data.onConfirm) {
+      this.dialogRef.close('confirmed');
+      return;
+    }
     this.data.onConfirm().subscribe({
       next: () => {
         const dialogRef = this.dialog.open<string>(MessageModal, {
-          data: { title: this.data.successTitle, message: this.data.successMessage },
+          data: { title: this.data.successTitle ?? '', message: this.data.successMessage ?? '' },
         });
         setTimeout(() => {
           dialogRef.close();

@@ -1,5 +1,5 @@
 .history-container {
-  padding: 32px;
+  padding: 28px 28px 28px 8px;
   min-height: 100vh;
 }
 
@@ -8,6 +8,19 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 32px;
+}
+
+.main-title{
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: var(--color-font-1);
+  line-height: 1;
+}
+
+.section-dec{
+  font-size: 0.875rem;
+  color: var(--color-font-2);
+  margin-top: 4px;
 }
 
 .today-badge {

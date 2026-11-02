@@ -12,6 +12,7 @@ export class MenuConfigService {
       { label: 'Categorías', icon: 'category', route: '/admin/categorias' },
       { label: 'Inventario', icon: 'inventory', route: '/admin/inventario' },
       { label: 'Ventas', icon: 'article', route: '/admin/ventas' },
+      { label: 'BackUp', icon: 'backup', route: '/admin/backup'}
     ],
     STORE: [
       { label: 'Inicio', icon: 'home', route: '/store/inicio' },

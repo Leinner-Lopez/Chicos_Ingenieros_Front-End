@@ -1,0 +1,75 @@
+<section class="backup-view">
+
+  <header class="view-header">
+    <div class="header-text">
+      <h2 class="header-title">Copias de seguridad</h2>
+      <p class="header-subtitle">{{ backups().length }} backups en el historial</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-primary" [disabled]="busy()" (click)="createBackup()">
+        <span class="material-symbols-outlined">backup</span>
+        Crear backup
+      </button>
+      <span class="header-separator"></span>
+      <button class="btn-danger" [disabled]="busy()" (click)="purgeDatabase()">
+        <span class="material-symbols-outlined">delete_forever</span>
+        Vaciar base de datos
+      </button>
+    </div>
+  </header>
+
+  <div class="table-wrap">
+    <table class="backup-table">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Tipo</th>
+          <th>Creado por</th>
+          <th>Tamaño</th>
+          <th>Registros</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (backup of backups(); track backup.backupId) {
+          <tr>
+            <td>{{ backup.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+            <td>
+              <span class="tag" [class]="'tag tag--' + backup.type.toLowerCase()">{{ typeLabels[backup.type] }}</span>
+            </td>
+            <td>{{ backup.createdBy }}</td>
+            <td>{{ formatSize(backup.sizeBytes) }}</td>
+            <td>{{ backup.recordCount }}</td>
+            <td>
+              <div class="row-actions">
+                <button class="btn-action btn-download" [disabled]="busy()" (click)="downloadBackup(backup)">
+                  <span class="material-symbols-outlined">download</span>
+                  Descargar
+                </button>
+                <button class="btn-action btn-restore" [disabled]="busy()" (click)="restoreBackup(backup)">
+                  <span class="material-symbols-outlined">restore</span>
+                  Restaurar
+                </button>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="empty-state">
+              <span class="material-symbols-outlined">cloud_off</span>
+              <p>No hay backups registrados aún.</p>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (busy()) {
+    <div class="loading-overlay" role="status" aria-live="polite">
+      <div class="spinner"></div>
+      <p>{{ busyText() }}</p>
+    </div>
+  }
+
+</section>

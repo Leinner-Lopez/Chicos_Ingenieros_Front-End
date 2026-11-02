@@ -15,8 +15,8 @@ describe('MenuConfigService', () => {
 
   describe('getMenuByRole()', () => {
     describe('ADMIN', () => {
-      it('debe retornar 7 items', () => {
-        expect(service.getMenuByRole('ADMIN').length).toBe(7);
+      it('debe retornar 8 items', () => {
+        expect(service.getMenuByRole('ADMIN').length).toBe(8);
       });
 
       it('debe incluir todas las rutas del dashboard de administrador', () => {
