@@ -2,18 +2,18 @@
 
   <header class="view-header">
     <div class="header-text">
-      <h2 class="header-title">Copias de seguridad</h2>
-      <p class="header-subtitle">{{ backups().length }} backups en el historial</p>
+      <h2 class="header-title">{{ 'backup.title' | transloco }}</h2>
+      <p class="header-subtitle">{{ 'backup.count' | transloco: { count: backups().length } }}</p>
     </div>
     <div class="header-actions">
       <button class="btn-primary" [disabled]="busy()" (click)="createBackup()">
         <span class="material-symbols-outlined">backup</span>
-        Crear backup
+        {{ 'backup.create' | transloco }}
       </button>
       <span class="header-separator"></span>
       <button class="btn-danger" [disabled]="busy()" (click)="purgeDatabase()">
         <span class="material-symbols-outlined">delete_forever</span>
-        Vaciar base de datos
+        {{ 'backup.purge' | transloco }}
       </button>
     </div>
   </header>
@@ -22,20 +22,20 @@
     <table class="backup-table">
       <thead>
         <tr>
-          <th>Fecha</th>
-          <th>Tipo</th>
-          <th>Creado por</th>
-          <th>Tamaño</th>
-          <th>Registros</th>
-          <th>Acciones</th>
+          <th>{{ 'backup.colDate' | transloco }}</th>
+          <th>{{ 'backup.colType' | transloco }}</th>
+          <th>{{ 'backup.colCreatedBy' | transloco }}</th>
+          <th>{{ 'backup.colSize' | transloco }}</th>
+          <th>{{ 'backup.colRecords' | transloco }}</th>
+          <th>{{ 'backup.colActions' | transloco }}</th>
         </tr>
       </thead>
       <tbody>
         @for (backup of backups(); track backup.backupId) {
           <tr>
-            <td>{{ backup.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+            <td>{{ backup.createdAt | translocoDate:{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false} }}</td>
             <td>
-              <span class="tag" [class]="'tag tag--' + backup.type.toLowerCase()">{{ typeLabels[backup.type] }}</span>
+              <span class="tag" [class]="'tag tag--' + backup.type.toLowerCase()">{{ typeLabelKeys[backup.type] | transloco }}</span>
             </td>
             <td>{{ backup.createdBy }}</td>
             <td>{{ formatSize(backup.sizeBytes) }}</td>
@@ -44,11 +44,11 @@
               <div class="row-actions">
                 <button class="btn-action btn-download" [disabled]="busy()" (click)="downloadBackup(backup)">
                   <span class="material-symbols-outlined">download</span>
-                  Descargar
+                  {{ 'backup.download' | transloco }}
                 </button>
                 <button class="btn-action btn-restore" [disabled]="busy()" (click)="restoreBackup(backup)">
                   <span class="material-symbols-outlined">restore</span>
-                  Restaurar
+                  {{ 'backup.restore' | transloco }}
                 </button>
               </div>
             </td>
@@ -57,7 +57,7 @@
           <tr>
             <td colspan="6" class="empty-state">
               <span class="material-symbols-outlined">cloud_off</span>
-              <p>No hay backups registrados aún.</p>
+              <p>{{ 'backup.empty' | transloco }}</p>
             </td>
           </tr>
         }

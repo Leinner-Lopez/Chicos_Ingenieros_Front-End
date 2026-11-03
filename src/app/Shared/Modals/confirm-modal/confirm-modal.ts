@@ -2,6 +2,7 @@ import { Dialog, DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Component, Inject, inject } from '@angular/core';
 import { MessageModal } from '../message-modal/message-modal';
 import { Observable } from 'rxjs';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 interface ConfirmModalData {
   message: string;
@@ -15,19 +16,20 @@ interface ConfirmModalData {
 
 @Component({
   selector: 'app-confirm-modal',
-  imports: [],
+  imports: [TranslocoPipe],
   templateUrl: './confirm-modal.html',
   styleUrl: './confirm-modal.css',
 })
 export class ConfirmModal {
   dialog = inject(Dialog);
   dialogRef: DialogRef<string> = inject(DialogRef);
+  private readonly t = inject(TranslocoService);
   message: string;
   title: string;
 
   constructor(@Inject(DIALOG_DATA) public data: ConfirmModalData) {
     this.message = data.message;
-    this.title = data.title ?? 'Confirmar Eliminación';
+    this.title = data.title ?? this.t.translate('confirm.deleteTitle');
   }
 
   closeModal() {

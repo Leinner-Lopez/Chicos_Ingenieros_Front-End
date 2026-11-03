@@ -1,4 +1,4 @@
-<nav class="navbar" aria-label="Menú lateral">
+<nav class="navbar" [attr.aria-label]="'menu.sidebarLabel' | transloco">
   <section class="navbar__group">
     <header class="group__user">
       <div class="user__icon">
@@ -17,14 +17,15 @@
           [routerLinkActiveOptions]="{exact: true}"
         >
           <span class="material-symbols-outlined">{{item.icon}}</span>
-          {{item.label}}
+          {{ item.label | transloco }}
         </a>
       </li>
       }
       <button (click)="logout()" class="item__link">
         <span class="material-symbols-outlined">logout</span>
-        Log out
+        {{ 'common.logout' | transloco }}
       </button>
+      <li class="list__item list__item--lang"><app-language-switcher /></li>
     </ul>
   </section>
 </nav>

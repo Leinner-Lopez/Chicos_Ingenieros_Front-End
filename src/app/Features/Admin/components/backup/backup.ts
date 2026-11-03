@@ -1,7 +1,9 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { DatePipe, DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Dialog } from '@angular/cdk/dialog';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
+import { TranslocoDatePipe, TranslocoLocaleService } from '@jsverse/transloco-locale';
 import { finalize, Observable } from 'rxjs';
 import { BackupService } from '../../../../Data/Services/backup-service';
 import { ApiError, Backup, BackupOperationResponse, BackupType } from '../../../../Data/Interfaces/Backup';
@@ -9,11 +11,9 @@ import { ConfirmModal } from '../../../../Shared/Modals/confirm-modal/confirm-mo
 import { MessageModal } from '../../../../Shared/Modals/message-modal/message-modal';
 import { ModalNotificationService } from '../../../../Core/Services/modal-notification.service';
 
-const GENERIC_ERROR = 'Ocurrió un error interno. Inténtalo de nuevo más tarde.';
-
 @Component({
   selector: 'app-backup',
-  imports: [DatePipe],
+  imports: [TranslocoPipe, TranslocoDatePipe],
   templateUrl: './backup.html',
   styleUrl: './backup.css',
 })
@@ -22,15 +22,17 @@ export class BackupView implements OnInit {
   private readonly document = inject(DOCUMENT);
   private readonly backupService = inject(BackupService);
   private readonly notification = inject(ModalNotificationService);
+  private readonly t = inject(TranslocoService);
+  private readonly localeService = inject(TranslocoLocaleService);
 
   backups = signal<Backup[]>([]);
   busy = signal(false);
   busyText = signal('');
 
-  readonly typeLabels: Record<BackupType, string> = {
-    MANUAL: 'Manual',
-    PRE_RESTORE: 'Automático (antes de restaurar)',
-    PRE_PURGE: 'Automático (antes de vaciar)',
+  readonly typeLabelKeys: Record<BackupType, string> = {
+    MANUAL: 'backup.typeManual',
+    PRE_RESTORE: 'backup.typePreRestore',
+    PRE_PURGE: 'backup.typePrePurge',
   };
 
   ngOnInit(): void {
@@ -50,14 +52,14 @@ export class BackupView implements OnInit {
   }
 
   createBackup() {
-    this.run('Creando backup…', this.backupService.createBackup(), () => {
-      this.notification.showSuccess('Backup creado', 'La copia de seguridad se creó exitosamente.', () => {});
+    this.run(this.t.translate('backup.creating'), this.backupService.createBackup(), () => {
+      this.notification.showSuccess(this.t.translate('backup.created'), this.t.translate('backup.createdMsg'), () => {});
       this.loadBackups();
     });
   }
 
   downloadBackup(backup: Backup) {
-    this.run('Descargando backup…', this.backupService.downloadBackup(backup.backupId), (blob) => {
+    this.run(this.t.translate('backup.downloading'), this.backupService.downloadBackup(backup.backupId), (blob) => {
       const url = URL.createObjectURL(blob);
       const link = this.document.createElement('a');
       link.href = url;
@@ -68,24 +70,27 @@ export class BackupView implements OnInit {
   }
 
   restoreBackup(backup: Backup) {
-    const date = new Date(backup.createdAt).toLocaleString('es-CO');
+    const date = this.localeService.localizeDate(new Date(backup.createdAt), undefined, {
+      dateStyle: 'short',
+      timeStyle: 'short',
+    });
     this.confirm(
-      'Confirmar Restauración',
-      `Esto reemplazará todos los datos actuales (productos, lotes, ventas, categorías y usuarios) por los del backup del ${date}. Tu usuario administrador se conserva. Antes de restaurar se creará un backup automático para que puedas volver atrás.`,
+      this.t.translate('backup.confirmRestoreTitle'),
+      this.t.translate('backup.confirmRestoreMsg', { date }),
       () =>
-        this.run('Restaurando backup…', this.backupService.restoreBackup(backup.backupId), (res) =>
-          this.onOperationDone('Base de datos restaurada', res),
+        this.run(this.t.translate('backup.restoring'), this.backupService.restoreBackup(backup.backupId), (res) =>
+          this.onOperationDone(this.t.translate('backup.restored'), res),
         ),
     );
   }
 
   purgeDatabase() {
     this.confirm(
-      'Confirmar Vaciado',
-      'Esto eliminará todos los datos actuales (productos, lotes, ventas, categorías y usuarios). Se conserva el usuario administrador y el historial de backups. Antes de vaciar se creará un backup automático para que puedas volver atrás.',
+      this.t.translate('backup.confirmPurgeTitle'),
+      this.t.translate('backup.confirmPurgeMsg'),
       () =>
-        this.run('Vaciando base de datos…', this.backupService.purgeDatabase(), (res) =>
-          this.onOperationDone('Base de datos vaciada', res),
+        this.run(this.t.translate('backup.purging'), this.backupService.purgeDatabase(), (res) =>
+          this.onOperationDone(this.t.translate('backup.purged'), res),
         ),
     );
   }
@@ -102,7 +107,7 @@ export class BackupView implements OnInit {
   private onOperationDone(title: string, res: BackupOperationResponse) {
     this.notification.showSuccess(
       title,
-      `Se guardó una copia previa (#${res.safetyBackup.backupId}) por si necesitas deshacer.`,
+      this.t.translate('backup.safetyCopy', { id: res.safetyBackup.backupId }),
       () => {},
       4000,
     );
@@ -123,12 +128,12 @@ export class BackupView implements OnInit {
 
   private async showError(err: unknown) {
     const message = await this.extractMessage(err);
-    this.dialog.open(MessageModal, { data: { title: 'Error', message } });
+    this.dialog.open(MessageModal, { data: { title: this.t.translate('common.error'), message } });
   }
 
   private async extractMessage(err: unknown): Promise<string> {
     if (!(err instanceof HttpErrorResponse) || err.status >= 500 || err.status === 0) {
-      return GENERIC_ERROR;
+      return this.t.translate('backup.genericError');
     }
     let body: unknown = err.error;
     if (body instanceof Blob) {
@@ -140,8 +145,8 @@ export class BackupView implements OnInit {
     }
     const apiMessage = (body as Partial<ApiError> | null)?.message;
     if (apiMessage) return apiMessage;
-    if (err.status === 403) return 'No tienes permisos o tu sesión expiró.';
-    if (err.status === 404) return 'El backup o su archivo no existen.';
-    return 'No se pudo completar la acción.';
+    if (err.status === 403) return this.t.translate('backup.forbidden');
+    if (err.status === 404) return this.t.translate('backup.notFound');
+    return this.t.translate('backup.actionFailed');
   }
 }

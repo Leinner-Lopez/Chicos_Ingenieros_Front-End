@@ -6,15 +6,17 @@ import { ProductResponse } from '../../../Data/Interfaces/Product';
 import { CategoryService } from '../../../Data/Services/category-service';
 import { Category } from '../../../Data/Interfaces/Category';
 import { MessageModal } from '../message-modal/message-modal';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-register-product',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, TranslocoPipe],
   templateUrl: './register-product.html',
   styleUrl: './register-product.css',
 })
 export class RegisterProduct {
   dialog = inject(Dialog);
+  private readonly t = inject(TranslocoService);
   dialogRef: DialogRef<string> = inject(DialogRef);
   categoryService = inject(CategoryService);
   categories: Category[] = [];
@@ -80,8 +82,8 @@ export class RegisterProduct {
         next: () => {
           const dialogRef = this.dialog.open<string>(MessageModal, {
             data: {
-              title: 'Producto Actualizado',
-              message: 'El producto ha sido actualizado exitosamente.',
+              title: this.t.translate('products.updated'),
+              message: this.t.translate('products.updatedMsg'),
             },
           });
           setTimeout(() => {
@@ -100,8 +102,8 @@ export class RegisterProduct {
         console.log(response);
         const dialogRef = this.dialog.open<string>(MessageModal, {
           data: {
-            title: 'Producto Registrado',
-            message: 'El producto ha sido registrado exitosamente.',
+            title: this.t.translate('products.registered'),
+            message: this.t.translate('products.registeredMsg'),
           },
         });
         setTimeout(() => {
@@ -126,13 +128,13 @@ export class RegisterProduct {
     const file = input.files[0];
 
     if (!this.ACCEPTED_TYPES.includes(file.type)) {
-      this.imageError = 'Formato no permitido. Solo se aceptan JPG, PNG y WebP.';
+      this.imageError = this.t.translate('validation.imageFormat');
       input.value = '';
       return;
     }
 
     if (file.size > this.MAX_SIZE_MB * 1024 * 1024) {
-      this.imageError = `La imagen no puede superar los ${this.MAX_SIZE_MB} MB.`;
+      this.imageError = this.t.translate('validation.imageSize', { max: this.MAX_SIZE_MB });
       input.value = '';
       return;
     }

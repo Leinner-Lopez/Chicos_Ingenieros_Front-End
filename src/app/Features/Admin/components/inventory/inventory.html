@@ -2,8 +2,8 @@
 
   <header class="view-header">
     <div class="header-text">
-      <h2 class="header-title">Inventario</h2>
-      <p class="header-subtitle">{{ productCount() }} productos registrados</p>
+      <h2 class="header-title">{{ 'inventory.title' | transloco }}</h2>
+      <p class="header-subtitle">{{ 'inventory.count' | transloco: { count: productCount() } }}</p>
     </div>
   </header>
 
@@ -18,9 +18,9 @@
           <div class="card-meta">
             <h3 class="item-name">{{ item.name }}</h3>
             @if (item.totalStock <= item.minStock) {
-              <span class="status-badge badge-warn">Stock bajo</span>
+              <span class="status-badge badge-warn">{{ 'inventory.lowStock' | transloco }}</span>
             } @else {
-              <span class="status-badge badge-ok">En stock</span>
+              <span class="status-badge badge-ok">{{ 'inventory.inStock' | transloco }}</span>
             }
           </div>
         </div>
@@ -29,12 +29,12 @@
 
         <div class="stock-info">
           <div class="stock-row">
-            <span class="stock-label">Stock total</span>
-            <span class="stock-value">{{ item.totalStock }} <small>uds</small></span>
+            <span class="stock-label">{{ 'inventory.totalStock' | transloco }}</span>
+            <span class="stock-value">{{ item.totalStock }} <small>{{ 'common.units' | transloco }}</small></span>
           </div>
           <div class="stock-row muted-row">
-            <span class="stock-label">Stock mínimo</span>
-            <span class="stock-min">{{ item.minStock }} uds</span>
+            <span class="stock-label">{{ 'inventory.minStock' | transloco }}</span>
+            <span class="stock-min">{{ item.minStock }} {{ 'common.units' | transloco }}</span>
           </div>
         </div>
 
@@ -42,7 +42,7 @@
     } @empty {
       <div class="empty-state">
         <span class="material-symbols-outlined">inventory</span>
-        <p>No hay productos en el inventario.</p>
+        <p>{{ 'inventory.empty' | transloco }}</p>
       </div>
     }
   </div>

@@ -32,7 +32,7 @@ describe('MenuConfigService', () => {
 
       it('el primer item debe ser Inicio con ruta /admin/inicio', () => {
         const first = service.getMenuByRole('ADMIN')[0];
-        expect(first.label).toBe('Inicio');
+        expect(first.label).toBe('menu.home');
         expect(first.route).toBe('/admin/inicio');
       });
     });

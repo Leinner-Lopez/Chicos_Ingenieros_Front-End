@@ -1,12 +1,14 @@
+import { TranslocoPipe } from '@jsverse/transloco';
+import { TranslocoDatePipe, TranslocoDecimalPipe } from '@jsverse/transloco-locale';
+import { DateFormatterService } from '../../../../Core/Services/date-formatter.service';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CustomerService } from '../../services/customer.service';
 import { AuthService } from '../../../../Core/Services/auth-service';
 import { SaleHistoryDTO } from '../../../../Data/Interfaces/Sale';
-import { DatePipe, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-inicio',
-  imports: [DatePipe, DecimalPipe],
+  imports: [TranslocoPipe, TranslocoDatePipe, TranslocoDecimalPipe],
   templateUrl: './inicio.html',
   styleUrl: './inicio.css',
 })
@@ -18,6 +20,7 @@ export class InicioCustomer implements OnInit {
 
   customerService = inject(CustomerService);
   authService = inject(AuthService);
+  private readonly dateFormatter = inject(DateFormatterService);
 
   ngOnInit(): void {
     const userId = this.authService.getUserId();
@@ -35,14 +38,5 @@ export class InicioCustomer implements OnInit {
       .subscribe((data) => this.recentPurchases.set(data));
   }
 
-  díasSemana: string[] = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-  fechaFormateada = this.getFechaFormateada();
-
-  getFechaFormateada(): string {
-    const fecha: Date = new Date();
-    const diaSemana: string = this.díasSemana[fecha.getDay()];
-    const dia: number = fecha.getDate();
-    const mes: string = fecha.toLocaleDateString('es-ES', { month: 'long' });
-    return `${diaSemana}, ${dia} de ${mes}`;
-  }
+  fechaFormateada = this.dateFormatter.fechaHoy;
 }

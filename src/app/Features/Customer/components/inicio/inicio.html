@@ -1,29 +1,29 @@
 <main class="inicio__view">
   <section class="view__main">
     <header class="main__header">
-      <h1 class="header__title">Hola, Cliente</h1>
-      <p class="header__date">{{fechaFormateada}}</p>
+      <h1 class="header__title">{{ 'greeting.customer' | transloco }}</h1>
+      <p class="header__date">{{ fechaFormateada() }}</p>
     </header>
 
     <section class="main__summary">
       <article class="summary__card card--white">
-        <h2>Productos disponibles</h2>
+        <h2>{{ 'home.availableProducts' | transloco }}</h2>
         <p>{{availableProducts()}}</p>
       </article>
       <article class="summary__card card--green">
-        <p>Total de compras realizadas</p>
-        <strong>{{totalPurchases()}} compra(s)</strong>
+        <p>{{ 'home.totalPurchases' | transloco }}</p>
+        <strong>{{ 'home.purchasesCount' | transloco: { count: totalPurchases() } }}</strong>
       </article>
       <article class="summary__card card--green">
-        <p>Total gastado</p>
-        <strong>$ {{totalSpent() | number:'1.0-0'}} COP</strong>
+        <p>{{ 'home.totalSpent' | transloco }}</p>
+        <strong>$ {{ totalSpent() | translocoDecimal:{maximumFractionDigits:0} }} {{ 'common.currencySuffix' | transloco }}</strong>
       </article>
     </section>
 
     <section class="main__agenda">
       <header class="agenda__header">
-        <h2>Últimas compras</h2>
-        <p>{{fechaFormateada}}</p>
+        <h2>{{ 'home.latestPurchases' | transloco }}</h2>
+        <p>{{ fechaFormateada() }}</p>
       </header>
       <ul class="bento-grid-lotes">
         @for (purchase of recentPurchases(); track purchase.saleId) {
@@ -32,28 +32,28 @@
             <span class="material-symbols-outlined">shopping_bag</span>
             <div class="product-details">
               <h4>{{ purchase.productName }}</h4>
-              <span class="lot-id">Venta #{{ purchase.saleId }}</span>
+              <span class="lot-id">{{ 'home.saleNumber' | transloco: { id: purchase.saleId } }}</span>
             </div>
           </div>
           <div class="card-body">
             <div class="data-row">
-              <span class="label">Cantidad</span>
-              <span class="value accent">{{ purchase.quantity }} unds</span>
+              <span class="label">{{ 'common.quantity' | transloco }}</span>
+              <span class="value accent">{{ purchase.quantity }} {{ 'common.unitsLong' | transloco }}</span>
             </div>
             <div class="data-row">
-              <span class="label">Total</span>
-              <span class="value">$ {{ purchase.totalPrice | number:'1.0-0' }} COP</span>
+              <span class="label">{{ 'common.total' | transloco }}</span>
+              <span class="value">$ {{ purchase.totalPrice | translocoDecimal:{maximumFractionDigits:0} }} {{ 'common.currencySuffix' | transloco }}</span>
             </div>
             <div class="data-row">
-              <span class="label">Fecha</span>
-              <span class="value date-value">{{ purchase.saleDate | date:'dd/MM/yyyy' }}</span>
+              <span class="label">{{ 'common.date' | transloco }}</span>
+              <span class="value date-value">{{ purchase.saleDate | translocoDate:{day:'2-digit',month:'2-digit',year:'numeric'} }}</span>
             </div>
           </div>
         </li>
         } @empty {
         <div class="empty-state">
           <span class="material-symbols-outlined">shopping_cart</span>
-          <p>Aún no has realizado ninguna compra.</p>
+          <p>{{ 'home.noPurchases' | transloco }}</p>
         </div>
         }
       </ul>

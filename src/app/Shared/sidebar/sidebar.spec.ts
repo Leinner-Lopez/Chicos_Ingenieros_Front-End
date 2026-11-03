@@ -68,7 +68,7 @@ describe('Sidebar', () => {
 
     it('el primer item debe ser Inicio', async () => {
       await setup('ADMIN');
-      expect(component.menuItems()[0].label).toBe('Inicio');
+      expect(component.menuItems()[0].label).toBe('menu.home');
       expect(component.menuItems()[0].route).toBe('/admin/inicio');
     });
   });

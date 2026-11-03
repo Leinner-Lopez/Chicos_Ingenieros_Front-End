@@ -1,6 +1,6 @@
 <div class="modal">
   <div class="modal__header">
-    <h2 class="modal__title">Usuarios Inactivos</h2>
+    <h2 class="modal__title">{{ 'users.inactiveTitle' | transloco }}</h2>
     <button class="modal__close" (click)="closeModal()">
       <span class="material-symbols-outlined">close</span>
     </button>
@@ -25,13 +25,13 @@
       </div>
       <button class="btn-reactivate" (click)="reactivate(user.userId)">
         <span class="material-symbols-outlined">person_check</span>
-        Reactivar
+        {{ 'users.reactivate' | transloco }}
       </button>
     </article>
     } @empty {
     <div class="empty-state">
       <span class="material-symbols-outlined">check_circle</span>
-      <p>No hay usuarios inactivos.</p>
+      <p>{{ 'users.inactiveEmpty' | transloco }}</p>
     </div>
     }
   </div>

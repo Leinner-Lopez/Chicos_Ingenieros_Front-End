@@ -10,10 +10,12 @@ import { MessageModal } from '../../../../Shared/Modals/message-modal/message-mo
 import { PasswordFieldset } from '../../../../Shared/password-fieldset/password-fieldset';
 import { NameInputs } from '../../../../Shared/name-inputs/name-inputs';
 import { hasFormError } from '../../../../Shared/Utilities/form-utils';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
+import { LanguageSwitcher } from '../../../../Shared/language-switcher/language-switcher';
 
 @Component({
   selector: 'app-register',
-  imports: [RouterLink, ReactiveFormsModule, PasswordFieldset, NameInputs],
+  imports: [RouterLink, ReactiveFormsModule, PasswordFieldset, NameInputs, TranslocoPipe, LanguageSwitcher],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
@@ -22,6 +24,7 @@ export class Register {
   private readonly form = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly t = inject(TranslocoService);
 
   registrationForm: FormGroup = this.form.group(
     {
@@ -52,8 +55,8 @@ export class Register {
       next: () => {
         const dialogRef = this.dialog.open(MessageModal, {
           data: {
-            message: 'Registro exitoso',
-            title: 'Éxito',
+            message: this.t.translate('auth.registerSuccess'),
+            title: this.t.translate('common.success'),
           },
         });
         setTimeout(() => {
@@ -65,8 +68,8 @@ export class Register {
         if (err.status === 409) {
           this.dialog.open<string>(MessageModal, {
             data: {
-              message: 'El email o el número de documento ya estan registrados.',
-              title: 'Error de registro',
+              message: this.t.translate('auth.alreadyRegistered'),
+              title: this.t.translate('auth.registerErrorTitle'),
             },
           });
         }

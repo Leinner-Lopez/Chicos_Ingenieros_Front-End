@@ -8,10 +8,11 @@ import { ProductService } from '../../../Data/Services/product-service';
 import { ProductDTO } from '../../../Data/Interfaces/Product';
 import { ModalNotificationService } from '../../../Core/Services/modal-notification.service';
 import { hasFormError } from '../../Utilities/form-utils';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-register-lot',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, TranslocoPipe],
   templateUrl: './register-lot.html',
   styleUrl: './register-lot.css',
 })
@@ -21,6 +22,7 @@ export class RegisterLot {
   private readonly lotService: LotService = inject(LotService);
   private readonly productService: ProductService = inject(ProductService);
   private readonly modalNotification = inject(ModalNotificationService);
+  private readonly t = inject(TranslocoService);
   products = signal<ProductDTO[]>([]);
 
   constructor(@Inject(DIALOG_DATA) public data: any) {
@@ -84,8 +86,8 @@ export class RegisterLot {
     this.lotService.saveLot(lotData).subscribe({
       next: () =>
         this.modalNotification.showSuccess(
-          'Lote Registrado',
-          'El lote ha sido registrado exitosamente.',
+          this.t.translate('lots.registered'),
+          this.t.translate('lots.registeredMsg'),
           () => this.closeModal(),
         ),
     });

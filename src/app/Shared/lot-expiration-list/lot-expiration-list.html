@@ -1,6 +1,6 @@
 <section class="main__agenda">
   <header class="agenda__header">
-    <h2>{{ title() }}</h2>
+    <h2>{{ title() || ('home.lotsExpiringThisWeek' | transloco) }}</h2>
     <p>{{ fecha() }}</p>
   </header>
   <ul class="bento-grid-lotes">
@@ -10,24 +10,24 @@
         <span class="material-symbols-outlined">box</span>
         <div class="product-details">
           <h4>{{ lot.productName }}</h4>
-          <span class="lot-id">Lote #{{ lot.lotId }}</span>
+          <span class="lot-id">{{ 'lots.lotNumber' | transloco: { id: lot.lotId } }}</span>
         </div>
       </div>
       <div class="card-body">
         <div class="data-row">
-          <span class="label">Stock disponible</span>
-          <span class="value accent">{{ lot.stockQuantity }} unds</span>
+          <span class="label">{{ 'lots.availableStock' | transloco }}</span>
+          <span class="value accent">{{ lot.stockQuantity }} {{ 'common.unitsLong' | transloco }}</span>
         </div>
         <div class="data-row">
-          <span class="label">Vencimiento</span>
-          <span class="value date-value">{{ lot.expirationDate | date:'dd/MM/yyyy' }}</span>
+          <span class="label">{{ 'lots.expiration' | transloco }}</span>
+          <span class="value date-value">{{ lot.expirationDate | translocoDate:{day:'2-digit',month:'2-digit',year:'numeric'} }}</span>
         </div>
       </div>
     </li>
     } @empty {
     <div class="empty-state">
       <span class="material-symbols-outlined">verified</span>
-      <p>No hay lotes en riesgo de vencimiento esta semana.</p>
+      <p>{{ 'lots.emptyExpiring' | transloco }}</p>
     </div>
     }
   </ul>

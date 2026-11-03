@@ -5,22 +5,22 @@ import { MenuItem } from '../../Data/Interfaces/MenuItem';
 export class MenuConfigService {
   private readonly menuByRole: Record<string, MenuItem[]> = {
     ADMIN: [
-      { label: 'Inicio', icon: 'home', route: '/admin/inicio' },
-      { label: 'Usuarios', icon: 'groups', route: '/admin/users' },
-      { label: 'Lotes', icon: 'package_2', route: '/admin/lotes' },
-      { label: 'Productos', icon: 'glass_cup', route: '/admin/productos' },
-      { label: 'Categorías', icon: 'category', route: '/admin/categorias' },
-      { label: 'Inventario', icon: 'inventory', route: '/admin/inventario' },
-      { label: 'Ventas', icon: 'article', route: '/admin/ventas' },
-      { label: 'BackUp', icon: 'backup', route: '/admin/backup'}
+      { label: 'menu.home', icon: 'home', route: '/admin/inicio' },
+      { label: 'menu.users', icon: 'groups', route: '/admin/users' },
+      { label: 'menu.lots', icon: 'package_2', route: '/admin/lotes' },
+      { label: 'menu.products', icon: 'glass_cup', route: '/admin/productos' },
+      { label: 'menu.categories', icon: 'category', route: '/admin/categorias' },
+      { label: 'menu.inventory', icon: 'inventory', route: '/admin/inventario' },
+      { label: 'menu.sales', icon: 'article', route: '/admin/ventas' },
+      { label: 'menu.backup', icon: 'backup', route: '/admin/backup'}
     ],
     STORE: [
-      { label: 'Inicio', icon: 'home', route: '/store/inicio' },
-      { label: 'Lotes', icon: 'package_2', route: '/store/lotes' },
+      { label: 'menu.home', icon: 'home', route: '/store/inicio' },
+      { label: 'menu.lots', icon: 'package_2', route: '/store/lotes' },
     ],
     CUSTOMER: [
-      { label: 'Inicio', icon: 'home', route: '/customer/inicio' },
-      { label: 'Productos', icon: 'glass_cup', route: '/customer/productos' },
+      { label: 'menu.home', icon: 'home', route: '/customer/inicio' },
+      { label: 'menu.products', icon: 'glass_cup', route: '/customer/productos' },
     ],
   };
 

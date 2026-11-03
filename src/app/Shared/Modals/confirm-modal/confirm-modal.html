@@ -8,8 +8,8 @@
     <div class="modal__content">
         <h3 class="content__text">{{message}}</h3>
         <div class="content__buttons">
-            <button class="buttons__button button--accept" (click)="confirmAction()">Aceptar</button>
-            <button class="buttons__button button--cancel" (click)="closeModal()">Cancelar</button>
+            <button class="buttons__button button--accept" (click)="confirmAction()">{{ 'common.accept' | transloco }}</button>
+            <button class="buttons__button button--cancel" (click)="closeModal()">{{ 'common.cancel' | transloco }}</button>
         </div>
     </div>
 </div>

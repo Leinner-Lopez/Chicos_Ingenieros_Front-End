@@ -1,4 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { TranslocoService } from '@jsverse/transloco';
+import { TranslocoLocaleService } from '@jsverse/transloco-locale';
 import { DateFormatterService } from './date-formatter.service';
 
 describe('DateFormatterService', () => {
@@ -38,5 +40,11 @@ describe('DateFormatterService', () => {
       const resultado = service.getFechaFormateada(fecha);
       expect(resultado.startsWith(diasEsperados[i])).toBe(true);
     }
+  });
+
+  it('debe formatear la fecha en inglés cuando el idioma activo es "en"', () => {
+    TestBed.inject(TranslocoService).setActiveLang('en');
+    TestBed.inject(TranslocoLocaleService).setLocale('en-US');
+    expect(service.getFechaFormateada(new Date(2025, 0, 6))).toBe('Monday, January 6');
   });
 });

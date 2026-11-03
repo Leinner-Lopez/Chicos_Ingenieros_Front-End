@@ -11,14 +11,14 @@
             type="email"
             id="email"
             formControlName="Username"
-            placeholder="Email"
+            [placeholder]="'auth.email' | transloco"
             name="username"
           />
         </div>
         @if (hasError('Username','required')) {
-        <p class="error__message">El campo es requerido</p>
+        <p class="error__message">{{ 'validation.required' | transloco }}</p>
         } @if(hasError('Username','email')){
-        <p class="error__message">Debe contener un email valido</p>
+        <p class="error__message">{{ 'validation.email' | transloco }}</p>
         }
       </div>
       <div class="form__input-container">
@@ -28,25 +28,26 @@
             <input
               type="password"
               id="Contraseña"
-              placeholder="Contraseña"
+              [placeholder]="'auth.password' | transloco"
               name="password"
               formControlName="Password"
               required
             />
           </div>
           @if (hasError('Password','required')) {
-          <p class="error__message">El campo es requerido</p>
+          <p class="error__message">{{ 'validation.required' | transloco }}</p>
           }
         </div>
       </div>
 
       <input
         type="submit"
-        value="Login"
+        [value]="'auth.login' | transloco"
         [disabled]="formularioLogin.invalid"
         class="form__button"
       />
     </form>
-    <p>¿No tienes una cuenta? <a routerLink="/register" id="register">Regístrate</a></p>
+    <p>{{ 'auth.noAccount' | transloco }} <a routerLink="/register" id="register">{{ 'auth.signUp' | transloco }}</a></p>
+    <app-language-switcher />
   </main>
 </div>

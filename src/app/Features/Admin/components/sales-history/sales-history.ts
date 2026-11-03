@@ -1,11 +1,12 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { SaleService } from '../../../../Data/Services/sale-service';
 import { SaleHistoryDTO } from '../../../../Data/Interfaces/Sale';
-import { CurrencyPipe, DatePipe } from '@angular/common';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { TranslocoCurrencyPipe, TranslocoDatePipe } from '@jsverse/transloco-locale';
 
 @Component({
   selector: 'app-sales-history',
-  imports: [DatePipe, CurrencyPipe],
+  imports: [TranslocoPipe, TranslocoDatePipe, TranslocoCurrencyPipe],
   templateUrl: './sales-history.html',
   styleUrl: './sales-history.css',
 })

@@ -4,15 +4,17 @@ import { Category } from '../../../../Data/Interfaces/Category';
 import { RegisterCategory } from '../../../../Shared/Modals/register-category/register-category';
 import { Dialog } from '@angular/cdk/dialog';
 import { ConfirmModal } from '../../../../Shared/Modals/confirm-modal/confirm-modal';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-categories',
-  imports: [],
+  imports: [TranslocoPipe],
   templateUrl: './categories.html',
   styleUrl: './categories.css',
 })
 export class Categories implements OnInit {
   dialog = inject(Dialog);
+  private readonly t = inject(TranslocoService);
   categoryService: CategoryService = inject(CategoryService);
   categories = signal<Category[]>([]);
   categoriesNumber = signal<number>(0);
@@ -42,9 +44,9 @@ export class Categories implements OnInit {
   deleteCategory(categoryId: number) {
     const dialogRef = this.dialog.open<string>(ConfirmModal, {
       data: {
-        message: '¿Deseas eliminar esta categoría?',
-        successTitle: 'Categoría Eliminada',
-        successMessage: 'La categoría ha sido eliminada exitosamente.',
+        message: this.t.translate('categories.confirmDelete'),
+        successTitle: this.t.translate('categories.deleted'),
+        successMessage: this.t.translate('categories.deletedMsg'),
         onConfirm: () => this.categoryService.deleteCategory(categoryId),
       },
     });

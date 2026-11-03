@@ -5,10 +5,11 @@ import { AuthService } from '../../../Core/Services/auth-service';
 import { SaleRequest } from '../../../Data/Interfaces/Sale';
 import { SaleService } from '../../../Data/Services/sale-service';
 import { MessageModal } from '../message-modal/message-modal';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-buy-product-modal',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, TranslocoPipe],
   templateUrl: './buy-product-modal.html',
   styleUrl: './buy-product-modal.css',
 })
@@ -17,6 +18,7 @@ export class BuyProductModal {
   dialogRef: DialogRef<string> = inject(DialogRef);
   form = inject(FormBuilder);
   authService = inject(AuthService);
+  private readonly t = inject(TranslocoService);
   salesService = inject(SaleService);
   productId = signal<number | null>(null);
 
@@ -47,8 +49,8 @@ export class BuyProductModal {
       next: () => {
         const dialogRef = this.dialog.open<string>(MessageModal, {
           data: {
-            title: 'Compra Registrada',
-            message: 'La compra ha sido registrada exitosamente.',
+            title: this.t.translate('shop.purchaseRegistered'),
+            message: this.t.translate('shop.purchaseRegisteredMsg'),
           },
         });
         setTimeout(() => {

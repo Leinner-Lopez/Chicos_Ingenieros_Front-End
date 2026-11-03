@@ -6,15 +6,17 @@ import { Dialog } from '@angular/cdk/dialog';
 import { RegisterUser } from '../../../../Shared/Modals/register-user/register-user';
 import { ConfirmModal } from '../../../../Shared/Modals/confirm-modal/confirm-modal';
 import { InactiveUsers } from '../../../../Shared/Modals/inactive-users/inactive-users';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-users',
-  imports: [],
+  imports: [TranslocoPipe],
   templateUrl: './users.html',
   styleUrl: './users.css',
 })
 export class Users implements OnInit {
   dialog = inject(Dialog);
+  private readonly t = inject(TranslocoService);
   userService: UserService = inject(UserService);
   users = signal<UserDTO[]>([]);
   usersNumber = signal<number>(0);
@@ -49,8 +51,8 @@ export class Users implements OnInit {
   deactivateUser(userId: number): void {
     const dialogRef = this.dialog.open<string>(ConfirmModal, {
       data: {
-        message: '¿Deseas desactivar este usuario?',
-        successTitle: 'Usuario Desactivado',
+        message: this.t.translate('users.confirmDeactivate'),
+        successTitle: this.t.translate('users.deactivated'),
         successMessage: 'El usuario ha sido desactivado exitosamente.',
         onConfirm: () => this.userService.toggleUserStatus(userId),
       },

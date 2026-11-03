@@ -73,7 +73,7 @@ h3 {
   background-color: inherit;
   width: 100%;
   border: none;
-  font-size: 1.2rem;
+  font-size: 1.17rem;
   user-select: none;
   text-decoration: none;
   color: var(--color-font-1);
@@ -165,4 +165,10 @@ span {
     width: 25px;
     height: 25px;
   }
+}
+
+.list__item--lang {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.75rem;
 }

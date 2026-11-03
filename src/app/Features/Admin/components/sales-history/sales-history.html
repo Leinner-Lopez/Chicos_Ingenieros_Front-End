@@ -1,12 +1,12 @@
 <section class="history-container">
   <div class="history-header">
     <div>
-      <h2 class="main-title">Historial de Ventas</h2>
-      <p class="section-desc">Monitoreo de salidas y auditoría de lotes vendidos</p>
+      <h2 class="main-title">{{ 'sales.title' | transloco }}</h2>
+      <p class="section-desc">{{ 'sales.subtitle' | transloco }}</p>
     </div>
     <div class="today-badge">
-      <span class="label">Balance de Hoy</span>
-      <span class="amount">{{ balanceHoy() | currency:'COP':'$':'1.0-0' }} COP</span>
+      <span class="label">{{ 'sales.todayBalance' | transloco }}</span>
+      <span class="amount">{{ balanceHoy() | translocoCurrency:'narrowSymbol':{minimumFractionDigits:0,maximumFractionDigits:0}:'COP' }} {{ 'common.currencySuffix' | transloco }}</span>
     </div>
   </div>
 
@@ -16,31 +16,31 @@
       <div class="ticket-left">
         <div class="icon-receipt">receipt_long</div>
         <div class="meta-info">
-          <span class="sale-id">Transacción #{{ venta.saleId }}</span>
-          <span class="sale-time">{{ venta.saleDate | date:'dd/MM/yyyy HH:mm' }}</span>
+          <span class="sale-id">{{ 'sales.transaction' | transloco: { id: venta.saleId } }}</span>
+          <span class="sale-time">{{ venta.saleDate | translocoDate:{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false} }}</span>
         </div>
       </div>
 
       <div class="ticket-center">
         <div class="product-spec">
           <h4>{{ venta.productName }}</h4>
-          <span class="lot-tracker">Origen: Lote #{{ venta.lotId }}</span>
+          <span class="lot-tracker">{{ 'sales.origin' | transloco: { id: venta.lotId } }}</span>
         </div>
         <div class="quantity-spec">
           <span class="qty">{{ venta.quantity }} x</span>
-          <span class="unit-p">{{ venta.unitPrice | currency:'COP':'$':'1.0-0' }}</span>
+          <span class="unit-p">{{ venta.unitPrice | translocoCurrency:'narrowSymbol':{minimumFractionDigits:0,maximumFractionDigits:0}:'COP' }}</span>
         </div>
       </div>
 
       <div class="ticket-right">
-        <span class="total-label">Total</span>
-        <span class="total-price">{{ venta.totalPrice | currency:'COP':'$':'1.0-0' }} COP</span>
+        <span class="total-label">{{ 'common.total' | transloco }}</span>
+        <span class="total-price">{{ venta.totalPrice | translocoCurrency:'narrowSymbol':{minimumFractionDigits:0,maximumFractionDigits:0}:'COP' }} {{ 'common.currencySuffix' | transloco }}</span>
       </div>
     </div>
     } @empty {
     <div class="empty-history">
       <span class="icon-empty">receipt</span>
-      <p>Aún no se han registrado ventas en el sistema.</p>
+      <p>{{ 'sales.empty' | transloco }}</p>
     </div>
     }
   </div>

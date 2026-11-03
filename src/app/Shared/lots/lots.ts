@@ -1,19 +1,21 @@
 import { Dialog } from '@angular/cdk/dialog';
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { LotService } from '../../Data/Services/lot-service';
 import { LotDTO } from '../../Data/Interfaces/Lot';
 import { ConfirmModal } from '../Modals/confirm-modal/confirm-modal';
 import { RegisterLot } from '../Modals/register-lot/register-lot';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
+import { TranslocoDatePipe } from '@jsverse/transloco-locale';
 
 @Component({
   selector: 'app-lots',
-  imports: [DatePipe],
+  imports: [TranslocoPipe, TranslocoDatePipe],
   templateUrl: './lots.html',
   styleUrl: './lots.css',
 })
 export class Lots implements OnInit {
   dialog = inject(Dialog);
+  private readonly t = inject(TranslocoService);
   lotService: LotService = inject(LotService);
   lots = signal<LotDTO[]>([]);
   lotsNumber = signal<number>(0);
@@ -43,8 +45,8 @@ export class Lots implements OnInit {
   deleteLot(lotId: number) {
     const dialogRef = this.dialog.open<string>(ConfirmModal, {
       data: {
-        message: '¿Deseas eliminar este lote?',
-        successTitle: 'Lote Eliminado',
+        message: this.t.translate('lots.confirmDelete'),
+        successTitle: this.t.translate('lots.deleted'),
         successMessage: 'El lote ha sido eliminado exitosamente.',
         onConfirm: () => this.lotService.deleteLot(lotId),
       },

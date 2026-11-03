@@ -1,56 +1,56 @@
 <div class="form__container">
   <main class="form">
-    <h1>Formulario de Registro</h1>
+    <h1>{{ 'auth.registerTitle' | transloco }}</h1>
     <form class="form__form" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
       <fieldset class="form__info-group">
-        <legend class="info-group__description">Información del Usuario</legend>
+        <legend class="info-group__description">{{ 'auth.userInfo' | transloco }}</legend>
         <div class="info-group__input-container">
           <app-name-inputs />
           <div class="input-container">
             <label
-              >Número de Documento<input
+              >{{ 'auth.documentNumber' | transloco }}<input
                 type="number"
                 formControlName="documentNumber"
                 minlength="8"
                 required
             /></label>
             @if (hasError('documentNumber','required')) {
-            <p class="error__message">El campo es requerido</p>
+            <p class="error__message">{{ 'validation.required' | transloco }}</p>
             } @if(hasError('documentNumber','minlength')){
-            <p class="error__message">Debe contener mínimo 8 caracteres</p>
+            <p class="error__message">{{ 'validation.min8' | transloco }}</p>
             }
           </div>
         </div>
       </fieldset>
       <fieldset class="form__info-group">
-        <legend class="info-group__description">Información de contacto</legend>
+        <legend class="info-group__description">{{ 'auth.contactInfo' | transloco }}</legend>
         <div class="info-group__input-container">
           <div class="input-container">
             <label
-              >Email<input
+              >{{ 'auth.email' | transloco }}<input
                 type="email"
                 formControlName="email"
                 placeholder="email@gmail.com"
                 required
             /></label>
             @if (hasError('email','required')) {
-            <p class="error__message">El campo es requerido</p>
+            <p class="error__message">{{ 'validation.required' | transloco }}</p>
             } @if(hasError('email','email')){
-            <p class="error__message">Correo electrónico inválido</p>
+            <p class="error__message">{{ 'validation.email' | transloco }}</p>
             }
           </div>
           <div class="input-container">
             <label
-              >Teléfono<input
+              >{{ 'auth.phone' | transloco }}<input
                 type="number"
                 formControlName="phoneNumber"
                 placeholder="0123456789"
                 required
             /></label>
             @if (hasError('phoneNumber','required')) {
-            <p class="error__message">El campo es requerido</p>
+            <p class="error__message">{{ 'validation.required' | transloco }}</p>
             } @if(hasError('phoneNumber','minlength')){
-            <p class="error__message">Debe contener mínimo 10 caracteres</p>
+            <p class="error__message">{{ 'validation.min10' | transloco }}</p>
             }
           </div>
         </div>
@@ -59,12 +59,13 @@
       <div class="form__button-container">
         <input
           type="submit"
-          value="Registrarse"
+          [value]="'auth.submitRegister' | transloco"
           class="form__button"
           [disabled]="registrationForm.invalid"
         />
       </div>
-      <p>¿Ya tienes una cuenta? <a routerLink="/login">Inicia sesión</a></p>
+      <p>{{ 'auth.haveAccount' | transloco }} <a routerLink="/login">{{ 'auth.signIn' | transloco }}</a></p>
+      <app-language-switcher />
     </form>
   </main>
 </div>
