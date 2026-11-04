@@ -5,10 +5,13 @@ import { AuthService } from '../../../../Core/Services/auth-service';
 import { LoginRequest } from '../../../../Data/Interfaces/LoginRequest';
 import { Dialog } from '@angular/cdk/dialog';
 import { MessageModal } from '../../../../Shared/Modals/message-modal/message-modal';
+import { HttpErrorResponse } from '@angular/common/http';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
+import { LanguageSwitcher } from '../../../../Shared/language-switcher/language-switcher';
 
 @Component({
   selector: 'app-login',
-  imports: [RouterLink, ReactiveFormsModule],
+  imports: [RouterLink, ReactiveFormsModule, TranslocoPipe, LanguageSwitcher],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
@@ -17,6 +20,7 @@ export class Login {
   form = inject(FormBuilder);
   authService = inject(AuthService);
   router = inject(Router);
+  private readonly t = inject(TranslocoService);
 
   formularioLogin: FormGroup = this.form.group({
     Username: ['', [Validators.required, Validators.email]],
@@ -31,13 +35,22 @@ export class Login {
     };
     this.authService.login(credentials).subscribe({
       next: () => this.router.navigate([this.authService.getHomeRoute()]),
-      error: (err) => {
-        this.dialog.open<string>(MessageModal, {
-          data: {
-            title: 'Error de autenticación',
-            message: 'Email o contraseña incorrectos. Por favor, inténtelo de nuevo.',
-          },
-        });
+      error: (err: HttpErrorResponse) => {
+        if (err.status == 403) {
+          this.dialog.open<string>(MessageModal, {
+            data: {
+              title: this.t.translate('auth.loginErrorTitle'),
+              message: this.t.translate('auth.badCredentials'),
+            },
+          });
+        } else {
+          this.dialog.open<string>(MessageModal, {
+            data: {
+              title: this.t.translate('auth.loginErrorTitle'),
+              message: this.t.translate('auth.userDisabled'),
+            },
+          });
+        }
       },
     });
   }

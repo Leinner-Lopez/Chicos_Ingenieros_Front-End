@@ -1,17 +1,17 @@
 <section class="users-view">
   <header class="view-header">
     <div class="header-text">
-      <h2 class="header-title">Usuarios</h2>
-      <p class="header-subtitle">{{ usersNumber() }} usuarios activos</p>
+      <h2 class="header-title">{{ 'users.title' | transloco }}</h2>
+      <p class="header-subtitle">{{ 'users.count' | transloco: { count: usersNumber() } }}</p>
     </div>
     <div class="header-actions">
       <button class="btn-secondary" (click)="openInactiveUsers()">
         <span class="material-symbols-outlined">person_off</span>
-        Inactivos
+        {{ 'users.inactive' | transloco }}
       </button>
       <button class="btn-primary" (click)="registerUser()">
         <span class="material-symbols-outlined">add</span>
-        Registrar
+        {{ 'common.register' | transloco }}
       </button>
     </div>
   </header>
@@ -39,12 +39,12 @@
       <div class="card-actions">
         <button class="btn-action btn-edit" (click)="updateUser(user.userId)">
           <span class="material-symbols-outlined">edit</span>
-          Editar
+          {{ 'common.edit' | transloco }}
         </button>
         <button
           class="btn-action btn-delete"
           (click)="deactivateUser(user.userId)"
-          title="Desactivar usuario"
+          [title]="'users.deactivateTooltip' | transloco"
         >
           <span class="material-symbols-outlined">person_off</span>
         </button>
@@ -53,7 +53,7 @@
     } @empty {
     <div class="empty-state">
       <span class="material-symbols-outlined">group</span>
-      <p>No hay usuarios activos.</p>
+      <p>{{ 'users.empty' | transloco }}</p>
     </div>
     }
   </div>

@@ -1,10 +1,11 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ProductService } from '../../../../Data/Services/product-service';
 import { ProductInventoryDTO } from '../../../../Data/Interfaces/Product';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-inventory',
-  imports: [],
+  imports: [TranslocoPipe],
   templateUrl: './inventory.html',
   styleUrl: './inventory.css',
 })

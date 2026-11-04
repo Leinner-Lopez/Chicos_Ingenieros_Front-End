@@ -9,10 +9,11 @@ import { ModalNotificationService } from '../../../Core/Services/modal-notificat
 import { hasFormError } from '../../Utilities/form-utils';
 import { PasswordFieldset } from '../../password-fieldset/password-fieldset';
 import { NameInputs } from '../../name-inputs/name-inputs';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-register-user',
-  imports: [ReactiveFormsModule, PasswordFieldset, NameInputs],
+  imports: [ReactiveFormsModule, PasswordFieldset, NameInputs, TranslocoPipe],
   templateUrl: './register-user.html',
   styleUrl: './register-user.css',
 })
@@ -21,6 +22,7 @@ export class RegisterUser {
   private readonly form = inject(FormBuilder);
   private readonly userService = inject(UserService);
   private readonly modalNotification = inject(ModalNotificationService);
+  private readonly t = inject(TranslocoService);
 
   registrationForm: FormGroup;
   isEditMode: boolean;
@@ -85,8 +87,8 @@ export class RegisterUser {
       this.userService.updateUser(userData).subscribe({
         next: () =>
           this.modalNotification.showSuccess(
-            'Usuario Actualizado',
-            'El usuario ha sido actualizado exitosamente.',
+            this.t.translate('users.updated'),
+            this.t.translate('users.updatedMsg'),
             () => this.closeModal(),
           ),
       });
@@ -96,8 +98,8 @@ export class RegisterUser {
     this.userService.saveUser(userData).subscribe({
       next: () =>
         this.modalNotification.showSuccess(
-          'Usuario Registrado',
-          'El usuario ha sido registrado exitosamente.',
+          this.t.translate('users.registered'),
+          this.t.translate('users.registeredMsg'),
           () => this.closeModal(),
         ),
     });

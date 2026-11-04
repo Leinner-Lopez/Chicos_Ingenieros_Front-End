@@ -1,29 +1,29 @@
 <div class="modal">
-  <h2 class="modal__title">Registrar Lote</h2>
+  <h2 class="modal__title">{{ 'lots.registerTitle' | transloco }}</h2>
   <button class="modal__close" (click)="closeModal()">
     <span class="material-symbols-outlined"> close </span>
   </button>
   <form class="modal__form" (ngSubmit)="onSubmit()" [formGroup]="formularioRegistration">
     <div class="form__input-container">
       <div class="input__container">
-        <label for="productName">Stock</label>
+        <label for="productName">{{ 'common.stock' | transloco }}</label>
         <input type="number" formControlName="stock" name="productStock" id="productStock" />
         @if (hasError("stock","required")) {
-        <p class="error__message">El campo es requerido</p>
+        <p class="error__message">{{ 'validation.required' | transloco }}</p>
         }
       </div>
       <div class="input__container">
-        <label for="productPrice">Estado</label>
+        <label for="productPrice">{{ 'lots.status' | transloco }}</label>
         <select name="status" id="status" formControlName="status" class="input__select">
-          <option value="AVAILABLE">Disponible</option>
-          <option value="EXPIRED">Expirado</option>
+          <option value="AVAILABLE">{{ 'lots.statusAvailable' | transloco }}</option>
+          <option value="EXPIRED">{{ 'lots.statusExpired' | transloco }}</option>
         </select>
         @if (hasError("status","required")) {
-        <p class="error__message">El campo es requerido</p>
+        <p class="error__message">{{ 'validation.required' | transloco }}</p>
         }
       </div>
       <div class="input__container">
-        <label for="productMinStock">Fecha de Vencimiento</label>
+        <label for="productMinStock">{{ 'lots.expirationDate' | transloco }}</label>
         <input
           type="date"
           formControlName="expirationDate"
@@ -32,14 +32,14 @@
           [min]="today"
         />
         @if (hasError("expirationDate","required")) {
-        <p class="error__message">El campo es requerido</p>
+        <p class="error__message">{{ 'validation.required' | transloco }}</p>
         }
         @if (hasError("expirationDate","minDate")) {
-        <p class="error__message">La fecha no puede ser anterior a hoy</p>
+        <p class="error__message">{{ 'validation.minDate' | transloco }}</p>
         }
       </div>
       <div class="input__container">
-        <label for="productCategory">Producto</label>
+        <label for="productCategory">{{ 'lots.product' | transloco }}</label>
         <select name="product" id="product" formControlName="product" class="input__select">
           @for (product of products(); track product.productId) {
           <option value="{{ product.productId }}">{{ product.name }}</option>
@@ -47,6 +47,6 @@
         </select>
       </div>
     </div>
-    <button type="submit" class="submit__button">Registrar</button>
+    <button type="submit" class="submit__button">{{ 'common.register' | transloco }}</button>
   </form>
 </div>

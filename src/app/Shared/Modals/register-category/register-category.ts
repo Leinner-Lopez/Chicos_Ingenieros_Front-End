@@ -5,10 +5,11 @@ import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Category } from '../../../Data/Interfaces/Category';
 import { ModalNotificationService } from '../../../Core/Services/modal-notification.service';
 import { hasFormError } from '../../Utilities/form-utils';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-register-category',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, TranslocoPipe],
   templateUrl: './register-category.html',
   styleUrl: './register-category.css',
 })
@@ -17,6 +18,7 @@ export class RegisterCategory {
   private readonly form = inject(FormBuilder);
   private readonly categoryService: CategoryService = inject(CategoryService);
   private readonly modalNotification = inject(ModalNotificationService);
+  private readonly t = inject(TranslocoService);
 
   constructor(@Inject(DIALOG_DATA) public data: any) {
     if (data?.categoryId) {
@@ -57,8 +59,8 @@ export class RegisterCategory {
     this.categoryService.saveCategory(categoryData).subscribe({
       next: () =>
         this.modalNotification.showSuccess(
-          'Categoría Registrada',
-          'La categoría ha sido registrada exitosamente.',
+          this.t.translate('categories.registered'),
+          this.t.translate('categories.registeredMsg'),
           () => this.closeModal(),
         ),
     });

@@ -1,81 +1,81 @@
 <div class="form">
-  <h1>{{ isEditMode ? 'Editar Usuario' : 'Formulario de Registro' }}</h1>
+  <h1>{{ (isEditMode ? 'users.editTitle' : 'auth.registerTitle') | transloco }}</h1>
   <button class="modal__close" (click)="closeModal()">
     <span class="material-symbols-outlined"> close </span>
   </button>
   <form class="form__form" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
     <fieldset class="form__info-group">
-      <legend class="info-group__description">Información del Usuario</legend>
+      <legend class="info-group__description">{{ 'auth.userInfo' | transloco }}</legend>
       <div class="info-group__input-container">
         <div class="input-container">
           <app-name-inputs />
         </div>
         <div class="input-container">
           <label
-            >Número de Documento<input
+            >{{ 'auth.documentNumber' | transloco }}<input
               type="number"
               formControlName="documentNumber"
               placeholder="12345678"
           /></label>
           @if (hasError('documentNumber','required')) {
-          <p class="error__message">El campo es requerido</p>
+          <p class="error__message">{{ 'validation.required' | transloco }}</p>
           } @if(hasError('documentNumber','min')){
-          <p class="error__message">Debe contener mínimo 8 caracteres</p>
+          <p class="error__message">{{ 'validation.min8' | transloco }}</p>
           } @if(hasError('documentNumber','max')){
-          <p class="error__message">Debe contener como máximo 10 caracteres</p>
+          <p class="error__message">{{ 'validation.max10' | transloco }}</p>
           }
-          <label for="userRole">Rol</label>
+          <label for="userRole">{{ 'users.role' | transloco }}</label>
           <select id="userRole" formControlName="userRole" class="input__select" required>
-            <option value="">Seleccionar rol</option>
-            <option value="CUSTOMER">Cliente</option>
-            <option value="ADMIN">Administrador</option>
-            <option value="STORE">Almacén</option>
+            <option value="">{{ 'users.selectRole' | transloco }}</option>
+            <option value="CUSTOMER">{{ 'users.roleCustomer' | transloco }}</option>
+            <option value="ADMIN">{{ 'users.roleAdmin' | transloco }}</option>
+            <option value="STORE">{{ 'users.roleStore' | transloco }}</option>
           </select>
           @if (hasError('userRole','required')) {
-          <p class="error__message">El campo es requerido</p>
+          <p class="error__message">{{ 'validation.required' | transloco }}</p>
           }
         </div>
       </div>
     </fieldset>
     <fieldset class="form__info-group">
-      <legend class="info-group__description">Información de contacto</legend>
+      <legend class="info-group__description">{{ 'auth.contactInfo' | transloco }}</legend>
       <div class="info-group__input-container">
         <div class="input-container">
           <label
-            >Email<input
+            >{{ 'auth.email' | transloco }}<input
               type="email"
               formControlName="email"
               placeholder="email@gmail.com"
               required
           /></label>
           @if (hasError('email','required')) {
-          <p class="error__message">El campo es requerido</p>
+          <p class="error__message">{{ 'validation.required' | transloco }}</p>
           } @if(hasError('email','email')){
-          <p class="error__message">Correo electrónico inválido</p>
+          <p class="error__message">{{ 'validation.email' | transloco }}</p>
           }
         </div>
         <div class="input-container">
           <label
-            >Teléfono<input type="number" formControlName="phoneNumber" placeholder="0123456789"
+            >{{ 'auth.phone' | transloco }}<input type="number" formControlName="phoneNumber" placeholder="0123456789"
           /></label>
           @if (hasError('phoneNumber','required')) {
-          <p class="error__message">El campo es requerido</p>
+          <p class="error__message">{{ 'validation.required' | transloco }}</p>
           } @if(hasError('phoneNumber','min')){
-          <p class="error__message">Debe contener mínimo 10 caracteres</p>
+          <p class="error__message">{{ 'validation.min10' | transloco }}</p>
           }@if(hasError('phoneNumber','max')){
-          <p class="error__message">Debe contener como máximo 10 caracteres</p>
+          <p class="error__message">{{ 'validation.max10' | transloco }}</p>
           }
         </div>
       </div>
     </fieldset>
     <app-password-fieldset />
     @if (isEditMode) {
-    <p class="form__hint">Dejar en blanco para no cambiar la contraseña</p>
+    <p class="form__hint">{{ 'users.passwordKeepHint' | transloco }}</p>
     }
     <div class="form__button-container">
       <input
         type="submit"
-        [value]="isEditMode ? 'Actualizar' : 'Registrar'"
+        [value]="(isEditMode ? 'common.update' : 'common.register') | transloco"
         class="form__button"
         [disabled]="registrationForm.invalid"
       />

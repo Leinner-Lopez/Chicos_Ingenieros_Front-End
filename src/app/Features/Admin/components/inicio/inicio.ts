@@ -3,10 +3,12 @@ import { AdminService } from '../../services/admin.service';
 import { LotDTO } from '../../../../Data/Interfaces/Lot';
 import { DateFormatterService } from '../../../../Core/Services/date-formatter.service';
 import { LotExpirationList } from '../../../../Shared/lot-expiration-list/lot-expiration-list';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { TranslocoCurrencyPipe } from '@jsverse/transloco-locale';
 
 @Component({
   selector: 'app-inicio-admin',
-  imports: [LotExpirationList],
+  imports: [LotExpirationList, TranslocoPipe, TranslocoCurrencyPipe],
   templateUrl: './inicio.html',
   styleUrl: './inicio.css',
 })
@@ -18,7 +20,7 @@ export class InicioAdmin implements OnInit {
   private readonly dashboardAdminService = inject(AdminService);
   private readonly dateFormatter = inject(DateFormatterService);
 
-  fechaFormateada = this.dateFormatter.getFechaFormateada();
+  fechaFormateada = this.dateFormatter.fechaHoy;
 
   ngOnInit(): void {
     this.dashboardAdminService.getProductsWithLowStock().subscribe((data: number) => {

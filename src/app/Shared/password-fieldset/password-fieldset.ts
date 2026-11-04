@@ -1,10 +1,11 @@
+import { TranslocoPipe } from '@jsverse/transloco';
 import { Component, inject } from '@angular/core';
 import { ControlContainer, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { hasFormError } from '../Utilities/form-utils';
 
 @Component({
   selector: 'app-password-fieldset',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, TranslocoPipe],
   templateUrl: './password-fieldset.html',
   styleUrl: '../../Features/Auth/components/register/register.css',
   viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }],

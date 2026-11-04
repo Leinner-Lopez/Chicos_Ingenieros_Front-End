@@ -1,21 +1,21 @@
 <div class="modal">
-  <h2 class="modal__title">Registrar Categoría</h2>
+  <h2 class="modal__title">{{ 'categories.registerTitle' | transloco }}</h2>
   <button class="modal__close" (click)="closeModal()">
     <span class="material-symbols-outlined"> close </span>
   </button>
   <form class="modal__form" (ngSubmit)="onSubmit()" [formGroup]="formularioRegistration">
     <div class="form__input-container">
       <div class="input__container">
-        <label for="categoryName">Nombre</label>
+        <label for="categoryName">{{ 'common.name' | transloco }}</label>
         <input type="text" formControlName="name" name="categoryName" id="categoryName" />
       </div>
       @if (hasError("name","required")) {
-      <p class="error__message">El campo es requerido</p>
+      <p class="error__message">{{ 'validation.required' | transloco }}</p>
       }
     </div>
     <div class="form__input-container">
       <div class="input__container">
-        <label for="categoryDescription">Descripción</label>
+        <label for="categoryDescription">{{ 'common.description' | transloco }}</label>
         <textarea
           name="categoryDescription"
           id="categoryDescription"
@@ -23,9 +23,9 @@
         ></textarea>
       </div>
       @if (hasError("description","required")) {
-      <p class="error__message">El campo es requerido</p>
+      <p class="error__message">{{ 'validation.required' | transloco }}</p>
       }
     </div>
-    <button type="submit" class="submit__button">Registrar</button>
+    <button type="submit" class="submit__button">{{ 'common.register' | transloco }}</button>
   </form>
 </div>

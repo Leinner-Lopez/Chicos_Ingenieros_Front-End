@@ -2,12 +2,12 @@
 
   <header class="view-header">
     <div class="header-text">
-      <h2 class="header-title">Lotes</h2>
-      <p class="header-subtitle">{{ lotsNumber() }} lotes registrados</p>
+      <h2 class="header-title">{{ 'lots.title' | transloco }}</h2>
+      <p class="header-subtitle">{{ 'lots.count' | transloco: { count: lotsNumber() } }}</p>
     </div>
     <button class="btn-primary" (click)="registerLot()">
       <span class="material-symbols-outlined">add</span>
-      Registrar
+      {{ 'common.register' | transloco }}
     </button>
   </header>
 
@@ -21,7 +21,7 @@
           </div>
           <div class="card-meta">
             <h3 class="lot-name">{{ lot.productName }}</h3>
-            <span class="lot-id-badge">Lote #{{ lot.lotId }}</span>
+            <span class="lot-id-badge">{{ 'lots.lotNumber' | transloco: { id: lot.lotId } }}</span>
           </div>
           <span [class]="'status-dot ' + getLotStatusClass(lot.expirationDate)"></span>
         </div>
@@ -32,17 +32,17 @@
           <div class="data-row">
             <span class="data-label">
               <span class="material-symbols-outlined icon-sm">layers</span>
-              Stock
+              {{ 'common.stock' | transloco }}
             </span>
-            <span class="data-value">{{ lot.stockQuantity }} <small>uds</small></span>
+            <span class="data-value">{{ lot.stockQuantity }} <small>{{ 'common.units' | transloco }}</small></span>
           </div>
           <div class="data-row">
             <span class="data-label">
               <span class="material-symbols-outlined icon-sm">event</span>
-              Vencimiento
+              {{ 'lots.expiration' | transloco }}
             </span>
             <span [class]="'data-date ' + getLotStatusClass(lot.expirationDate)">
-              {{ lot.expirationDate | date:'dd/MM/yyyy' }}
+              {{ lot.expirationDate | translocoDate:{day:'2-digit',month:'2-digit',year:'numeric'} }}
             </span>
           </div>
         </div>
@@ -50,7 +50,7 @@
         <div class="card-actions">
           <button class="btn-action btn-edit" (click)="updateLot(lot.lotId)">
             <span class="material-symbols-outlined">edit</span>
-            Editar
+            {{ 'common.edit' | transloco }}
           </button>
           <button class="btn-action btn-delete" (click)="deleteLot(lot.lotId)">
             <span class="material-symbols-outlined">delete</span>
@@ -61,7 +61,7 @@
     } @empty {
       <div class="empty-state">
         <span class="material-symbols-outlined">package_2</span>
-        <p>No hay lotes registrados aún.</p>
+        <p>{{ 'lots.empty' | transloco }}</p>
       </div>
     }
   </div>

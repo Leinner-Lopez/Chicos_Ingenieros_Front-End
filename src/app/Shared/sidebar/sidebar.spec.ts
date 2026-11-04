@@ -31,9 +31,9 @@ describe('Sidebar', () => {
   }
 
   describe('menú para ADMIN', () => {
-    it('debe tener 7 items de menú', async () => {
+    it('debe tener 8 items de menú', async () => {
       await setup('ADMIN');
-      expect(component.menuItems().length).toBe(7);
+      expect(component.menuItems().length).toBe(8);
     });
 
     it('debe incluir la ruta /admin/inicio', async () => {
@@ -68,7 +68,7 @@ describe('Sidebar', () => {
 
     it('el primer item debe ser Inicio', async () => {
       await setup('ADMIN');
-      expect(component.menuItems()[0].label).toBe('Inicio');
+      expect(component.menuItems()[0].label).toBe('menu.home');
       expect(component.menuItems()[0].route).toBe('/admin/inicio');
     });
   });

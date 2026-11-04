@@ -1,26 +1,26 @@
 <div class="modal">
-  <h2 class="modal__title">{{ isEditMode ? 'Editar Producto' : 'Registrar Producto' }}</h2>
+  <h2 class="modal__title">{{ (isEditMode ? 'products.editTitle' : 'products.registerTitle') | transloco }}</h2>
   <button class="modal__close" (click)="closeModal()">
     <span class="material-symbols-outlined"> close </span>
   </button>
   <form class="modal__form" (ngSubmit)="onSubmit()" [formGroup]="formularioRegistration">
     <div class="form__input-container">
       <div class="input__container">
-        <label for="productName">Nombre</label>
+        <label for="productName">{{ 'common.name' | transloco }}</label>
         <input type="text" formControlName="name" name="productName" id="productName" />
         @if (hasError("name","required")) {
-        <p class="error__message">El campo es requerido</p>
+        <p class="error__message">{{ 'validation.required' | transloco }}</p>
         }
       </div>
       <div class="input__container">
-        <label for="productPrice">Precio</label>
+        <label for="productPrice">{{ 'products.price' | transloco }}</label>
         <input type="number" formControlName="price" name="productPrice" id="productPrice" />
         @if (hasError("price","required")) {
-        <p class="error__message">El campo es requerido</p>
+        <p class="error__message">{{ 'validation.required' | transloco }}</p>
         }
       </div>
       <div class="input__container">
-        <label for="productMinStock">Stock Mínimo</label>
+        <label for="productMinStock">{{ 'products.minStock' | transloco }}</label>
         <input
           type="number"
           formControlName="minStock"
@@ -28,11 +28,11 @@
           id="productMinStock"
         />
         @if (hasError("minStock","required")) {
-        <p class="error__message">El campo es requerido</p>
+        <p class="error__message">{{ 'validation.required' | transloco }}</p>
         }
       </div>
       <div class="input__container">
-        <label for="productCategory">Categoría</label>
+        <label for="productCategory">{{ 'products.category' | transloco }}</label>
         <select
           name="productCategory"
           id="productCategory"
@@ -45,10 +45,10 @@
         </select>
       </div>
       <div class="input__container input__container--full">
-        <label for="productImage">Imagen</label>
+        <label for="productImage">{{ 'products.image' | transloco }}</label>
         @if (isEditMode && currentImageUrl) {
-        <img [src]="currentImageUrl" alt="Actual" class="product__current-image" />
-        <p class="input__hint">Dejar en blanco para mantener la imagen actual</p>
+        <img [src]="currentImageUrl" [alt]="'products.imageCurrentAlt' | transloco" class="product__current-image" />
+        <p class="input__hint">{{ 'products.imageKeepHint' | transloco }}</p>
         }
         <input
           type="file"
@@ -57,25 +57,25 @@
           accept="image/jpeg,image/png,image/webp"
           (change)="onImageChange($event)"
         />
-        <p class="input__hint">Formatos aceptados: JPG, PNG, WebP · Máximo 10 MB</p>
+        <p class="input__hint">{{ 'products.imageFormatsHint' | transloco }}</p>
         @if (imageError) {
         <p class="error__message">{{ imageError }}</p>
         }
       </div>
       <div class="input__container input__container--full">
-        <label for="productDescription">Descripción</label>
+        <label for="productDescription">{{ 'common.description' | transloco }}</label>
         <textarea
           name="productDescription"
           id="productDescription"
           formControlName="description"
         ></textarea>
         @if (hasError("description","required")) {
-        <p class="error__message">El campo es requerido</p>
+        <p class="error__message">{{ 'validation.required' | transloco }}</p>
         }
       </div>
     </div>
     <button type="submit" class="submit__button">
-      {{ isEditMode ? 'Actualizar' : 'Registrar' }}
+      {{ (isEditMode ? 'common.update' : 'common.register') | transloco }}
     </button>
   </form>
 </div>

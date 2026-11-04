@@ -1,29 +1,29 @@
 <main class="inicio__view">
   <section class="view__main">
     <header class="main__header">
-      <h1 class="header__title">Hola, Administrador</h1>
-      <p class="header__date">{{fechaFormateada}}</p>
+      <h1 class="header__title">{{ 'greeting.admin' | transloco }}</h1>
+      <p class="header__date">{{ fechaFormateada() }}</p>
     </header>
 
     <section class="main__summary">
       <article class="summary__card card--green">
-        <p>Esta semana se vencen</p>
-        <strong> {{lots().length}} lote(s)</strong>
+        <p>{{ 'home.expiringThisWeek' | transloco }}</p>
+        <strong>{{ 'home.lotsCount' | transloco: { count: lots().length } }}</strong>
       </article>
       <article class="summary__card card--white">
-        <h2>Hay escasez en</h2>
-        <p>{{productsWithLowStock()}} producto(s)</p>
+        <h2>{{ 'home.lowStockIn' | transloco }}</h2>
+        <p>{{ 'home.productsCount' | transloco: { count: productsWithLowStock() } }}</p>
       </article>
       <article class="summary__card card--green">
-        <p>Mermas del Mes</p>
-        <strong>$ {{costOfShrinksOfTheMonth()}} COP</strong>
+        <p>{{ 'home.monthlyLosses' | transloco }}</p>
+        <strong>{{ costOfShrinksOfTheMonth() | translocoCurrency:'narrowSymbol':{minimumFractionDigits:0,maximumFractionDigits:0}:'COP' }} {{ 'common.currencySuffix' | transloco }}</strong>
       </article>
     </section>
 
     <app-lot-expiration-list
       [lots]="lots()"
-      [fecha]="fechaFormateada"
-      title="Lotes de esta semana"
+      [fecha]="fechaFormateada()"
+      [title]="'home.lotsThisWeek' | transloco"
     />
   </section>
 </main>

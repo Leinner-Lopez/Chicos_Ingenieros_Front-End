@@ -2,12 +2,12 @@
 
   <header class="view-header">
     <div class="header-text">
-      <h2 class="header-title">Categorías</h2>
-      <p class="header-subtitle">{{ categoriesNumber() }} categorías en catálogo</p>
+      <h2 class="header-title">{{ 'categories.title' | transloco }}</h2>
+      <p class="header-subtitle">{{ 'categories.count' | transloco: { count: categoriesNumber() } }}</p>
     </div>
     <button class="btn-primary" (click)="registerCategory()">
       <span class="material-symbols-outlined">add</span>
-      Registrar
+      {{ 'common.register' | transloco }}
     </button>
   </header>
 
@@ -32,7 +32,7 @@
         <div class="card-actions">
           <button class="btn-action btn-edit" (click)="updateCategory(category.categoryId)">
             <span class="material-symbols-outlined">edit</span>
-            Editar
+            {{ 'common.edit' | transloco }}
           </button>
           <button class="btn-action btn-delete" (click)="deleteCategory(category.categoryId)">
             <span class="material-symbols-outlined">delete</span>
@@ -43,7 +43,7 @@
     } @empty {
       <div class="empty-state">
         <span class="material-symbols-outlined">label_off</span>
-        <p>No hay categorías registradas aún.</p>
+        <p>{{ 'categories.empty' | transloco }}</p>
       </div>
     }
   </div>

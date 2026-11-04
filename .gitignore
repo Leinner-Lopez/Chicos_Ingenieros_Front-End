@@ -60,3 +60,5 @@ node_modules/
 
 # Variables de entorno locales
 .env
+docs/
+graphify-out/

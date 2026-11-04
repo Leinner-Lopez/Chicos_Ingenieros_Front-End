@@ -1,28 +1,28 @@
 <main class="inicio__view">
   <section class="view__main">
     <header class="main__header">
-      <h1 class="header__title">Hola, Bodega</h1>
-      <p class="header__date">{{fechaFormateada}}</p>
+      <h1 class="header__title">{{ 'greeting.store' | transloco }}</h1>
+      <p class="header__date">{{ fechaFormateada() }}</p>
     </header>
 
     <section class="main__summary">
       <article class="summary__card card--green">
-        <p>Lotes por vencer esta semana</p>
-        <strong>{{lots().length}} lote(s)</strong>
+        <p>{{ 'home.lotsExpiringThisWeek' | transloco }}</p>
+        <strong>{{ 'home.lotsCount' | transloco: { count: lots().length } }}</strong>
       </article>
       <article class="summary__card card--white">
-        <h2>Total de lotes registrados</h2>
+        <h2>{{ 'home.totalLotsRegistered' | transloco }}</h2>
         <p>{{totalLots()}}</p>
       </article>
       <article class="summary__card card--green">
-        <p>Mermas del Mes</p>
-        <strong>$ {{lossesOfTheMonth()}} COP</strong>
+        <p>{{ 'home.monthlyLosses' | transloco }}</p>
+        <strong>{{ lossesOfTheMonth() | translocoCurrency:'narrowSymbol':{minimumFractionDigits:0,maximumFractionDigits:0}:'COP' }} {{ 'common.currencySuffix' | transloco }}</strong>
       </article>
     </section>
 
     <app-lot-expiration-list
       [lots]="lots()"
-      [fecha]="fechaFormateada"
+      [fecha]="fechaFormateada()"
     />
   </section>
 </main>

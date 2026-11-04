@@ -26,7 +26,7 @@ describe('RegisterLot', () => {
     stock: 100,
     product: 1,
     status: LotStatus.AVAILABLE,
-    expirationDate: '2027-01-01',
+    expirationDate: '2099-01-01',
   };
 
   describe('modo creación (sin lotId)', () => {
@@ -92,7 +92,7 @@ describe('RegisterLot', () => {
       expect(req.request.method).toBe('POST');
       expect(req.request.body.stockQuantity).toBe(100);
       expect(req.request.body.productId).toBe(1);
-      expect(req.request.body.expirationDate).toBe('2027-01-01');
+      expect(req.request.body.expirationDate).toBe('2099-01-01');
       req.flush({ lotId: 10, ...validFormValue });
     });
 
@@ -114,7 +114,7 @@ describe('RegisterLot', () => {
       stockQuantity: 80,
       productId: 2,
       status: LotStatus.AVAILABLE,
-      expirationDate: '2026-09-15',
+      expirationDate: '2099-09-15',
     };
 
     beforeEach(async () => {
@@ -149,7 +149,7 @@ describe('RegisterLot', () => {
     it('debe poblar el formulario con los datos del lote', () => {
       expect(component.formularioRegistration.get('stock')!.value).toBe(80);
       expect(component.formularioRegistration.get('product')!.value).toBe(2);
-      expect(component.formularioRegistration.get('expirationDate')!.value).toBe('2026-09-15');
+      expect(component.formularioRegistration.get('expirationDate')!.value).toBe('2099-09-15');
     });
 
     it('onSubmit() debe llamar a updateLot() (PUT)', () => {
@@ -157,7 +157,7 @@ describe('RegisterLot', () => {
         stock: 60,
         product: 2,
         status: LotStatus.AVAILABLE,
-        expirationDate: '2026-09-15',
+        expirationDate: '2099-09-15',
       });
 
       component.onSubmit();

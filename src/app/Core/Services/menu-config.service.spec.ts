@@ -15,8 +15,8 @@ describe('MenuConfigService', () => {
 
   describe('getMenuByRole()', () => {
     describe('ADMIN', () => {
-      it('debe retornar 7 items', () => {
-        expect(service.getMenuByRole('ADMIN').length).toBe(7);
+      it('debe retornar 8 items', () => {
+        expect(service.getMenuByRole('ADMIN').length).toBe(8);
       });
 
       it('debe incluir todas las rutas del dashboard de administrador', () => {
@@ -32,7 +32,7 @@ describe('MenuConfigService', () => {
 
       it('el primer item debe ser Inicio con ruta /admin/inicio', () => {
         const first = service.getMenuByRole('ADMIN')[0];
-        expect(first.label).toBe('Inicio');
+        expect(first.label).toBe('menu.home');
         expect(first.route).toBe('/admin/inicio');
       });
     });
